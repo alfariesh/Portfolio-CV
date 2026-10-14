@@ -1,4 +1,5 @@
-import { lazy, Suspense } from "react";
+import { lazy } from "react";
+import { ClientOnly } from "./ClientOnly";
 
 const PaperFibre = lazy(() => import("./PaperFibre"));
 
@@ -8,9 +9,9 @@ export function Backdrop() {
     <div className="backdrop" aria-hidden="true">
       <div className="backdrop__folds" />
       <div className="backdrop__clip">
-        <Suspense fallback={null}>
+        <ClientOnly>
           <PaperFibre className="backdrop__paper" paper="#FFFFFF" shadow="#C9CBC1" />
-        </Suspense>
+        </ClientOnly>
       </div>
       <div className="backdrop__ruler backdrop__ruler--y" />
       <div className="backdrop__ruler backdrop__ruler--x" />

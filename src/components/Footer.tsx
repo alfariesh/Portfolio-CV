@@ -1,6 +1,7 @@
-import { lazy, Suspense } from "react";
+import { lazy } from "react";
 import { footer, profile } from "../content";
 import { Link } from "../router/Link";
+import { ClientOnly } from "./ClientOnly";
 import { Icon } from "./Icon";
 import { Mark } from "./Mark";
 
@@ -9,9 +10,9 @@ const PaperFibre = lazy(() => import("./PaperFibre"));
 export function Footer() {
   return (
     <footer className="footer">
-      <Suspense fallback={null}>
+      <ClientOnly>
         <PaperFibre className="footer__paper" />
-      </Suspense>
+      </ClientOnly>
       <div className="footer__inner container">
         <div className="footer__brand">
           <span className="footer__tile">

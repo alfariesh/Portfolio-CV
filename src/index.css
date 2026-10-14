@@ -439,6 +439,7 @@ svg {
   width: 100%;
   margin-inline: auto;
   overflow: hidden;
+  container-type: inline-size;
 }
 
 .scaler__inner {
@@ -446,6 +447,15 @@ svg {
   top: 0;
   left: 0;
   transform-origin: 0 0;
+}
+
+/* Where the browser can divide lengths, CSS works out the scale itself, so the
+   prerendered page is right before any script runs. Scaler.tsx sets the same
+   `scale` inline everywhere else. */
+@supports (scale: calc(100cqw / 1px)) {
+  .scaler__inner {
+    scale: calc(100cqw / var(--scaler-width));
+  }
 }
 
 /* ------------------------------------------------------------------ */

@@ -6,6 +6,7 @@ import { Tag } from "../components/Tag";
 import { profile } from "../content";
 import { formatDate, notes, type Note } from "../notes";
 import { Link } from "../router/Link";
+import { Seo } from "../components/Seo";
 
 // A single note, laid out like a sheet: cover, header, body, then the two
 // notes around it.
@@ -16,7 +17,7 @@ export function NotePage({ note }: { note: Note }) {
 
   return (
     <>
-      <title>{`${note.title} — notes · ${profile.name}`}</title>
+      <Seo path={`/notes/${note.slug}`} />
       <article className="grid grid--sheet">
         <Cell span={1} className="cell--cover">
           <NoteCover slug={note.slug} cover={note.cover} interactive />

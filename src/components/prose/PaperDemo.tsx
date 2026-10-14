@@ -1,4 +1,5 @@
-import { lazy, Suspense, useId, useState } from "react";
+import { lazy, useId, useState } from "react";
+import { ClientOnly } from "../ClientOnly";
 
 const PaperPlayground = lazy(() => import("./PaperPlayground"));
 
@@ -12,9 +13,9 @@ export function PaperDemo() {
   return (
     <figure className="demo">
       <div className="demo__stage">
-        <Suspense fallback={null}>
+        <ClientOnly>
           <PaperPlayground amount={amount} lines={lines} />
-        </Suspense>
+        </ClientOnly>
         <span className="demo__badge">live · webgl</span>
       </div>
       <figcaption className="demo__controls">

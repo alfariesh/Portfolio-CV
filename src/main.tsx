@@ -1,5 +1,5 @@
 import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, hydrateRoot } from "react-dom/client";
 import "@fontsource-variable/caveat/wght.css";
 import "./index.css";
 import "./styles/canvas.css";
@@ -20,8 +20,14 @@ window.addEventListener("vite:preloadError", (event) => {
   window.location.reload();
 });
 
-createRoot(document.getElementById("root")!).render(
+const root = document.getElementById("root")!;
+const app = (
   <StrictMode>
     <App />
-  </StrictMode>,
+  </StrictMode>
 );
+
+// The build prerenders every page (scripts/prerender.ts), so React adopts the
+// HTML that is already there. `vp dev` serves an empty root and renders fresh.
+if (root.firstElementChild) hydrateRoot(root, app);
+else createRoot(root).render(app);

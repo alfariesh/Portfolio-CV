@@ -1,11 +1,12 @@
 import { caseStudies } from "../case-studies";
 import { Cell } from "../components/Grid";
 import { WorkRow } from "../components/WorkRow";
+import { Seo } from "../components/Seo";
 
 export function WorkPage() {
   return (
     <>
-      <title>work — Salman Alfariesh</title>
+      <Seo path="/work" />
       <div className="grid">
         <Cell className="cell--masthead">
           <div className="masthead">

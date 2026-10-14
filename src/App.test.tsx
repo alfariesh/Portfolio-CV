@@ -5,16 +5,14 @@ import { caseStudies } from "./case-studies";
 import { footer, nav } from "./content";
 import { notes, tags } from "./notes";
 import { matchRoute } from "./router/routes";
+import { absolute, ogImage, pages as seoPages, site } from "./seo";
 
 const render = (url: string) => renderToString(<App url={url} />);
 
-const pages = [
-  "/",
-  "/work",
-  "/notes",
-  ...caseStudies.map((study) => `/work/${study.slug}`),
-  ...notes.map((note) => `/notes/${note.slug}`),
-];
+const pages = seoPages.map((page) => page.path);
+
+// Social cards drawn by scripts/og.ts, as "../public/og/….png".
+const cards = Object.keys(import.meta.glob("../public/og/**/*.png"));
 
 // Every in-site link must land on a page that exists.
 function resolves(href: string) {
@@ -67,7 +65,8 @@ describe.each(pages)("page %s", (url) => {
   });
 
   it("only links to pages that exist", () => {
-    const hrefs = [...html.matchAll(/href="(\/[^"]*)"/g)].map((m) => m[1]);
+    // Anchors only: <link> tags (font preloads, canonical) aren't site links.
+    const hrefs = [...html.matchAll(/<a\b[^>]*\shref="(\/[^"]*)"/g)].map((m) => m[1]);
     for (const href of new Set(hrefs)) expect(resolves(href), href).toBe(true);
   });
 
@@ -121,5 +120,48 @@ describe("content", () => {
     for (const col of footer.columns) {
       expect(col.links.length).toBeGreaterThan(0);
     }
+  });
+});
+
+describe("seo", () => {
+  const head = (html: string, pattern: RegExp) => [...html.matchAll(pattern)].map((m) => m[1]);
+
+  it("has an entry for every case study and note", () => {
+    for (const study of caseStudies) expect(pages).toContain(`/work/${study.slug}`);
+    for (const note of notes) expect(pages).toContain(`/notes/${note.slug}`);
+  });
+
+  it.each(pages)("%s has one title, a description and its own canonical URL", (path) => {
+    const html = render(path);
+    expect(head(html, /<title>([^<]*)<\/title>/g)).toHaveLength(1);
+    expect(head(html, /<meta name="description" content="([^"]+)"/g)).toHaveLength(1);
+    expect(head(html, /<link rel="canonical" href="([^"]+)"/g)).toEqual([absolute(path)]);
+    expect(html).not.toContain("noindex");
+  });
+
+  it.each(pages)("%s has a social card that exists and valid structured data", (path) => {
+    const html = render(path);
+    const image = ogImage(path);
+    expect(head(html, /<meta property="og:image" content="([^"]+)"/g)).toEqual([absolute(image)]);
+    expect(cards, `run vp run og to draw ${image}`).toContain(`../public${image}`);
+    const [json] = head(html, /<script type="application\/ld\+json">(.*?)<\/script>/g);
+    const graph = JSON.parse(json)["@graph"];
+    expect(graph.length).toBeGreaterThan(0);
+    for (const node of graph) expect(node["@type"]).toBeTruthy();
+  });
+
+  it("gives every page a unique title and description", () => {
+    expect(new Set(seoPages.map((page) => page.title)).size).toBe(seoPages.length);
+    expect(new Set(seoPages.map((page) => page.description)).size).toBe(seoPages.length);
+  });
+
+  it("keeps the not-found page out of the index", () => {
+    const html = render("/nope");
+    expect(html).toContain(`<meta name="robots" content="noindex"/>`);
+    expect(html).not.toContain(`rel="canonical"`);
+  });
+
+  it("uses an https origin without a trailing slash", () => {
+    expect(site.url).toMatch(/^https:\/\/[^/]+$/);
   });
 });

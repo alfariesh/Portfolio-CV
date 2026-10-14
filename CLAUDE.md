@@ -5,17 +5,26 @@ Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug
 ## Setup notes
 
 - The home directory has its own `pnpm-workspace.yaml`. This project keeps a local `pnpm-workspace.yaml` so it stays a standalone workspace root; don't delete it.
-- `vp dev` serves on port 5173 (`.claude/launch.json` runs it for the preview pane). `vp build` is the plain build; `vp run build` also runs `tsc -b`.
+- `vp dev` serves on port 5173 (`.claude/launch.json` runs it for the preview pane). `vp run build` is the real build: `tsc -b`, the client build, a server build into `dist-ssr/` and `scripts/prerender.ts`. Plain `vp build` only makes the client bundle (an empty SPA shell, no prerendered pages).
 - The pre-commit hook runs `vp check --fix` on staged files. There is no git remote yet.
-- Deep links need the host to serve `index.html` for unknown paths (SPA fallback). `vp dev`, `vp preview` and Cloudflare (below) already do.
+- Every page is prerendered to its own HTML file (`/work/numi` → `dist/work/numi.html`) and hydrated with `hydrateRoot`; unknown paths get `dist/404.html` with a 404 status. `vp dev` still renders client-side from an empty root.
 
 ## Deploy (Cloudflare Workers)
 
-- Hosted as a Worker with static assets: `wrangler.jsonc` (config), `public/_headers` (security headers, a year of `immutable` caching for `/assets/*`), `worker/index.ts` (a tiny Worker, type-checked through `tsconfig.worker.json`). Files in `dist/` and browser navigations never invoke the Worker (free, unlimited); it only runs when nothing matches and the request isn't a navigation, and answers 404 for a missing `/assets/*` file so an old chunk never gets `index.html` cached as immutable.
+- Hosted as a Worker with static assets: `wrangler.jsonc` (config, `not_found_handling: "404-page"`), `public/_headers` (security headers, a year of `immutable` caching for `/assets/*`), `worker/index.ts` (a tiny Worker, type-checked through `tsconfig.worker.json`). Files in `dist/` and browser navigations never invoke the Worker (free, unlimited); it only runs when nothing matches and the request isn't a navigation, and answers an uncacheable 404 for a missing `/assets/*` file so an old chunk never gets a 404 cached as immutable.
 - `vp run deploy` builds and deploys to production; `vp run deploy:preview` uploads a version with its own preview URL without promoting it; `vp run preview:cf` serves the build locally in workerd. The preview pane's `cloudflare` entry runs `wrangler dev` on port 8787 (serves the existing `dist/`, so build first). Roll back with `vp exec wrangler rollback`.
 - `wrangler` is a local dev dependency (`vp exec wrangler …`). pnpm's minimum release age blocks versions published in the last day; don't add `minimumReleaseAgeExclude` to force one.
 - The CSP in `_headers` allows only same-origin scripts (no inline). Inline styles are allowed because iso figures and React set them. Adding an external script, font, image or analytics beacon means extending the CSP.
 - `src/main.tsx` reloads the page once on `vite:preloadError`: after a deploy, a tab still on the old build can't load its lazy chunks.
+
+## SEO
+
+- `src/seo.ts` is the registry: one entry per indexable URL with its title (`page | Salman Alfariesh`), description, social card and schema.org nodes (WebSite + ProfilePage on home, Article per case study, BlogPosting per note, BreadcrumbList below home). `site.url` is the canonical origin; change it there when a custom domain is added. A new page needs an entry here, or `seoFor` throws.
+- `<Seo path>` (`src/components/Seo.tsx`) renders the head tags; React hoists them and swaps them on navigation. `<NoIndex>` is for the 404. JSON-LD is a data block, so the CSP doesn't need to allow it.
+- `scripts/prerender.ts` moves React's hoisted tags (`<title>`, `<meta>`, `<link>`, the figures' `<style precedence>`) into `<head>`, writes the pages, `404.html`, `sitemap.xml` and `robots.txt`, and fails the build on a missing or doubled `<title>` or a Suspense boundary the server gave up on.
+- Lazy WebGL pieces (`PaperFibre`, `PaperPlayground`) go inside `<ClientOnly>`: the server can't wait for a lazy chunk, and hydrating a boundary it gave up on logs React error 419 in every visitor's console.
+- Social cards (`public/og/**.png`, 1200×630) and the PNG favicons (`favicon-96.png`, `apple-touch-icon.png`; Google doesn't read SVG favicons) are committed. `vp run og` redraws them in headless Chrome from `/social-cards/` (`src/og/*`, dev only); rerun it after changing a page's card or figure, or adding a page (a test checks every page has its card).
+- Fonts: `App.tsx` preloads HarmonyOS Sans Regular and Bold (body and headlines), the first text on every page.
 
 ## Where things live
 
@@ -27,10 +36,10 @@ Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug
 - `src/router/*`: `Router` runs route changes in a Transition so `<ViewTransition>` animates them. It intercepts links and back/forward through the Navigation API, scrolls synchronously in a layout effect (before the browser captures the new page), and ignores React's own `info: "react-transition"` navigations. `Link` only steps in for browsers without the Navigation API. Pages live in `src/pages/*`.
 - Transitions: `App.tsx` wraps each page in a keyed `<ViewTransition>` (types `nav-forward` / `nav-back`); `<ProjectArt>` (`art-<key>`) and `<NoteCover>` (`note-cover-<slug>`) are shared elements. Shared names must stay unique per page. CSS is at the end of `src/styles/pages.css`.
 - `src/index.css`: tokens, layout, grid, footer, responsive rules. `src/styles/canvas.css` styles the hero canvas window, `src/styles/art.css` the hero canvas pieces, `src/styles/pages.css` case studies, notes, prose and view transitions, `src/iso/iso.css` the figures.
-- `src/art/*` and `src/components/CanvasMock.tsx`: the hero canvas (cursors, chips, mini phone screens), drawn at a fixed size and scaled by `<Scaler>`. Its height comes from `aspect-ratio`; the scale is written to the DOM in `useLayoutEffect` (not state), so it is right before paint and inside a view transition's snapshot.
+- `src/art/*` and `src/components/CanvasMock.tsx`: the hero canvas (cursors, chips, mini phone screens), drawn at a fixed size and scaled by `<Scaler>`. Its height comes from `aspect-ratio`. CSS scales it (`100cqw / --scaler-width`, typed arithmetic) so the prerendered page is right before scripts run; `useLayoutEffect` writes the same `scale` to the DOM (not state) for other browsers, before paint and inside a view transition's snapshot.
 - Icons and pictograms use the Rekanesia stroke-sharp set: inner SVG markup in `src/components/icon-data.ts` and `src/art/pictogram-markup.ts`, rendered with `dangerouslySetInnerHTML`, stroke width 1.5 inherited from the parent `<svg>`. Add new glyphs there in the same format.
-- `src/components/PaperFibre.tsx`: static WebGL paper texture from `@paper-design/shaders-react` (Apache-2.0), lazy-loaded into its own chunk. Used behind the footer and in the paper-texture demo note.
-- `src/App.test.tsx`: renders every route with `react-dom/server` (`<App url="…" />`) and checks one `h1` per page, home anchors, that every in-site link resolves, image labels, the ai-in-the-loop section and note metadata. Keep it passing when adding pages, sections or links.
+- `src/components/PaperFibre.tsx`: static WebGL paper texture from `@paper-design/shaders-react` (Apache-2.0), lazy-loaded into its own chunk inside `<ClientOnly>`. Used in the backdrop, behind the footer and in the paper-texture demo note.
+- `src/App.test.tsx`: renders every route with `react-dom/server` (`<App url="…" />`) and checks one `h1` per page, home anchors, that every in-site link resolves, image labels, the ai-in-the-loop section, note metadata and the SEO tags (one title, description, own canonical, an existing social card and valid JSON-LD per page; noindex on the 404). Its page list comes from `src/seo.ts`. Keep it passing when adding pages, sections or links.
 
 ## Design rules
 

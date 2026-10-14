@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "build": "tsc -b && vp build",
+    "build": "tsc -b && vp build && vp build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.ts",
     "lint": "vp lint",
     "preview": "vp preview",
     "prepare": "vp config",
     "preview:cf": "vp run build && wrangler dev",
     "deploy": "vp run build && wrangler deploy",
-    "deploy:preview": "vp run build && wrangler versions upload"
+    "deploy:preview": "vp run build && wrangler versions upload",
+    "og": "node scripts/og.ts"
   },
   "dependencies": {
     "@fontsource-variable/caveat": "^5.3.0",

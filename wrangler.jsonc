@@ -9,10 +9,10 @@
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
-    // The client-side router handles every path, so a navigation to an unknown
-    // path gets index.html with a 200 (src/router/routes.ts renders "missing").
-    // Headers and caching live in public/_headers.
-    "not_found_handling": "single-page-application",
+    // Every page is prerendered to its own HTML file (scripts/prerender.ts),
+    // so an unknown path gets 404.html with a real 404 status, never a soft
+    // 404. Headers and caching live in public/_headers.
+    "not_found_handling": "404-page",
   },
   "observability": {
     "enabled": true,

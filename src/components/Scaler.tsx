@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, type ReactNode } from "react";
+import { useLayoutEffect, useRef, type CSSProperties, type ReactNode } from "react";
 
 type ScalerProps = {
   width: number;
@@ -13,7 +13,7 @@ type ScalerProps = {
 // Renders children at a fixed design size and scales them to fit the available
 // width, so detailed illustrations keep their proportions on phones. The box
 // takes its height from `aspect-ratio`, so the page has its final height
-// before any script runs; only the transform is measured.
+// before any script runs, and CSS scales it too where it can (index.css).
 export function Scaler({ width, height, className, label, grow, children }: ScalerProps) {
   const ref = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
@@ -26,7 +26,7 @@ export function Scaler({ width, height, className, label, grow, children }: Scal
     if (!el || !inner) return;
     const fit = (available: number) => {
       const scale = grow ? available / width : Math.min(1, available / width);
-      inner.style.transform = `scale(${scale})`;
+      inner.style.scale = String(scale);
     };
     fit(el.clientWidth);
     const observer = new ResizeObserver(([entry]) => fit(entry.contentRect.width));
@@ -38,7 +38,13 @@ export function Scaler({ width, height, className, label, grow, children }: Scal
     <div
       ref={ref}
       className={["scaler", className].filter(Boolean).join(" ")}
-      style={{ aspectRatio: `${width} / ${height}`, maxWidth: grow ? undefined : width }}
+      style={
+        {
+          aspectRatio: `${width} / ${height}`,
+          maxWidth: grow ? undefined : width,
+          "--scaler-width": `${width}px`,
+        } as CSSProperties
+      }
       role={label ? "img" : undefined}
       aria-label={label}
     >

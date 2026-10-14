@@ -9,6 +9,7 @@ import { figures } from "../iso/figures";
 import { IsoFigure } from "../iso/IsoFigure";
 import { formatDate, notes } from "../notes";
 import { Link } from "../router/Link";
+import { Seo } from "../components/Seo";
 
 // Selected work as rows; Rekanesia leads the design-systems section instead.
 const featured = [caseStudy("vuboi"), caseStudy("surau"), caseStudy("ipubers")];
@@ -18,7 +19,7 @@ export function Home() {
 
   return (
     <>
-      <title>Salman Alfariesh — design, then ship it</title>
+      <Seo path="/" />
       <Hero />
 
       <div className="grid">

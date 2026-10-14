@@ -3,6 +3,7 @@ import { Cell } from "../components/Grid";
 import { ProjectArt } from "../components/ProjectArt";
 import { proseComponents } from "../components/prose";
 import { Link } from "../router/Link";
+import { Seo } from "../components/Seo";
 
 const number = (index: number) => String(index + 1).padStart(2, "0");
 
@@ -21,7 +22,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
 
   return (
     <>
-      <title>{`${study.title} — case study · Salman Alfariesh`}</title>
+      <Seo path={`/work/${study.slug}`} />
       <div className="grid">
         <Cell className="cell--art">
           <ProjectArt art={study.art} interactive />

@@ -1,10 +1,11 @@
 import { Cell, Head } from "../components/Grid";
 import { Link } from "../router/Link";
+import { NoIndex } from "../components/Seo";
 
 export function MissingPage() {
   return (
     <>
-      <title>not found — Salman Alfariesh</title>
+      <NoIndex title="not found | Salman Alfariesh" />
       <div className="grid">
         <Cell className="cell--head cell--missing">
           <Head

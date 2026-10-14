@@ -12,12 +12,14 @@ vp install      # install dependencies
 vp dev          # dev server on http://localhost:5173
 vp check        # format, lint and type-check
 vp test         # run tests
-vp build        # production build into dist/
+vp run build    # production build into dist/, every page prerendered
 vp preview      # serve the production build
+vp run og       # redraw the social cards and PNG favicons (needs Chrome)
 ```
 
 `vp run <script>` runs a `package.json` script instead of the built-in
-command (for example `vp run build` also runs `tsc -b`).
+command. Plain `vp build` only makes the client bundle; `vp run build` also
+type-checks and prerenders every page to static HTML.
 
 ## Deploy
 
@@ -31,6 +33,13 @@ vp run preview:cf        # build and serve it locally the way Cloudflare does
 ```
 
 Security headers and caching rules are in `public/_headers`.
+
+## SEO
+
+Titles, descriptions, canonical URLs, social cards and structured data for
+every page live in `src/seo.ts`; the build writes them into each page's
+static HTML along with `sitemap.xml` and `robots.txt`. When the site moves to
+a custom domain, change `site.url` there and redeploy.
 
 ## Editing
 

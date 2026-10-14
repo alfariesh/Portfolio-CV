@@ -6,6 +6,7 @@ import { Tag } from "../components/Tag";
 import { tagIcons } from "../components/tag-icons";
 import { formatDate, notes, tags, type Tag as TagName } from "../notes";
 import { Link } from "../router/Link";
+import { Seo } from "../components/Seo";
 
 type Filter = TagName | "all";
 
@@ -20,7 +21,7 @@ export function NotesPage() {
 
   return (
     <>
-      <title>notes — Salman Alfariesh</title>
+      <Seo path="/notes" />
       <div className="grid">
         <Cell className="cell--masthead">
           <div className="masthead">
