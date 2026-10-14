@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Link } from "../router/Link";
 
 type CellProps = {
   span?: 1 | 2;
@@ -85,11 +86,19 @@ export function Head({ id, eyebrow, title, body, align = "start", children }: He
   );
 }
 
-export function Blurb({ title, body }: { title: string; body: string }) {
+type BlurbProps = { title: string; body: string; href?: string; cta?: string };
+
+// With `href`, the blurb is a door to a case study.
+export function Blurb({ title, body, href, cta = "read the case study" }: BlurbProps) {
   return (
     <div className="blurb">
       <h3 className="blurb__title">{title}</h3>
       <p className="blurb__body">{body}</p>
+      {href && (
+        <Link className="link link--accent blurb__cta" href={href}>
+          {cta} →
+        </Link>
+      )}
     </div>
   );
 }

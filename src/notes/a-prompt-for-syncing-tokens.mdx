@@ -1,0 +1,26 @@
+export const meta = {
+  title: "a prompt for syncing tokens, and the one that failed",
+  summary:
+    "asking an agent to “match the design” invented new greys. Asking it to diff named tokens didn't.",
+  date: "2026-09-12",
+  tag: "workflow",
+  cover: { word: "css", glyph: "doc", tone: "moss" },
+};
+
+{/* TODO: draft. Swap in the exact prompt you use today and the real failure. */}
+
+My first attempt at syncing design tokens from the canvas into code was one line: make the CSS match the design. It worked, sort of. The page looked right, and the stylesheet had four new greys that existed nowhere on the canvas, each one a rounded version of a real token.
+
+The problem wasn't the agent. The prompt asked for a matching picture, so I got a matching picture. What I wanted was a matching vocabulary.
+
+The version I use now names the source of truth, asks for a diff instead of a rewrite, and forbids inventing values:
+
+```text
+Read the tokens on the "Tokens" artboard through the Paper MCP.
+Compare them with :root in src/index.css by name.
+For each token: unchanged, changed (old → new), or missing.
+Show me the diff first. Do not add a token that isn't on the canvas,
+and do not change any value that isn't a token.
+```
+
+Two details do most of the work. "By name" makes the canvas the vocabulary, not just a reference image. "Show me the diff first" turns a silent rewrite into a decision I make, which is the point of keeping a human in the loop.

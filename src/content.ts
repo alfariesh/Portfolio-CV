@@ -1,4 +1,6 @@
-// All copy for the site lives here. Edit this file to make the portfolio yours.
+// Copy and links for the home page, nav and footer. Case studies live in
+// src/case-studies/*.mdx and notes in src/notes/*.mdx.
+import { caseStudies } from "./case-studies";
 
 export const profile = {
   name: "Salman Alfariesh",
@@ -10,12 +12,13 @@ export const profile = {
   resumeUrl: "#",
 };
 
+// Shown on every page, so home sections are linked as /#section.
 export const nav = [
-  { label: "work", href: "#work" },
-  { label: "systems", href: "#systems" },
-  { label: "process", href: "#process" },
-  { label: "about", href: "#about" },
-  { label: "notes", href: "#notes" },
+  { label: "work", href: "/#work" },
+  { label: "systems", href: "/#systems" },
+  { label: "process", href: "/#process" },
+  { label: "about", href: "/#about" },
+  { label: "notes", href: "/notes" },
 ] as const;
 
 export const hero = {
@@ -40,44 +43,6 @@ export const intro = {
   cta: { label: "view selected work", href: "#work" },
 };
 
-export type Project = {
-  slug: string;
-  name: string;
-  kind: string;
-  summary: string;
-};
-
-export const projects: Project[] = [
-  {
-    slug: "vuboi",
-    name: "Vuboi",
-    kind: "mobile app",
-    summary:
-      "a calm mobile experience designed on the canvas and built in React Native, sharing one token set across iOS and Android",
-  },
-  {
-    slug: "chicken-bank",
-    name: "Chicken Bank",
-    kind: "iOS app",
-    summary:
-      "a playful savings app, prototyped on the canvas with real data and rebuilt natively in SwiftUI",
-  },
-  {
-    slug: "rekanesia-pictograms",
-    name: "Rekanesia",
-    kind: "pictogram family",
-    summary:
-      "a pictogram family drawn on one shared grid, so every icon feels like it belongs to the same voice",
-  },
-  {
-    slug: "rekanesia-states",
-    name: "Rekanesia",
-    kind: "status states",
-    summary:
-      "a complete vocabulary of states — draft, in review, approved, rejected — designed as tokens, not one-offs",
-  },
-];
-
 export const sections = {
   work: {
     eyebrow: "selected work",
@@ -88,11 +53,26 @@ export const sections = {
     eyebrow: "design systems",
     title: "systems that scale, pictograms that speak",
     body: "tokens, states and icon families built once and used everywhere — from the canvas all the way to the component library",
+    points: [
+      {
+        title: "Rekanesia — pictogram family",
+        body: "a pictogram family drawn on one shared grid, so every icon feels like it belongs to the same voice",
+        href: "/work/rekanesia",
+        cta: "read the case study",
+      },
+      {
+        title: "Rekanesia — status states",
+        body: "a complete vocabulary of states — draft, in review, approved, rejected — designed as tokens, not one-offs",
+        href: "/work/rekanesia#states",
+        cta: "see the states",
+      },
+    ],
   },
   process: {
     eyebrow: "process",
     title: "hand off the boilerplate, keep the human touch",
     body: "agents read my canvas, scaffold the components and sync the tokens. I stay on taste, motion and the details that make it feel alive",
+    link: { label: "how this site was built →", href: "/work/this-site" },
     points: [
       {
         title: "agents that see the canvas",
@@ -115,44 +95,34 @@ export const sections = {
 export const now = {
   title: ["Now", "&Next"],
   body: "exploring agent-assisted design systems, SwiftUI motion and faster web toolchains. Always happy to trade notes.",
-  cta: { label: "read the notes", href: "#notes" },
+  cta: { label: "read the notes", href: "/notes" },
 };
 
-export const notes = [
-  {
-    id: "notes",
-    title: "what's new in the studio",
-    body: "october, 2026: rebuilt this portfolio with Vite+, designed on a Paper canvas and shipped in an afternoon",
-    link: { label: "build log →", href: "#notes" },
-  },
-  {
-    id: "about",
-    title: "about Salman",
-    body: "a designer who codes. I sketch on the canvas, ship in React and Swift, and let agents handle the boilerplate",
-    link: { label: "download résumé →", href: profile.resumeUrl },
-  },
-];
+export const studio = {
+  title: "what's new in the studio",
+  link: { label: "all notes →", href: "/notes" },
+};
+
+export const about = {
+  title: "about Salman",
+  body: "a designer who codes. I sketch on the canvas, ship in React and Swift, and let agents handle the boilerplate",
+  link: { label: "download résumé →", href: profile.resumeUrl },
+};
 
 export const footer = {
   columns: [
     {
       title: "portfolio",
       links: [
-        { label: "home", href: "#top" },
-        { label: "work", href: "#work" },
-        { label: "process", href: "#process" },
-        { label: "about", href: "#about" },
+        { label: "home", href: "/" },
+        { label: "work", href: "/#work" },
+        { label: "notes", href: "/notes" },
+        { label: "about", href: "/#about" },
       ],
     },
     {
-      title: "projects",
-      links: [
-        { label: "Vuboi", href: "#work" },
-        { label: "Chicken Bank", href: "#work" },
-        { label: "Rekanesia", href: "#systems" },
-        { label: "Numi", href: "#work" },
-        { label: "iPubers", href: "#work" },
-      ],
+      title: "case studies",
+      links: caseStudies.map((study) => ({ label: study.title, href: `/work/${study.slug}` })),
     },
     {
       // TODO: point these at your real profiles.

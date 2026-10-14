@@ -1,41 +1,51 @@
-import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useLayoutEffect, useRef, type ReactNode } from "react";
 
 type ScalerProps = {
   width: number;
   height: number;
   className?: string;
   label?: string;
+  /** Also scale up past the design size to fill wider containers. */
+  grow?: boolean;
   children: ReactNode;
 };
 
-// Renders children at a fixed design size and scales them down to fit the
-// available width, so detailed illustrations keep their proportions on phones.
-export function Scaler({ width, height, className, label, children }: ScalerProps) {
+// Renders children at a fixed design size and scales them to fit the available
+// width, so detailed illustrations keep their proportions on phones. The box
+// takes its height from `aspect-ratio`, so the page has its final height
+// before any script runs; only the transform is measured.
+export function Scaler({ width, height, className, label, grow, children }: ScalerProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
+  const innerRef = useRef<HTMLDivElement>(null);
 
-  // Measure before the first paint so large artwork never flashes at full size.
+  // Write the scale straight to the DOM before the first paint. A state update
+  // here would land after a view transition has captured the new page.
   useLayoutEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    const fit = (available: number) => setScale(Math.min(1, available / width));
+    const inner = innerRef.current;
+    if (!el || !inner) return;
+    const fit = (available: number) => {
+      const scale = grow ? available / width : Math.min(1, available / width);
+      inner.style.transform = `scale(${scale})`;
+    };
     fit(el.clientWidth);
     const observer = new ResizeObserver(([entry]) => fit(entry.contentRect.width));
     observer.observe(el);
     return () => observer.disconnect();
-  }, [width]);
+  }, [width, grow]);
 
   return (
     <div
       ref={ref}
       className={["scaler", className].filter(Boolean).join(" ")}
-      style={{ height: height * scale, maxWidth: width }}
+      style={{ aspectRatio: `${width} / ${height}`, maxWidth: grow ? undefined : width }}
       role={label ? "img" : undefined}
       aria-label={label}
     >
       <div
+        ref={innerRef}
         className="scaler__inner"
-        style={{ width, height, transform: `scale(${scale})` }}
+        style={{ width, height }}
         aria-hidden={label ? true : undefined}
       >
         {children}

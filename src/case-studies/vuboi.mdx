@@ -1,0 +1,69 @@
+export const meta = {
+  title: "Vuboi",
+  kind: "mobile app",
+  tagline: "a planner that keeps its voice down",
+  summary:
+    "a calm mobile experience designed on the canvas and built in React Native, sharing one token set across iOS and Android",
+  year: "2025", // TODO: confirm
+  role: "product design, design system, React Native build",
+  platform: "iOS & Android",
+  tools: ["Paper", "React Native", "Expo", "Claude Code"],
+  art: "phones",
+  order: 1,
+};
+
+{/* TODO: this is a draft built from the illustration. Replace it with the real story, numbers and screenshots. */}
+
+## the brief
+
+Most planners compete for your attention. Vuboi was meant to do the opposite: show the few rituals that make up a day, how long each one takes, and then get out of the way.
+
+I owned both the design and the build, so the real brief was to keep the two halves honest with each other. Nothing could be designed that I wasn't willing to maintain on two platforms.
+
+## the approach
+
+I started on the canvas with real content instead of placeholder text: actual ritual names, real durations, the awkward long titles. The home screen went through many versions before it lost everything that didn't help someone start their morning. No streaks, no badges, one featured routine and a short list for today.
+
+The visual system is small on purpose. Two type sizes do most of the work, colour lives in the thumbnails, and the chrome stays ink on paper. Every value is a token, defined once on the canvas and synced to the single theme file that both the iOS and the Android build read.
+
+<AiLoop
+  flow={["Paper", "Paper MCP", "Claude Code", "Expo"]}
+  rows={[
+    [
+      "scaffold",
+      "turned the Paper frames into React Native screens through the MCP, keeping the real layout and spacing",
+      "drew the component boundaries, and deleted the components that only existed once",
+    ],
+    [
+      "tokens",
+      "kept the theme file in sync with the canvas on every change",
+      "named the tokens and decided which values were allowed to exist",
+    ],
+    [
+      "variations",
+      "laid out five densities of the home screen side by side",
+      "picked the quietest one, then removed one more thing",
+    ],
+    [
+      "motion",
+      "wrote a first pass of the screen transitions",
+      "tuned every duration and easing by hand, on a real device",
+    ],
+  ]}
+>
+
+The agent did the translation work: from canvas to components, and from tokens to code. The decisions about what Vuboi should feel like stayed with me.
+
+</AiLoop>
+
+## what shipped
+
+- a home, a routine player and a weekly view, on iOS and Android from one React Native codebase
+- one token file shared by both platforms, generated from the canvas
+- a component set small enough to read in one sitting
+
+{/* TODO: add real outcomes, e.g. store rating, retention or a quote from a user. */}
+
+## what I'd do next
+
+Widgets. The calmest version of Vuboi is the one you never open: today's three rituals on the home screen, and nothing else.

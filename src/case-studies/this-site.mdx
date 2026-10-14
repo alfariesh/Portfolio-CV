@@ -1,0 +1,70 @@
+export const meta = {
+  title: "This site",
+  kind: "portfolio",
+  tagline: "designed in Paper, shipped with an agent",
+  summary:
+    "this portfolio, designed on a Paper canvas, built by pairing with Claude Code and checked by Vite+ before every commit",
+  year: "2026",
+  role: "design, build and writing",
+  platform: "web",
+  tools: ["Paper", "Claude Code", "React 19", "Vite+"],
+  art: "loop",
+  order: 4,
+};
+
+## the brief
+
+A portfolio for a designer who works with agents should show how the work gets made, not only how it ends up. So this site is a case study of itself: every decision on it was made on a canvas, built with an agent, and reviewed by me.
+
+## the approach
+
+The layout started in Paper: one 1082 px grid of bordered cells, with small registration marks where the lines meet. An early version also had a full graph-paper grid behind everything. It looked right on the canvas and busy on a real screen, so it went. The rule now is simple: the only lines are cell borders, registration marks and the rulers on the edge.
+
+The paper itself is a WebGL fibre texture behind the footer and the notes, with folds and crumples turned off so it adds grain but never lines. You can play with it in [paper texture, zero folds](/notes/paper-texture-zero-folds).
+
+Case studies and notes are MDX files in the repo. Moving between pages uses React's `ViewTransition` on top of the Navigation API, so a project's illustration travels with you from the home page into its case study.
+
+<AiLoop
+  flow={["Paper", "Paper MCP", "Claude Code", "Vite+"]}
+  rows={[
+    [
+      "layout",
+      "rebuilt the canvas frames as React components through the Paper MCP",
+      "set the grid, the type scale and what each cell is for",
+    ],
+    [
+      "illustrations",
+      "drew a first pass of each illustration in HTML and CSS at a fixed size",
+      "cut the clutter, redrew the details and kept every piece original",
+    ],
+    [
+      "texture",
+      "wired up the paper shader and split it into its own chunk",
+      "turned the folds off, because they added lines the grid didn't need",
+    ],
+    [
+      "transitions",
+      "built the router on the Navigation API and React's ViewTransition",
+      "chose what travels between pages, and how fast",
+    ],
+    [
+      "checks",
+      "ran format, lint, types and tests through Vite+ on every commit",
+      "read every diff before it shipped",
+    ],
+  ]}
+>
+
+The first version came together in an afternoon. The agent was fastest at the parts that are pure translation: canvas to components, tokens to CSS, a spec to a router. It was no help at all with the hardest part, which was deciding what to leave out.
+
+</AiLoop>
+
+## what shipped
+
+- a single React 19 app on Vite+, with case studies and notes as MDX
+- page transitions that carry illustrations and covers between pages
+- a pre-commit hook that formats, lints and type-checks every change
+
+## what I'd do next
+
+Prerender every page to static HTML, so the notes load as fast as they read.

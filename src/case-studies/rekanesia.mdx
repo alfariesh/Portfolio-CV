@@ -1,0 +1,69 @@
+export const meta = {
+  title: "Rekanesia",
+  kind: "design system",
+  tagline: "pictograms and states that speak with one voice",
+  summary:
+    "a pictogram family and a status vocabulary drawn on one shared grid, so every icon and every state feels like it belongs",
+  year: "2026", // TODO: confirm
+  role: "icon design, design system, tokens",
+  platform: "web & mobile",
+  tools: ["Paper", "SVG", "Claude Code", "Vite+"],
+  art: "systems",
+  order: 3,
+};
+
+{/* TODO: this is a draft built from the illustration. Replace it with the real story and numbers. */}
+
+## the brief
+
+Rekanesia needed a visual language for fields, deliveries, factories and paperwork, plus a clear way to show where every record stands. The icons and the status labels had grown one at a time, and it showed.
+
+## one grid
+
+Every pictogram is drawn on the same 24 px grid with a 1.5 stroke and sharp corners. Two keylines, a 20 px circle and an 18 px square, keep round and square shapes the same visual size, and a 2 px safe area keeps strokes off the edge.
+
+The set is small on purpose: a leaf, a drop, a truck, a factory, a sack, a chart, and a few more. Each one had to read at 16 px in a table and at 36 px in an empty state, so details that only worked large were removed.
+
+## states
+
+Draft, in review, approved, rejected, archived. Each state is a token, not a one-off colour: `--state-draft`, `--state-review` and so on, each with a background, a text colour and a dot. A screen never picks its own green.
+
+Writing the states down as a vocabulary also settled arguments that used to happen in every review. "Pending" and "waiting" are the same state, so only one of them exists.
+
+<AiLoop
+  flow={["Paper", "Claude Code", "SVG module", "Vite+"]}
+  rows={[
+    [
+      "cleanup",
+      "stripped fills, transforms and stray attributes from every exported SVG",
+      "drew every glyph and chose every metaphor",
+    ],
+    [
+      "checks",
+      "flagged glyphs that broke the stroke width or left the safe area",
+      "decided which rules could bend, like the truck wheels",
+    ],
+    [
+      "module",
+      "generated the typed markup module and a contact sheet of the whole set",
+      "reviewed the sheet at 16 px and 36 px, and redrew what didn't hold",
+    ],
+    [
+      "states",
+      "wrote the state tokens and a chip component from the spec",
+      "named the states, and merged the ones that meant the same thing",
+    ],
+  ]}
+>
+
+Icon work is mostly drawing and mostly mine. The agent took the mechanical parts around the drawing: export, cleanup, consistency checks and the code that ships the set. There's a short note on how that went: [a pictogram set with an agent](/notes/pictograms-with-an-agent).
+
+</AiLoop>
+
+## what shipped
+
+- a pictogram family on one 24 px grid, shipped as a typed SVG module
+- five status states as tokens, with a chip component for each
+- the same set in this portfolio: every icon on this site is Rekanesia
+
+{/* TODO: add where the system is used in the real product, and how many screens it covers. */}

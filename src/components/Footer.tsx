@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { footer, profile } from "../content";
+import { Link } from "../router/Link";
 import { Mark } from "./Mark";
 
 const PaperFibre = lazy(() => import("./PaperFibre"));
@@ -27,9 +28,9 @@ export function Footer() {
             <nav key={col.title} className="footer__col" aria-label={col.title}>
               <p className="footer__title">{col.title}</p>
               {col.links.map((link) => (
-                <a key={link.label} className="link link--soft" href={link.href}>
+                <Link key={link.label} className="link link--soft" href={link.href}>
                   {link.label}
-                </a>
+                </Link>
               ))}
             </nav>
           ))}

@@ -1,0 +1,18 @@
+export const meta = {
+  title: "a pictogram set with an agent, in two hours",
+  summary:
+    "I drew the glyphs. The agent did the export, the cleanup and the consistency checks. A short log of how the work split.",
+  date: "2026-08-28",
+  tag: "experiment",
+  cover: { word: "24", glyph: "sprout", tone: "yolk" },
+};
+
+{/* TODO: draft. Check the timing and the details against what really happened, and add a before/after of the contact sheet. */}
+
+The experiment: how much of an icon set can an agent take on without the icons starting to look generated? The answer was most of the work around the drawing, and none of the drawing itself.
+
+I drew sixteen pictograms for [Rekanesia](/work/rekanesia) on one 24 px grid with a 1.5 stroke. Then I handed the exports to Claude Code with three jobs: strip everything that wasn't a stroke, check every glyph against the keylines and the safe area, and generate a typed module the app could import.
+
+The cleanup took minutes instead of an evening. The checks were the surprise. The agent flagged two glyphs where a curve had crept off the half-pixel and one that broke the safe area. Two were real mistakes. The third was the truck, whose wheels sit outside on purpose, and saying no to that flag was a design decision.
+
+What I'd change: ask for the contact sheet first. Seeing the whole set at 16 px before any code existed would have caught the weakest glyph an hour earlier.

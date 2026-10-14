@@ -1,3 +1,44 @@
+# Salman Alfariesh — portfolio
+
+Portfolio in the style of paper.design: a home page, case studies (`/work/<slug>`) and notes (`/notes`, `/notes/<slug>`). React 19.3 + TypeScript on Vite+ 1.1.0, pnpm (pinned via `devEngines`). A small hand-written router, no backend. The user writes in Indonesian; site copy is English, lowercase, paper.design voice.
+
+## Setup notes
+
+- The home directory has its own `pnpm-workspace.yaml`. This project keeps a local `pnpm-workspace.yaml` so it stays a standalone workspace root; don't delete it.
+- `vp dev` serves on port 5173 (`.claude/launch.json` runs it for the preview pane). `vp build` is the plain build; `vp run build` also runs `tsc -b`.
+- The pre-commit hook runs `vp check --fix` on staged files. There is no git remote yet.
+- Deep links need the host to serve `index.html` for unknown paths (SPA fallback). `vp dev` and `vp preview` already do; a static host needs a rewrite rule.
+
+## Where things live
+
+- `src/content.ts`: copy and links for the home page, nav and footer. Email, résumé and social links are placeholders (`hello@example.com`, `#`) and must be replaced before publishing.
+- `src/case-studies/*.mdx` and `src/notes/*.mdx`: one file per case study or note, `export const meta = {...}` on top (types in each folder's `index.ts`), the file name is the slug. Case studies must include `<AiLoop>` (the "ai in the loop" section; a test enforces it). Notes take one tag: experiment, workflow, essay or demo. Draft copy is marked with `TODO` comments.
+- `src/components/prose/*`: components MDX files can use without importing (`AiLoop`, `Workflow`, `Callout`, `PaperDemo`), plus heading ids and router links for markdown.
+- `src/router/*`: `Router` runs route changes in a Transition so `<ViewTransition>` animates them. It intercepts links and back/forward through the Navigation API, scrolls synchronously in a layout effect (before the browser captures the new page), and ignores React's own `info: "react-transition"` navigations. `Link` only steps in for browsers without the Navigation API. Pages live in `src/pages/*`.
+- Transitions: `App.tsx` wraps each page in a keyed `<ViewTransition>` (types `nav-forward` / `nav-back`); `<ProjectArt>` (`art-<key>`) and `<NoteCover>` (`note-cover-<slug>`) are shared elements. Shared names must stay unique per page. CSS is at the end of `src/styles/pages.css`.
+- `src/index.css`: tokens, layout, grid, footer, responsive rules. `src/styles/canvas.css` styles the hero canvas window, `src/styles/art.css` the illustrations, `src/styles/pages.css` case studies, notes (covers included), prose and view transitions.
+- `src/art/*`: project illustrations drawn at a fixed size and scaled by `<Scaler>`. Its height comes from `aspect-ratio`; the scale is written to the DOM in `useLayoutEffect` (not state), so it is right before paint and inside a view transition's snapshot.
+- Icons and pictograms use the Rekanesia stroke-sharp set: inner SVG markup in `src/components/icon-data.ts` and `src/art/pictogram-markup.ts`, rendered with `dangerouslySetInnerHTML`, stroke width 1.5 inherited from the parent `<svg>`. Add new glyphs there in the same format.
+- `src/components/PaperFibre.tsx`: static WebGL paper texture from `@paper-design/shaders-react` (Apache-2.0), lazy-loaded into its own chunk. Used behind the footer and the notes collage.
+- `src/App.test.tsx`: renders every route with `react-dom/server` (`<App url="…" />`) and checks one `h1` per page, home anchors, that every in-site link resolves, image labels, the ai-in-the-loop section and note metadata. Keep it passing when adding pages, sections or links.
+
+## Design rules
+
+- Tokens: ink `#181818`, ink-soft `#666666`, ink-muted `#909090`, paper `#FCFCF9`, paper-deep `#EFEFE4`, line `#D7D7D6`, accent `#81ACEC`, accent-ink `#2D6FCD` (accent text links, like paper.design's blue "read article →"). System sans; body 18/28, display 56/56 at −0.02em, labels 14px caps.
+- Layout: 1321px container, 1082px two-column grid of bordered cells with 12px registration marks where lines meet (`.cell::before/::after`).
+- Keep lines minimal. Only cell borders, registration marks, edge rulers and the fold edges (fill only, no stroke) are allowed. Do not add repeating background grids or graph-paper patterns to the page or cells; the user found them messy. (In the Paper reference the 120px grid tile is `no-repeat`, not a full grid.)
+- Paper texture: keep `folds`, `wrinkles`, `crumples` and `drops` at 0 so it adds no lines. Render it outside `<Scaler>` at real size, and keep to about two WebGL instances per page.
+- Don't use Paper's logo, wordmark or brand art. The "s" monogram in `Mark.tsx` and all illustrations are original.
+
+## Paper (design reference)
+
+- The paper.design clone lives in the Paper file "Tender harmony" (id `01M4WJJCNRE4Z5G3ZF931HD4RH`). Read it for reference only. Do not modify it (pages, artboards, tokens) unless the user explicitly asks in that request.
+- Its page "Portfolio — Salman" holds a desktop recreation of this site from the first commit. It is out of date (it still has the old full-page grid) and is not kept in sync with the code.
+
+## Verifying visually
+
+- Use the browser pane for interactive checks. For full-page screenshots, headless Chrome works at desktop widths. It enforces a minimum window width of about 500px, so check 375px in the pane's mobile preset or through an iframe of that width.
+
 <!--VITE PLUS START-->
 
 # Using Vite+, the Unified Toolchain for the Web

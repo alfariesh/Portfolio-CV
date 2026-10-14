@@ -530,6 +530,11 @@
   position: absolute;
 }
 
+.phone.is-dim {
+  opacity: 0.35;
+  filter: grayscale(0.6);
+}
+
 .phone__screen {
   overflow: hidden;
   border-radius: 30px;
