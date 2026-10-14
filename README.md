@@ -19,6 +19,19 @@ vp preview      # serve the production build
 `vp run <script>` runs a `package.json` script instead of the built-in
 command (for example `vp run build` also runs `tsc -b`).
 
+## Deploy
+
+The site runs on Cloudflare Workers with static assets (`wrangler.jsonc`).
+
+```bash
+vp exec wrangler login   # once per machine
+vp run deploy            # build and deploy to production
+vp run deploy:preview    # build and upload a version with its own preview URL
+vp run preview:cf        # build and serve it locally the way Cloudflare does
+```
+
+Security headers and caching rules are in `public/_headers`.
+
 ## Editing
 
 - **Copy and links:** `src/content.ts`. Replace the placeholder email,

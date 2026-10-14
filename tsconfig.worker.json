@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.worker.tsbuildinfo",
+    "target": "es2023",
+    // The Worker only uses Fetch API types (Request, Response, URL), which DOM
+    // describes the same way the Workers runtime implements them.
+    "lib": ["ES2023", "DOM"],
+    "types": [],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["worker"]
+}

@@ -7,7 +7,15 @@ Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug
 - The home directory has its own `pnpm-workspace.yaml`. This project keeps a local `pnpm-workspace.yaml` so it stays a standalone workspace root; don't delete it.
 - `vp dev` serves on port 5173 (`.claude/launch.json` runs it for the preview pane). `vp build` is the plain build; `vp run build` also runs `tsc -b`.
 - The pre-commit hook runs `vp check --fix` on staged files. There is no git remote yet.
-- Deep links need the host to serve `index.html` for unknown paths (SPA fallback). `vp dev` and `vp preview` already do; a static host needs a rewrite rule.
+- Deep links need the host to serve `index.html` for unknown paths (SPA fallback). `vp dev`, `vp preview` and Cloudflare (below) already do.
+
+## Deploy (Cloudflare Workers)
+
+- Hosted as a Worker with static assets: `wrangler.jsonc` (config), `public/_headers` (security headers, a year of `immutable` caching for `/assets/*`), `worker/index.ts` (a tiny Worker, type-checked through `tsconfig.worker.json`). Files in `dist/` and browser navigations never invoke the Worker (free, unlimited); it only runs when nothing matches and the request isn't a navigation, and answers 404 for a missing `/assets/*` file so an old chunk never gets `index.html` cached as immutable.
+- `vp run deploy` builds and deploys to production; `vp run deploy:preview` uploads a version with its own preview URL without promoting it; `vp run preview:cf` serves the build locally in workerd. The preview pane's `cloudflare` entry runs `wrangler dev` on port 8787 (serves the existing `dist/`, so build first). Roll back with `vp exec wrangler rollback`.
+- `wrangler` is a local dev dependency (`vp exec wrangler …`). pnpm's minimum release age blocks versions published in the last day; don't add `minimumReleaseAgeExclude` to force one.
+- The CSP in `_headers` allows only same-origin scripts (no inline). Inline styles are allowed because iso figures and React set them. Adding an external script, font, image or analytics beacon means extending the CSP.
+- `src/main.tsx` reloads the page once on `vite:preloadError`: after a deploy, a tab still on the old build can't load its lazy chunks.
 
 ## Where things live
 

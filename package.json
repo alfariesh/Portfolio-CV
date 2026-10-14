@@ -8,7 +8,10 @@
     "build": "tsc -b && vp build",
     "lint": "vp lint",
     "preview": "vp preview",
-    "prepare": "vp config"
+    "prepare": "vp config",
+    "preview:cf": "vp run build && wrangler dev",
+    "deploy": "vp run build && wrangler deploy",
+    "deploy:preview": "vp run build && wrangler versions upload"
   },
   "dependencies": {
     "@paper-design/shaders-react": "^0.0.81",
@@ -24,7 +27,8 @@
     "@vitejs/plugin-react": "^6.1.1",
     "typescript": "~6.0.2",
     "vite": "catalog:",
-    "vite-plus": "catalog:"
+    "vite-plus": "catalog:",
+    "wrangler": "^4.149.0"
   },
   "devEngines": {
     "packageManager": {
