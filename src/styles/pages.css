@@ -19,11 +19,9 @@
   white-space: nowrap;
 }
 
-.tag i {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--dot);
+.tag svg {
+  flex: none;
+  color: var(--dot);
 }
 
 .tag--experiment {
@@ -34,11 +32,31 @@
   --dot: #6c7a45;
 }
 
+.tag--prompt {
+  --dot: #3d7ea6;
+}
+
+.tag--agent {
+  --dot: #3e9a7a;
+}
+
+.tag--design-system {
+  --dot: #d9573f;
+}
+
+.tag--plugin {
+  --dot: #3d7ea6;
+}
+
+.tag--illustration {
+  --dot: #b4477a;
+}
+
 .tag--essay {
   --dot: #9b7bd8;
 }
 
-.tag--demo {
+.tag--video {
   --dot: #e9b43f;
 }
 

@@ -114,8 +114,8 @@
 .chip--archived {
   --bg: transparent;
   --fg: #65675e;
-  --dot: #bfc1b7;
-  box-shadow: inset 0 0 0 1px #bfc1b7;
+  --dot: #d8dad1;
+  box-shadow: inset 0 0 0 1px #d8dad1;
 }
 
 /* ------------------------------------------------------------------ */

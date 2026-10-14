@@ -1,6 +1,7 @@
 // Copy and links for the home page, nav and footer. Case studies live in
 // src/case-studies/*.mdx and notes in src/notes/*.mdx.
 import { caseStudies } from "./case-studies";
+import type { IconName } from "./components/Icon";
 
 export const profile = {
   name: "Salman Alfariesh",
@@ -110,37 +111,34 @@ export const about = {
   link: { label: "download résumé →", href: profile.resumeUrl },
 };
 
-export const footer = {
+type FooterLink = { label: string; href: string; icon?: IconName };
+type FooterColumn = { title: string; links: FooterLink[] };
+
+export const footer: { columns: FooterColumn[] } = {
   columns: [
     {
       title: "portfolio",
       links: [
-        { label: "home", href: "/" },
-        { label: "work", href: "/work" },
-        { label: "notes", href: "/notes" },
-        { label: "about", href: "/#about" },
+        { label: "home", href: "/", icon: "home" },
+        { label: "work", href: "/work", icon: "work" },
+        { label: "notes", href: "/notes", icon: "notes" },
+        { label: "about", href: "/#about", icon: "user" },
       ],
     },
     {
       title: "case studies",
-      links: caseStudies.map((study) => ({ label: study.title, href: `/work/${study.slug}` })),
+      links: caseStudies
+        .filter((study) => !["numi", "rekan"].includes(study.slug))
+        .map((study) => ({ label: study.title, href: `/work/${study.slug}` })),
     },
     {
       // TODO: point these at your real profiles.
       title: "elsewhere",
       links: [
-        { label: "github", href: "#" },
-        { label: "linkedin", href: "#" },
-        { label: "dribbble", href: "#" },
-        { label: "instagram", href: "#" },
-      ],
-    },
-    {
-      title: "colophon",
-      links: [
-        { label: "built with Vite+", href: "https://viteplus.dev" },
-        { label: "designed in Paper", href: "https://paper.design" },
-        { label: "set in system sans", href: "#top" },
+        { label: "github", href: "#", icon: "github" },
+        { label: "linkedin", href: "#", icon: "linkedin" },
+        { label: "dribbble", href: "#", icon: "dribbble" },
+        { label: "instagram", href: "#", icon: "instagram" },
       ],
     },
   ],

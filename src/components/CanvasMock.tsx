@@ -29,7 +29,7 @@ const terminal = [
     cmd: "vp create vite -- --template react-ts",
     out: "Scaffolded portfolio with React + TypeScript",
   },
-  { cmd: "paper – get_computed_styles (MCP)", out: "ink #23251D · paper #FEFEFC · line #BFC1B7" },
+  { cmd: "paper – get_computed_styles (MCP)", out: "ink #23251D · paper #FEFEFC · line #D8DAD1" },
   { cmd: "vp check", out: "pass: no lint or type errors" },
 ];
 

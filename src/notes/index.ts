@@ -3,7 +3,17 @@ import type { FigureKey } from "../iso/figures";
 
 // Notes are short MDX files in this folder: `export const meta = {...}` on top,
 // three to five paragraphs below. The file name is the URL slug (/notes/<slug>).
-export const tags = ["experiment", "workflow", "essay", "demo"] as const;
+export const tags = [
+  "experiment",
+  "workflow",
+  "prompt",
+  "agent",
+  "design-system",
+  "plugin",
+  "illustration",
+  "essay",
+  "video",
+] as const;
 export type Tag = (typeof tags)[number];
 
 export type NoteMeta = {

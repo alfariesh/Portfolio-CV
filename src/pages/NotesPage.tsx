@@ -1,7 +1,9 @@
 import { useState, useTransition, ViewTransition } from "react";
 import { Cell } from "../components/Grid";
 import { NoteCover } from "../components/NoteCover";
+import { Icon } from "../components/Icon";
 import { Tag } from "../components/Tag";
+import { tagIcons } from "../components/tag-icons";
 import { formatDate, notes, tags, type Tag as TagName } from "../notes";
 import { Link } from "../router/Link";
 
@@ -41,6 +43,7 @@ export function NotesPage() {
                 disabled={count(option) === 0}
                 onClick={() => startTransition(() => setFilter(option))}
               >
+                <Icon name={tagIcons[option]} size={16} />
                 {option}
                 <span className="filter__count">{count(option)}</span>
               </button>

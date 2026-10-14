@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { footer, profile } from "../content";
 import { Link } from "../router/Link";
+import { Icon } from "./Icon";
 import { Mark } from "./Mark";
 
 const PaperFibre = lazy(() => import("./PaperFibre"));
@@ -29,6 +30,7 @@ export function Footer() {
               <p className="footer__title">{col.title}</p>
               {col.links.map((link) => (
                 <Link key={link.label} className="link link--soft" href={link.href}>
+                  {link.icon ? <Icon name={link.icon} size={18} /> : null}
                   {link.label}
                 </Link>
               ))}

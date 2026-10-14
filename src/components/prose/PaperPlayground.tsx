@@ -10,7 +10,7 @@ export default function PaperPlayground({ amount, lines }: PaperPlaygroundProps)
       className="demo__paper"
       colorBack="#FEFEFC"
       colorPaper="#FEFEFC"
-      colorShadow="#BFC1B7"
+      colorShadow="#D8DAD1"
       roughness={amount}
       fiber={amount}
       folds={lines ? 0.6 : 0}
