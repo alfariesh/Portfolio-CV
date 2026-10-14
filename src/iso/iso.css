@@ -7,21 +7,21 @@
 /* ------------------------------------------------------------------ */
 
 .iso {
-  --panel: #f6f6f0;
-  --edge: #deded6;
-  --line: #8b8b85;
-  --detail: #c9c9c1;
-  --body: #ecece5;
-  --deck: #f8f8f3;
-  --ink: #6b6b66;
-  --ink-hi: #181818;
-  --live: #0c0d0e;
-  --glass: #e3e3db;
-  --recess: #e5e5dd;
-  --accent: #ff7a1a;
-  --accent-hi: #ffb070;
+  --panel: #f6f7f3;
+  --edge: #e4e6de;
+  --line: #65675e;
+  --detail: #bfc1b7;
+  --body: #f6f7f3;
+  --deck: #fefefc;
+  --ink: #65675e;
+  --ink-hi: #23251d;
+  --live: #1e1f23;
+  --glass: #eeefe9;
+  --recess: #eeefe9;
+  --accent: #f54e00;
+  --accent-hi: #ff9a66;
   --accent-dim: color-mix(in srgb, var(--accent) 10%, transparent);
-  --glass-on: color-mix(in srgb, var(--accent) 12%, #f3f3ec);
+  --glass-on: color-mix(in srgb, var(--accent) 12%, #f6f7f3);
   --mono: var(--font-mono);
 
   display: flex;

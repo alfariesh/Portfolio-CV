@@ -14,7 +14,7 @@ export function Footer() {
       <div className="footer__inner container">
         <div className="footer__brand">
           <span className="footer__tile">
-            <Mark size={26} color="#FCFCF9" />
+            <Mark size={26} color="#FEFEFC" />
           </span>
           <div className="footer__sign">
             <a className="link link--soft" href={`mailto:${profile.email}`}>

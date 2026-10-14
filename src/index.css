@@ -1,23 +1,48 @@
+@font-face {
+  font-family: "HarmonyOS Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/HarmonyOS_Sans_Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "HarmonyOS Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("./fonts/HarmonyOS_Sans_Medium.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "HarmonyOS Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./fonts/HarmonyOS_Sans_Bold.woff2") format("woff2");
+}
+
 /* ------------------------------------------------------------------ */
 /* Tokens                                                              */
 /* ------------------------------------------------------------------ */
 
 :root {
-  --ink: #181818;
-  --ink-80: rgb(24 24 24 / 80%);
-  --ink-soft: #666666;
-  --ink-muted: #909090;
-  --paper: #fcfcf9;
-  --paper-deep: #efefe4;
-  --line: #d7d7d6;
-  --accent: #81acec;
-  /* Accent for text links: --accent darkened to pass contrast on paper. */
-  --accent-ink: #2d6fcd;
-  --sky-top: oklab(77.6% -0.019 -0.087);
-  --sky-bottom: oklab(70.4% -0.026 -0.124);
+  --ink: #23251d;
+  --ink-80: rgb(35 37 29 / 80%);
+  --ink-soft: #65675e;
+  --ink-muted: #65675e;
+  --paper: #fefefc;
+  --paper-deep: #f6f7f3;
+  --line: #bfc1b7;
+  --accent: #f54e00;
+  /* Accent for text links (Ibid accent). */
+  --accent-ink: #f54e00;
+  --sky-top: #ffc7a3;
+  --sky-bottom: #ff8a4d;
 
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --font-sans: "HarmonyOS Sans", sans-serif;
+  --font-hand: "Caveat Variable", "Caveat", cursive;
+  --font-mono: "HarmonyOS Sans", sans-serif;
 
   --text-display: 56px;
   --leading-display: 56px;
@@ -105,7 +130,7 @@ svg {
 }
 
 ::selection {
-  background: rgb(129 172 236 / 35%);
+  background: rgb(245 78 0 / 35%);
 }
 
 .container {
@@ -151,7 +176,7 @@ svg {
 /* Links inside running text are always underlined. */
 .link--line {
   text-decoration-line: underline;
-  text-decoration-color: rgb(24 24 24 / 30%);
+  text-decoration-color: rgb(35 37 29 / 30%);
   transition: text-decoration-color 0.15s ease;
 }
 
@@ -166,7 +191,7 @@ svg {
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: rgb(24 24 24 / 50%);
+  color: rgb(35 37 29 / 50%);
 }
 
 .btn {
@@ -198,7 +223,7 @@ svg {
 }
 
 .btn--ink:hover {
-  background: #303030;
+  background: #23251d;
 }
 
 .btn--sky {
@@ -248,6 +273,15 @@ svg {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='200' viewBox='0 0 100 200'%3E%3Cpath d='M0 0H100L0 100Z M0 100V200H100Z' fill='%23FCFCF9'/%3E%3C/svg%3E");
   background-size: 100% auto;
   background-repeat: repeat-y;
+}
+
+.backdrop__paper {
+  /* Fixed to the viewport so the canvas stays small and the sheet seems to
+     slide over it; multiply keeps only the fibre, not the white. */
+  position: fixed;
+  inset: 0;
+  mix-blend-mode: multiply;
+  opacity: 0.55;
 }
 
 .backdrop__ruler {
@@ -348,7 +382,7 @@ svg {
   font-size: var(--text-display);
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
-  font-weight: 400;
+  font-weight: 700;
 }
 
 .display__line {
@@ -384,7 +418,7 @@ svg {
 .showcase__frame {
   margin-inline: auto;
   border-radius: 12px;
-  background: #f6f6f3;
+  background: #f6f7f3;
   box-shadow:
     #80808026 0 0 0 1px,
     #00000003 0 59px 24px,
@@ -491,7 +525,7 @@ svg {
   font-size: var(--text-display);
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
-  font-weight: 400;
+  font-weight: 700;
   text-wrap: balance;
 }
 
@@ -520,6 +554,9 @@ svg {
 .head__body {
   max-width: 600px;
   text-wrap: pretty;
+  font-family: var(--font-hand);
+  font-size: 26px;
+  line-height: 32px;
 }
 
 .cell--head {
@@ -689,7 +726,7 @@ svg {
 }
 
 .tools__item {
-  color: #8e8e8a;
+  color: #65675e;
   font-size: 23px;
   line-height: 40px;
   font-weight: 600;
@@ -699,7 +736,7 @@ svg {
 
 /* A little typographic variety, the way a logo wall has. */
 .tools__row:last-child .tools__item:nth-child(4) {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   letter-spacing: -0.01em;
 }
@@ -786,7 +823,7 @@ svg {
 }
 
 .squircle--ink {
-  background: linear-gradient(#2b2b2b, #121212);
+  background: linear-gradient(#23251d, #1e1f23);
 }
 
 .squircle--plum {
@@ -909,7 +946,7 @@ svg {
   left: 20px;
   width: 100px;
   height: 72px;
-  background: #7d95e0;
+  background: #f54e00;
   mix-blend-mode: multiply;
   clip-path: polygon(
     0 0,
@@ -963,7 +1000,7 @@ svg {
 }
 
 .decor--halftone i:nth-child(1) {
-  background-color: #1d1d1d;
+  background-color: #1e1f23;
   background-image:
     linear-gradient(#ffffff4d 1px, transparent 1px),
     linear-gradient(90deg, #ffffff4d 1px, transparent 1px);
@@ -972,14 +1009,14 @@ svg {
 
 .decor--halftone i:nth-child(2) {
   background:
-    radial-gradient(circle, #181818 1.3px, transparent 1.6px) 0 0 / 5px 5px,
-    #f3f3ee;
+    radial-gradient(circle, #23251d 1.3px, transparent 1.6px) 0 0 / 5px 5px,
+    #f6f7f3;
 }
 
 .decor--halftone i:nth-child(3) {
   background:
-    radial-gradient(circle, #18181859 0.8px, transparent 1px) 0 0 / 4px 4px,
-    #fafaf6;
+    radial-gradient(circle, #23251d59 0.8px, transparent 1px) 0 0 / 4px 4px,
+    #fefefc;
 }
 
 .decor--weave i {
@@ -989,7 +1026,7 @@ svg {
 }
 
 .decor--weave i:nth-child(1) {
-  background-color: #8e8e8c;
+  background-color: #65675e;
 }
 
 .decor--weave i:nth-child(2) {
@@ -997,7 +1034,7 @@ svg {
 }
 
 .decor--weave i:nth-child(3) {
-  background-color: #ececea;
+  background-color: #f6f7f3;
 }
 
 /* ------------------------------------------------------------------ */
@@ -1015,7 +1052,7 @@ svg {
 }
 
 #notes .note__art {
-  background: #f4f4ef;
+  background: #f6f7f3;
 }
 
 .note__copy {
@@ -1082,7 +1119,7 @@ svg {
   width: 60px;
   height: 60px;
   border-radius: 14px;
-  background: linear-gradient(#2b2b2b, #121212);
+  background: linear-gradient(#23251d, #1e1f23);
   box-shadow:
     inset 0 1px 0 #ffffff26,
     0 2px 6px #00000026;
@@ -1101,7 +1138,7 @@ svg {
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: rgb(24 24 24 / 50%);
+  color: rgb(35 37 29 / 50%);
 }
 
 .footer__cols {
@@ -1137,8 +1174,8 @@ svg {
   font-size: 700px;
   font-weight: 500;
   letter-spacing: -0.04em;
-  fill: #f6f6f0;
-  stroke: #dcdcd4;
+  fill: #f6f7f3;
+  stroke: #e4e6de;
   stroke-width: 1.5px;
   paint-order: stroke;
   z-index: 1;

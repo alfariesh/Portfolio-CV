@@ -14,7 +14,7 @@
 .art__label {
   display: block;
   margin-bottom: 10px;
-  color: #8a8a86;
+  color: #65675e;
   font-family: var(--font-mono);
   font-size: 12px;
   line-height: 16px;
@@ -23,7 +23,7 @@
 
 /* Collaborator cursors */
 .cursor {
-  --c: #4f86e0;
+  --c: #f54e00;
   position: absolute;
   z-index: 5;
   display: flex;
@@ -56,9 +56,9 @@
 
 /* Status chips */
 .chip {
-  --bg: #eeeee9;
-  --fg: #55554f;
-  --dot: #9a9a93;
+  --bg: #f6f7f3;
+  --fg: #4d4f46;
+  --dot: #9ea096;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -113,9 +113,9 @@
 
 .chip--archived {
   --bg: transparent;
-  --fg: #77776f;
-  --dot: #bdbdb6;
-  box-shadow: inset 0 0 0 1px #cfcfc8;
+  --fg: #65675e;
+  --dot: #bfc1b7;
+  box-shadow: inset 0 0 0 1px #bfc1b7;
 }
 
 /* ------------------------------------------------------------------ */
@@ -139,7 +139,7 @@
   width: 390px;
   height: 844px;
   overflow: hidden;
-  color: #181818;
+  color: #23251d;
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 22px;
@@ -182,7 +182,7 @@
 }
 
 .mscr__kicker {
-  color: #8a8a86;
+  color: #65675e;
   font-size: 15px;
   line-height: 20px;
 }
@@ -206,7 +206,7 @@
 }
 
 .mscr__muted {
-  color: #8a8a86;
+  color: #65675e;
   font-size: 15px;
   font-weight: 500;
 }
@@ -220,7 +220,7 @@
 
 /* Vuboi */
 .mscr--vuboi {
-  background: #fcfcf9;
+  background: #fefefc;
 }
 
 .vb-search {
@@ -231,8 +231,8 @@
   margin-bottom: 20px;
   padding: 0 16px;
   border-radius: 14px;
-  background: #efefe8;
-  color: #8a8a86;
+  background: #f6f7f3;
+  color: #65675e;
 }
 
 .vb-feature {
@@ -245,7 +245,7 @@
   padding: 22px;
   overflow: hidden;
   border-radius: 24px;
-  background: linear-gradient(160deg, #a9c5f2, #6f95dc);
+  background: linear-gradient(160deg, #fbb89a, #f54e00);
   color: #fff;
 }
 
@@ -278,7 +278,7 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: #fcfcf9;
+  background: #fefefc;
 }
 
 .vb-feature__play::after {
@@ -288,7 +288,7 @@
   left: 21px;
   border-top: 9px solid transparent;
   border-bottom: 9px solid transparent;
-  border-left: 14px solid #181818;
+  border-left: 14px solid #23251d;
 }
 
 .vb-row {
@@ -296,7 +296,7 @@
   align-items: center;
   gap: 14px;
   padding: 10px 0;
-  border-bottom: 1px solid #edede6;
+  border-bottom: 1px solid #f6f7f3;
 }
 
 .vb-row__thumb {
@@ -319,7 +319,7 @@
 
 .vb-row__text span,
 .vb-row__time {
-  color: #8a8a86;
+  color: #65675e;
   font-size: 14px;
 }
 
@@ -332,13 +332,13 @@
   justify-content: space-around;
   height: 88px;
   padding-top: 16px;
-  border-top: 1px solid #edede6;
-  background: #fcfcf9;
-  color: #a3a39e;
+  border-top: 1px solid #f6f7f3;
+  background: #fefefc;
+  color: #9ea096;
 }
 
 .tabbar svg:first-child {
-  color: #181818;
+  color: #23251d;
 }
 
 .nm-button {
@@ -347,8 +347,8 @@
   height: 56px;
   margin-top: 22px;
   border-radius: 16px;
-  background: #181818;
-  color: #fcfcf9;
+  background: #23251d;
+  color: #fefefc;
   font-size: 17px;
   font-weight: 600;
 }

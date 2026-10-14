@@ -54,7 +54,7 @@ export function VuboiHome() {
         </div>
         {[
           ["Bench press", "Barbell · 4 × 8", "40 kg", "#4B5A3C"],
-          ["Pull-up", "Bodyweight · 3 × 6", "bw", "#222222"],
+          ["Pull-up", "Bodyweight · 3 × 6", "bw", "#23251D"],
           ["Plank", "Core · 3 × 45 s", "45 s", "#C9B48A"],
         ].map(([title, sub, time, color]) => (
           <div key={title} className="vb-row">

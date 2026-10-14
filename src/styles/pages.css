@@ -147,7 +147,7 @@
 }
 
 .pager:hover {
-  background: rgb(239 239 228 / 45%);
+  background: rgb(246 247 243 / 45%);
 }
 
 .pager--next {
@@ -229,8 +229,8 @@
   padding: 20px 24px;
   overflow-x: auto;
   border-radius: 6px;
-  background: #1b1b1a;
-  color: #e9e9e2;
+  background: #1e1f23;
+  color: #eeefe9;
   font-family: var(--font-mono);
   font-size: 14px;
   line-height: 22px;
@@ -306,7 +306,7 @@
   width: 36px;
   height: 36px;
   border-radius: 9px;
-  background: linear-gradient(#2b2b2b, #121212);
+  background: linear-gradient(#23251d, #1e1f23);
   box-shadow: inset 0 1px 0 #ffffff26;
 }
 
@@ -368,7 +368,7 @@
   align-items: start;
   margin: 64px calc(-1 * var(--cell-pad)) 8px;
   padding: 56px var(--cell-pad) 0;
-  background: rgb(239 239 228 / 55%);
+  background: rgb(246 247 243 / 55%);
 }
 
 .ai-loop > * {
@@ -466,7 +466,7 @@
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: rgb(24 24 24 / 50%);
+  color: rgb(35 37 29 / 50%);
 }
 
 .ai-loop__table tbody th {
@@ -480,7 +480,7 @@
 }
 
 .ai-loop__table tbody tr:nth-child(odd) {
-  background: rgb(252 252 249 / 70%);
+  background: rgb(254 254 252 / 70%);
 }
 
 /* ------------------------------------------------------------------ */
@@ -568,7 +568,7 @@
 }
 
 .filter[aria-pressed="true"] .filter__count {
-  color: rgb(252 252 249 / 60%);
+  color: rgb(254 254 252 / 60%);
 }
 
 .feature-list,
@@ -582,7 +582,7 @@
   flex-direction: column;
   justify-content: center;
   /* Same as the iso figure panel, so a figure shorter than its row blends in. */
-  background: #f6f6f0;
+  background: #f6f7f3;
 }
 
 .feature-row--flip .feature-row__art {
@@ -611,7 +611,7 @@
   font-size: 40px;
   line-height: 42px;
   letter-spacing: var(--tracking-display);
-  font-weight: 400;
+  font-weight: 700;
   text-wrap: balance;
 }
 
@@ -627,6 +627,9 @@
 .feature-row__summary {
   margin-top: 18px;
   color: var(--ink-80);
+  font-family: var(--font-hand);
+  font-size: 26px;
+  line-height: 32px;
   text-wrap: pretty;
 }
 
@@ -679,12 +682,15 @@
   max-width: 600px;
   margin-top: 24px;
   color: var(--ink-80);
+  font-family: var(--font-hand);
+  font-size: 28px;
+  line-height: 34px;
   text-wrap: balance;
 }
 
 .cell--cover {
   display: block;
-  background: #f4f4ef;
+  background: #f6f7f3;
 }
 
 .cell--article-body {
@@ -736,7 +742,7 @@
   left: 14px;
   padding: 3px 8px;
   border-radius: 4px;
-  background: rgb(252 252 249 / 85%);
+  background: rgb(254 254 252 / 85%);
   color: var(--ink-soft);
   font-family: var(--font-mono);
   font-size: 12px;
@@ -968,7 +974,7 @@
     font-weight: 500;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: rgb(24 24 24 / 50%);
+    color: rgb(35 37 29 / 50%);
   }
 
   .feature-row__art {

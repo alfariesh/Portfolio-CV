@@ -8,9 +8,9 @@ export default function PaperPlayground({ amount, lines }: PaperPlaygroundProps)
   return (
     <PaperTexture
       className="demo__paper"
-      colorBack="#FCFCF9"
-      colorPaper="#FCFCF9"
-      colorShadow="#C9C9C2"
+      colorBack="#FEFEFC"
+      colorPaper="#FEFEFC"
+      colorShadow="#BFC1B7"
       roughness={amount}
       fiber={amount}
       folds={lines ? 0.6 : 0}

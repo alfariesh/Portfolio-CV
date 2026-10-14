@@ -51,7 +51,7 @@ export function Intro() {
             ))}
           </span>
           <span className="squircle squircle--hero">
-            <Mark size={48} color="#FCFCF9" />
+            <Mark size={48} color="#FEFEFC" />
           </span>
           <span className="dock__stack dock__stack--offset">
             {icons[1].map((icon) => (

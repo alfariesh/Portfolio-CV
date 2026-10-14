@@ -12,8 +12,8 @@ type PaperFibreProps = {
 // split into its own chunk and the plain background shows until it is ready.
 export default function PaperFibre({
   className,
-  paper = "#FCFCF9",
-  shadow = "#D7D7D6",
+  paper = "#FEFEFC",
+  shadow = "#BFC1B7",
   amount = 0.3,
 }: PaperFibreProps) {
   return (

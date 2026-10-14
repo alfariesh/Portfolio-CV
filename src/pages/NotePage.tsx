@@ -37,7 +37,7 @@ export function NotePage({ note }: { note: Note }) {
           <div className="prose prose--single">
             <p className="byline">
               <span className="byline__avatar" aria-hidden="true">
-                <Mark size={16} color="#FCFCF9" />
+                <Mark size={16} color="#FEFEFC" />
               </span>
               {profile.name}
             </p>
