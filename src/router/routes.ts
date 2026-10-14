@@ -1,5 +1,6 @@
 export type Route =
   | { name: "home" }
+  | { name: "works" }
   | { name: "work"; slug: string }
   | { name: "notes" }
   | { name: "note"; slug: string }
@@ -9,7 +10,7 @@ export function matchRoute(pathname: string): Route {
   const [section, slug, ...rest] = pathname.split("/").filter(Boolean);
   if (!section) return { name: "home" };
   if (rest.length > 0) return { name: "missing" };
-  if (section === "work" && slug) return { name: "work", slug };
+  if (section === "work") return slug ? { name: "work", slug } : { name: "works" };
   if (section === "notes") return slug ? { name: "note", slug } : { name: "notes" };
   return { name: "missing" };
 }

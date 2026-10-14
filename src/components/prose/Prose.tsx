@@ -29,3 +29,19 @@ export function Callout({ label, children }: CalloutProps) {
     </aside>
   );
 }
+
+type StatsProps = { items: [value: string, label: string][] };
+
+// Big numbers with a short caption each.
+export function Stats({ items }: StatsProps) {
+  return (
+    <dl className="stats">
+      {items.map(([value, label]) => (
+        <div key={label} className="stats__item">
+          <dt className="stats__value">{value}</dt>
+          <dd className="stats__label">{label}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}

@@ -14,7 +14,7 @@ export const profile = {
 
 // Shown on every page, so home sections are linked as /#section.
 export const nav = [
-  { label: "work", href: "/#work" },
+  { label: "work", href: "/work" },
   { label: "systems", href: "/#systems" },
   { label: "process", href: "/#process" },
   { label: "about", href: "/#about" },
@@ -47,24 +47,25 @@ export const sections = {
   work: {
     eyebrow: "selected work",
     title: "from canvas to code, and back again",
-    body: "a few recent projects — each one designed on the canvas, prototyped with real content and shipped by the same pair of hands",
+    link: { label: "all six projects →", href: "/work" },
+    body: "from a national subsidy system to products I build myself — each one designed with real content, real constraints and the people who use it",
   },
   systems: {
     eyebrow: "design systems",
-    title: "systems that scale, pictograms that speak",
-    body: "tokens, states and icon families built once and used everywhere — from the canvas all the way to the component library",
+    title: "one source of truth, many brands",
+    body: "Rekanesia: tokens, components and a pipeline built once and used everywhere — from the design file all the way to five platforms",
     points: [
       {
-        title: "Rekanesia — pictogram family",
-        body: "a pictogram family drawn on one shared grid, so every icon feels like it belongs to the same voice",
-        href: "/work/rekanesia",
+        title: "the seven-day rebrand, delivered in two",
+        body: "when a national program needed the whole app rebranded in a week, variable design tokens turned it into a two-day job",
+        href: "/work/rekanesia#the-seven-day-rebrand-delivered-in-two",
         cta: "read the case study",
       },
       {
-        title: "Rekanesia — status states",
-        body: "a complete vocabulary of states — draft, in review, approved, rejected — designed as tokens, not one-offs",
-        href: "/work/rekanesia#states",
-        cta: "see the states",
+        title: "one source, five platforms",
+        body: "one token file compiles to Flutter, Compose, CSS, Android XML and Swift, and re-skins 30 components into five brands",
+        href: "/work/rekanesia#ai-in-the-loop",
+        cta: "see how",
       },
     ],
   },
@@ -72,7 +73,7 @@ export const sections = {
     eyebrow: "process",
     title: "hand off the boilerplate, keep the human touch",
     body: "agents read my canvas, scaffold the components and sync the tokens. I stay on taste, motion and the details that make it feel alive",
-    link: { label: "how this site was built →", href: "/work/this-site" },
+    link: { label: "how this site was built →", href: "/notes/rebuilding-in-an-afternoon" },
     points: [
       {
         title: "agents that see the canvas",
@@ -115,7 +116,7 @@ export const footer = {
       title: "portfolio",
       links: [
         { label: "home", href: "/" },
-        { label: "work", href: "/#work" },
+        { label: "work", href: "/work" },
         { label: "notes", href: "/notes" },
         { label: "about", href: "/#about" },
       ],

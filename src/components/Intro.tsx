@@ -4,10 +4,10 @@ import { Mark } from "./Mark";
 const icons = [
   [
     { letter: "V", tone: "ink" },
-    { letter: "N", tone: "plum" },
+    { letter: "S", tone: "plum" },
   ],
   [
-    { letter: "C", tone: "yolk" },
+    { letter: "I", tone: "yolk" },
     { letter: "R", tone: "moss" },
   ],
 ];

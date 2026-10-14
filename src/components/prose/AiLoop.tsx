@@ -5,11 +5,13 @@ type AiLoopProps = {
   flow: string[];
   /** One row per step: what the agent did, and what stayed a human decision. */
   rows: [step: string, agent: string, me: string][];
+  /** Column titles; "the machine" fits work where the AI sits inside the product. */
+  columns?: [agent: string, me: string];
   children?: ReactNode;
 };
 
 // The "ai in the loop" section every case study carries.
-export function AiLoop({ flow, rows, children }: AiLoopProps) {
+export function AiLoop({ flow, rows, columns = ["the agent", "me"], children }: AiLoopProps) {
   return (
     <section className="ai-loop" aria-labelledby="ai-in-the-loop">
       <h2 id="ai-in-the-loop">ai in the loop</h2>
@@ -20,16 +22,16 @@ export function AiLoop({ flow, rows, children }: AiLoopProps) {
           <thead>
             <tr>
               <th scope="col">step</th>
-              <th scope="col">the agent</th>
-              <th scope="col">me</th>
+              <th scope="col">{columns[0]}</th>
+              <th scope="col">{columns[1]}</th>
             </tr>
           </thead>
           <tbody>
             {rows.map(([step, agent, me]) => (
               <tr key={step}>
                 <th scope="row">{step}</th>
-                <td data-label="the agent">{agent}</td>
-                <td data-label="me">{me}</td>
+                <td data-label={columns[0]}>{agent}</td>
+                <td data-label={columns[1]}>{me}</td>
               </tr>
             ))}
           </tbody>

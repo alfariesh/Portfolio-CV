@@ -10,6 +10,7 @@ const render = (url: string) => renderToString(<App url={url} />);
 
 const pages = [
   "/",
+  "/work",
   "/notes",
   ...caseStudies.map((study) => `/work/${study.slug}`),
   ...notes.map((note) => `/notes/${note.slug}`),
@@ -52,8 +53,8 @@ describe("home page", () => {
     expect(labelled).toHaveLength(images.length);
   });
 
-  it("links every case study and the notes", () => {
-    for (const study of caseStudies) expect(html).toContain(`href="/work/${study.slug}`);
+  it("links the work and notes indexes", () => {
+    expect(html).toContain(`href="/work"`);
     expect(html).toContain(`href="/notes"`);
   });
 });
@@ -69,6 +70,13 @@ describe.each(pages)("page %s", (url) => {
     const hrefs = [...html.matchAll(/href="(\/[^"]*)"/g)].map((m) => m[1]);
     for (const href of new Set(hrefs)) expect(resolves(href), href).toBe(true);
   });
+
+  it("only links to sections that exist on other pages", () => {
+    const hrefs = [...html.matchAll(/href="(\/[^"#]+)#([^"]+)"/g)];
+    for (const [, page, id] of hrefs) {
+      expect(render(page), `${page}#${id}`).toContain(`id="${id}"`);
+    }
+  });
 });
 
 describe("case studies", () => {
@@ -78,9 +86,9 @@ describe("case studies", () => {
     expect(html).toContain('class="ai-loop__table"');
   });
 
-  it("uses three or four case studies with unique order", () => {
-    expect(caseStudies.length).toBeGreaterThanOrEqual(3);
-    expect(caseStudies.length).toBeLessThanOrEqual(4);
+  it("are all listed on /work, in a unique order", () => {
+    const html = render("/work");
+    for (const study of caseStudies) expect(html).toContain(`href="/work/${study.slug}"`);
     expect(new Set(caseStudies.map((study) => study.order)).size).toBe(caseStudies.length);
   });
 });

@@ -1,27 +1,17 @@
-import { ViewTransition } from "react";
-import { artwork, type ArtKey } from "../art/artwork";
-import { LoopArt } from "../art/LoopArt";
-import { PhonesArt } from "../art/PhonesArt";
-import { SystemsArt } from "../art/SystemsArt";
-import { Scaler } from "./Scaler";
+import { figures, type FigureKey } from "../iso/figures";
+import { IsoFigure } from "../iso/IsoFigure";
 
-type ProjectArtProps = { art: ArtKey; focus?: string };
+type ProjectArtProps = { art: FigureKey; interactive?: boolean };
 
-// The same illustration on the home page and as the case study hero. The shared
-// name lets a route change carry it from one page to the other.
-export function ProjectArt({ art, focus }: ProjectArtProps) {
-  const { width, height, label } = artwork[art];
+// A case study's iso-glow figure at 4:3, on the home page and as the page
+// hero. The shared name lets a route change carry it from one to the other.
+export function ProjectArt({ art, interactive = false }: ProjectArtProps) {
   return (
-    <ViewTransition name={`art-${art}`} share="morph" default="none">
-      <Scaler width={width} height={height} label={label}>
-        {art === "phones" ? (
-          <PhonesArt focus={focus} />
-        ) : art === "systems" ? (
-          <SystemsArt />
-        ) : (
-          <LoopArt />
-        )}
-      </Scaler>
-    </ViewTransition>
+    <IsoFigure
+      fig={figures[art]}
+      name={`art-${art}`}
+      interactive={interactive}
+      demo={interactive ? "mount" : "visible"}
+    />
   );
 }

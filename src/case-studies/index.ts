@@ -1,5 +1,5 @@
 import type { MDXContent } from "mdx/types";
-import type { ArtKey } from "../art/artwork";
+import type { FigureKey } from "../iso/figures";
 
 // Each case study is an MDX file in this folder: `export const meta = {...}`
 // on top, the story below. The file name is the URL slug (/work/<slug>).
@@ -12,10 +12,10 @@ export type CaseStudyMeta = {
   summary: string;
   year: string;
   role: string;
+  industry: string;
   platform: string;
-  tools: string[];
-  /** Illustration shown on the home page and as the page hero. */
-  art: ArtKey;
+  /** iso-glow figure shown on the home page and as the page hero. */
+  art: FigureKey;
   order: number;
   /** Set when the work is under NDA and only the process is shown. */
   processOnly?: boolean;

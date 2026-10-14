@@ -7,7 +7,7 @@ import { profile } from "../content";
 import { formatDate, notes, type Note } from "../notes";
 import { Link } from "../router/Link";
 
-// A single note, laid out like a sheet: header, cover, body, then the two
+// A single note, laid out like a sheet: cover, header, body, then the two
 // notes around it.
 export function NotePage({ note }: { note: Note }) {
   const index = notes.indexOf(note);
@@ -18,6 +18,10 @@ export function NotePage({ note }: { note: Note }) {
     <>
       <title>{`${note.title} — notes · ${profile.name}`}</title>
       <article className="grid grid--sheet">
+        <Cell span={1} className="cell--cover">
+          <NoteCover slug={note.slug} cover={note.cover} interactive />
+        </Cell>
+
         <Cell span={1} className="cell--article-head">
           <header className="article-head">
             <p className="article-head__meta">
@@ -27,10 +31,6 @@ export function NotePage({ note }: { note: Note }) {
             <h1 className="article-head__title">{note.title}</h1>
             <p className="article-head__lede">{note.summary}</p>
           </header>
-        </Cell>
-
-        <Cell span={1} className="cell--cover">
-          <NoteCover slug={note.slug} label={`note · ${note.tag}`} {...note.cover} />
         </Cell>
 
         <Cell span={1} className="cell--article-body">
@@ -47,7 +47,7 @@ export function NotePage({ note }: { note: Note }) {
 
         <Cell span={1} className="cell--more">
           <nav className="more" aria-label="More notes">
-            <p className="label">more notes</p>
+            <p className="caps">more notes</p>
             <ul className="latest">
               {nearby.map((other) => (
                 <li key={other.slug}>

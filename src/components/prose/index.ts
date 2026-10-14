@@ -1,7 +1,7 @@
 import type { MDXComponents } from "mdx/types";
 import { AiLoop, Workflow } from "./AiLoop";
 import { PaperDemo } from "./PaperDemo";
-import { Callout, Heading, ProseLink } from "./Prose";
+import { Callout, Heading, ProseLink, Stats } from "./Prose";
 
 // Components available to every case study and note without an import.
 export const proseComponents: MDXComponents = {
@@ -11,4 +11,5 @@ export const proseComponents: MDXComponents = {
   Workflow,
   Callout,
   PaperDemo,
+  Stats,
 };

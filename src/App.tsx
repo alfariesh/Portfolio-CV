@@ -9,6 +9,7 @@ import { Home } from "./pages/Home";
 import { MissingPage } from "./pages/MissingPage";
 import { NotePage } from "./pages/NotePage";
 import { NotesPage } from "./pages/NotesPage";
+import { WorkPage } from "./pages/WorkPage";
 import { useRouter } from "./router/context";
 import { Router } from "./router/Router";
 import type { Route } from "./router/routes";
@@ -17,6 +18,8 @@ function Page({ route }: { route: Route }) {
   switch (route.name) {
     case "home":
       return <Home />;
+    case "works":
+      return <WorkPage />;
     case "work": {
       const study = findCaseStudy(route.slug);
       return study ? <CaseStudyPage study={study} /> : <MissingPage />;

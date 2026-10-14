@@ -1,5 +1,5 @@
 import type { MDXContent } from "mdx/types";
-import type { CoverProps } from "../components/NoteCover";
+import type { FigureKey } from "../iso/figures";
 
 // Notes are short MDX files in this folder: `export const meta = {...}` on top,
 // three to five paragraphs below. The file name is the URL slug (/notes/<slug>).
@@ -13,7 +13,8 @@ export type NoteMeta = {
   /** ISO date, e.g. "2026-10-12". */
   date: string;
   tag: Tag;
-  cover: CoverProps;
+  /** iso-glow figure for the list and the page header. */
+  cover: FigureKey;
 };
 
 export type Note = NoteMeta & { slug: string; Content: MDXContent };

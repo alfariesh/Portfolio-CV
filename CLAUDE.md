@@ -1,6 +1,6 @@
 # Salman Alfariesh — portfolio
 
-Portfolio in the style of paper.design: a home page, case studies (`/work/<slug>`) and notes (`/notes`, `/notes/<slug>`). React 19.3 + TypeScript on Vite+ 1.1.0, pnpm (pinned via `devEngines`). A small hand-written router, no backend. The user writes in Indonesian; site copy is English, lowercase, paper.design voice.
+Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug>`: six case studies, four featured on home) and notes (`/notes`, `/notes/<slug>`). React 19.3 + TypeScript on Vite+ 1.1.0, pnpm (pinned via `devEngines`). A small hand-written router, no backend. The user writes in Indonesian; site copy is English, lowercase, paper.design voice.
 
 ## Setup notes
 
@@ -12,14 +12,16 @@ Portfolio in the style of paper.design: a home page, case studies (`/work/<slug>
 ## Where things live
 
 - `src/content.ts`: copy and links for the home page, nav and footer. Email, résumé and social links are placeholders (`hello@example.com`, `#`) and must be replaced before publishing.
-- `src/case-studies/*.mdx` and `src/notes/*.mdx`: one file per case study or note, `export const meta = {...}` on top (types in each folder's `index.ts`), the file name is the slug. Case studies must include `<AiLoop>` (the "ai in the loop" section; a test enforces it). Notes take one tag: experiment, workflow, essay or demo. Draft copy is marked with `TODO` comments.
-- `src/components/prose/*`: components MDX files can use without importing (`AiLoop`, `Workflow`, `Callout`, `PaperDemo`), plus heading ids and router links for markdown.
+- `src/case-studies/*.mdx` and `src/notes/*.mdx`: one file per case study or note, `export const meta = {...}` on top (types in each folder's `index.ts`), the file name is the slug. Case studies must include `<AiLoop>` (the "ai in the loop" section; a test enforces it; `columns={["the machine", …]}` when the AI sits inside the product rather than the process). Notes take one tag: experiment, workflow, essay or demo. Draft copy is marked with `TODO` comments.
+- Case study facts come from the user's previous portfolio: `~/Documents/GitHub/portfolio/content/projects/<slug>/overview.mdx` and `metadata.ts` (ipubers, numi, rekan, rekanesia, surau, vuboi). Don't invent projects, numbers or anecdotes; there is no "Chicken Bank".
+- `src/iso/*`: every illustration is an iso-glow figure (interactive isometric SVG, from the `iso-glow` skill). `kernel.ts` is the projection kernel, `IsoFigure.tsx` the host (draws in a layout effect, runs the demo on mount or when scrolled into view, optional shared view-transition `name`), `iso.css` the light-theme vocabulary and tokens (ember accent `#FF7A1A`, no glow), `figures/*.ts` one figure each, keyed in `figures/index.ts`. Case studies pick a figure in `meta.art` (4:3), notes in `meta.cover` (3:2). `vp dev` serves a gallery of all figures at `/iso-glow/` (`?fig=<key>&aspect=3/2&w=540`); `iso-glow/ipubers.html` is the original standalone asset.
+- `src/components/prose/*`: components MDX files can use without importing (`AiLoop`, `Workflow`, `Callout`, `Stats`, `PaperDemo`), plus heading ids and router links for markdown.
 - `src/router/*`: `Router` runs route changes in a Transition so `<ViewTransition>` animates them. It intercepts links and back/forward through the Navigation API, scrolls synchronously in a layout effect (before the browser captures the new page), and ignores React's own `info: "react-transition"` navigations. `Link` only steps in for browsers without the Navigation API. Pages live in `src/pages/*`.
 - Transitions: `App.tsx` wraps each page in a keyed `<ViewTransition>` (types `nav-forward` / `nav-back`); `<ProjectArt>` (`art-<key>`) and `<NoteCover>` (`note-cover-<slug>`) are shared elements. Shared names must stay unique per page. CSS is at the end of `src/styles/pages.css`.
-- `src/index.css`: tokens, layout, grid, footer, responsive rules. `src/styles/canvas.css` styles the hero canvas window, `src/styles/art.css` the illustrations, `src/styles/pages.css` case studies, notes (covers included), prose and view transitions.
-- `src/art/*`: project illustrations drawn at a fixed size and scaled by `<Scaler>`. Its height comes from `aspect-ratio`; the scale is written to the DOM in `useLayoutEffect` (not state), so it is right before paint and inside a view transition's snapshot.
+- `src/index.css`: tokens, layout, grid, footer, responsive rules. `src/styles/canvas.css` styles the hero canvas window, `src/styles/art.css` the hero canvas pieces, `src/styles/pages.css` case studies, notes, prose and view transitions, `src/iso/iso.css` the figures.
+- `src/art/*` and `src/components/CanvasMock.tsx`: the hero canvas (cursors, chips, mini phone screens), drawn at a fixed size and scaled by `<Scaler>`. Its height comes from `aspect-ratio`; the scale is written to the DOM in `useLayoutEffect` (not state), so it is right before paint and inside a view transition's snapshot.
 - Icons and pictograms use the Rekanesia stroke-sharp set: inner SVG markup in `src/components/icon-data.ts` and `src/art/pictogram-markup.ts`, rendered with `dangerouslySetInnerHTML`, stroke width 1.5 inherited from the parent `<svg>`. Add new glyphs there in the same format.
-- `src/components/PaperFibre.tsx`: static WebGL paper texture from `@paper-design/shaders-react` (Apache-2.0), lazy-loaded into its own chunk. Used behind the footer and the notes collage.
+- `src/components/PaperFibre.tsx`: static WebGL paper texture from `@paper-design/shaders-react` (Apache-2.0), lazy-loaded into its own chunk. Used behind the footer and in the paper-texture demo note.
 - `src/App.test.tsx`: renders every route with `react-dom/server` (`<App url="…" />`) and checks one `h1` per page, home anchors, that every in-site link resolves, image labels, the ai-in-the-loop section and note metadata. Keep it passing when adding pages, sections or links.
 
 ## Design rules
@@ -28,6 +30,7 @@ Portfolio in the style of paper.design: a home page, case studies (`/work/<slug>
 - Layout: 1321px container, 1082px two-column grid of bordered cells with 12px registration marks where lines meet (`.cell::before/::after`).
 - Keep lines minimal. Only cell borders, registration marks, edge rulers and the fold edges (fill only, no stroke) are allowed. Do not add repeating background grids or graph-paper patterns to the page or cells; the user found them messy. (In the Paper reference the 120px grid tile is `no-repeat`, not a full grid.)
 - Paper texture: keep `folds`, `wrinkles`, `crumples` and `drops` at 0 so it adds no lines. Render it outside `<Scaler>` at real size, and keep to about two WebGL instances per page.
+- Iso figures use bare class names inside their SVG (`face`, `top`, `detail`, `label`, `glass`, `scr`, `led`, `wire`, `pulse`, `press`, `lit`, `hot`…). Don't define site-level CSS with those names: site 14px caps are `.caps`, the hero's mini screens `.mscr`.
 - Don't use Paper's logo, wordmark or brand art. The "s" monogram in `Mark.tsx` and all illustrations are original.
 
 ## Paper (design reference)
@@ -38,6 +41,8 @@ Portfolio in the style of paper.design: a home page, case studies (`/work/<slug>
 ## Verifying visually
 
 - Use the browser pane for interactive checks. For full-page screenshots, headless Chrome works at desktop widths. It enforces a minimum window width of about 500px, so check 375px in the pane's mobile preset or through an iframe of that width.
+- Headless Chrome with `--virtual-time-budget` freezes requestAnimationFrame and CSS transitions, so iso figures look half-lit and view transitions never run. Drive Chrome in real time over CDP instead (`--remote-debugging-port`, then navigate, wait, `Page.captureScreenshot`).
+- When the browser pane is hidden it renders no frames while still reporting `visible`, so view transitions stall there; test transitions in real-time headless Chrome.
 
 <!--VITE PLUS START-->
 

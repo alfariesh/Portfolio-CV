@@ -81,8 +81,9 @@
 /* Case study                                                          */
 /* ------------------------------------------------------------------ */
 
+/* Follows the hero figure, so it sizes to its content. */
 .cell--cs-head {
-  min-height: 420px;
+  min-height: 0;
 }
 
 .eyebrow__sep {
@@ -154,7 +155,7 @@
   text-align: right;
 }
 
-.pager .label {
+.pager .caps {
   margin-bottom: 18px;
 }
 
@@ -281,6 +282,15 @@
   margin-top: 40px;
 }
 
+.prose--single .ai-loop {
+  display: block;
+  margin: 40px calc(-1 * var(--cell-pad)) 32px;
+}
+
+.prose--single .ai-loop > h2 {
+  margin-bottom: 12px;
+}
+
 .byline {
   display: flex;
   align-items: center;
@@ -312,6 +322,33 @@
   color: var(--ink-soft);
   font-size: 14px;
   font-weight: 500;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 40px;
+  margin: 8px 0 32px;
+}
+
+.stats__item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stats__value {
+  font-size: 40px;
+  line-height: 44px;
+  letter-spacing: var(--tracking-display);
+}
+
+.stats__label {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 16px;
+  line-height: 24px;
+  text-wrap: pretty;
 }
 
 /* ------------------------------------------------------------------ */
@@ -447,7 +484,7 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Notes list                                                          */
+/* Feature rows: selected work on the home page and the notes list     */
 /* ------------------------------------------------------------------ */
 
 .cell--masthead {
@@ -534,24 +571,25 @@
   color: rgb(252 252 249 / 60%);
 }
 
-.note-list,
-.note-row {
+.feature-list,
+.feature-row {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: subgrid;
 }
 
-.note-row__art {
+.feature-row__art {
   flex-direction: column;
   justify-content: center;
-  background: #f4f4ef;
+  /* Same as the iso figure panel, so a figure shorter than its row blends in. */
+  background: #f6f6f0;
 }
 
-.note-row--flip .note-row__art {
+.feature-row--flip .feature-row__art {
   order: 2;
 }
 
-.note-row__copy {
+.feature-row__copy {
   flex-direction: column;
   background: var(--paper);
   justify-content: space-between;
@@ -560,7 +598,7 @@
   padding: 40px var(--cell-pad) 48px;
 }
 
-.note-row__meta {
+.feature-row__meta {
   display: flex;
   align-items: center;
   gap: 14px;
@@ -569,7 +607,7 @@
   line-height: 24px;
 }
 
-.note-row__title {
+.feature-row__title {
   font-size: 40px;
   line-height: 42px;
   letter-spacing: var(--tracking-display);
@@ -577,127 +615,24 @@
   text-wrap: balance;
 }
 
-.note-row__title a {
+.feature-row__title a {
   text-decoration-thickness: 1px;
   text-underline-offset: 6px;
 }
 
-.note-row__title a:hover {
+.feature-row__title a:hover {
   text-decoration-line: underline;
 }
 
-.note-row__summary {
+.feature-row__summary {
   margin-top: 18px;
   color: var(--ink-80);
   text-wrap: pretty;
 }
 
-.note-row__cta {
+.feature-row__cta {
   display: inline-block;
   margin-top: 28px;
-}
-
-/* ------------------------------------------------------------------ */
-/* Note covers (540×360)                                               */
-/* ------------------------------------------------------------------ */
-
-.art--cover {
-  --tone: var(--accent);
-  background: #f4f4ef;
-}
-
-.cover--moss {
-  --tone: #a9b48a;
-}
-
-.cover--yolk {
-  --tone: #f6cf63;
-}
-
-.cover--plum {
-  --tone: #bba6e6;
-}
-
-.cover__label {
-  position: absolute;
-  top: 22px;
-  left: 26px;
-  color: #8a8a86;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.cover__word {
-  position: absolute;
-  bottom: -62px;
-  left: 14px;
-  color: transparent;
-  font-size: 268px;
-  line-height: 1;
-  font-weight: 600;
-  letter-spacing: -0.06em;
-  white-space: nowrap;
-  -webkit-text-stroke: 1.25px rgb(24 24 24 / 50%);
-}
-
-.cover__ink {
-  position: absolute;
-  top: 70px;
-  right: 58px;
-  width: 200px;
-  height: 150px;
-  background: var(--tone);
-  mix-blend-mode: multiply;
-}
-
-.cover__dots {
-  position: absolute;
-  top: 132px;
-  right: 168px;
-  width: 168px;
-  height: 128px;
-  background: radial-gradient(circle, #181818 1.3px, transparent 1.6px) 0 0 / 6px 6px;
-  opacity: 0.5;
-  mask-image: linear-gradient(135deg, #000 25%, transparent 80%);
-}
-
-.cover__glyph {
-  position: absolute;
-  top: 78px;
-  right: 92px;
-  color: var(--ink);
-}
-
-.cover__tape {
-  position: absolute;
-  top: 52px;
-  right: 222px;
-  width: 74px;
-  height: 26px;
-  background: #e6e0cd;
-  rotate: -9deg;
-  opacity: 0.92;
-  clip-path: polygon(
-    0 8%,
-    8% 0,
-    18% 10%,
-    30% 2%,
-    44% 9%,
-    58% 0,
-    72% 8%,
-    86% 1%,
-    100% 9%,
-    100% 92%,
-    88% 100%,
-    74% 91%,
-    60% 100%,
-    46% 92%,
-    32% 100%,
-    18% 91%,
-    6% 100%,
-    0 90%
-  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -711,8 +646,7 @@
 
 .cell--article-head {
   justify-content: center;
-  min-height: 460px;
-  padding: 72px 40px;
+  padding: 72px 40px 64px;
 }
 
 .article-head {
@@ -944,7 +878,7 @@
 /* ------------------------------------------------------------------ */
 
 @media (max-width: 1100px) {
-  .note-row__title,
+  .feature-row__title,
   .pager__title {
     font-size: 32px;
     line-height: 36px;
@@ -1037,17 +971,17 @@
     color: rgb(24 24 24 / 50%);
   }
 
-  .note-row__art {
+  .feature-row__art {
     order: 0 !important;
   }
 
-  .note-row__copy {
+  .feature-row__copy {
     min-height: 0;
     gap: 24px;
     padding: 28px var(--cell-pad) 36px;
   }
 
-  .note-row__title,
+  .feature-row__title,
   .pager__title {
     font-size: 28px;
     line-height: 32px;

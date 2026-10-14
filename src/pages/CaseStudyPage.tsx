@@ -14,20 +14,24 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
 
   const facts = [
     { label: "role", value: study.role },
+    { label: "industry", value: study.industry },
     { label: "platform", value: study.platform },
     { label: "year", value: study.year },
-    { label: "tools", value: study.tools.join(", ") },
   ];
 
   return (
     <>
       <title>{`${study.title} — case study · Salman Alfariesh`}</title>
       <div className="grid">
+        <Cell className="cell--art">
+          <ProjectArt art={study.art} interactive />
+        </Cell>
+
         <Cell className="cell--head cell--cs-head">
           <div className="head">
             <p className="eyebrow">
-              <Link className="link link--soft" href="/#work">
-                selected work
+              <Link className="link link--soft" href="/work">
+                work
               </Link>
               <span className="eyebrow__sep"> / </span>
               case study {number(index)}
@@ -49,15 +53,11 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
           <dl className="facts">
             {facts.map((fact) => (
               <div key={fact.label} className="facts__item">
-                <dt className="label">{fact.label}</dt>
+                <dt className="caps">{fact.label}</dt>
                 <dd>{fact.value}</dd>
               </div>
             ))}
           </dl>
-        </Cell>
-
-        <Cell className="cell--art">
-          <ProjectArt art={study.art} focus={study.slug} />
         </Cell>
 
         <Cell className="cell--prose">
@@ -68,14 +68,14 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
 
         <Cell span={1} className="cell--pager">
           <Link className="pager" href={`/work/${previous.slug}`}>
-            <span className="label">← previous</span>
+            <span className="caps">← previous</span>
             <span className="pager__title">{previous.title}</span>
             <span className="pager__kind">{previous.kind}</span>
           </Link>
         </Cell>
         <Cell span={1} className="cell--pager">
           <Link className="pager pager--next" href={`/work/${next.slug}`}>
-            <span className="label">next →</span>
+            <span className="caps">next →</span>
             <span className="pager__title">{next.title}</span>
             <span className="pager__kind">{next.kind}</span>
           </Link>

@@ -1,19 +1,17 @@
-import { lazy, Suspense } from "react";
-import { CollageArt, PortraitArt } from "../art/NotesArt";
 import { caseStudy } from "../case-studies";
 import { Blurb, Cell, Head, Orbit } from "../components/Grid";
 import { Hero } from "../components/Hero";
 import { Intro } from "../components/Intro";
 import { ProjectArt } from "../components/ProjectArt";
-import { Scaler } from "../components/Scaler";
+import { WorkRow } from "../components/WorkRow";
 import { about, now, profile, sections, studio } from "../content";
+import { figures } from "../iso/figures";
+import { IsoFigure } from "../iso/IsoFigure";
 import { formatDate, notes } from "../notes";
 import { Link } from "../router/Link";
 
-const PaperFibre = lazy(() => import("../components/PaperFibre"));
-
-const vuboi = caseStudy("vuboi");
-const chicken = caseStudy("chicken-bank");
+// Selected work as rows; Rekanesia leads the design-systems section instead.
+const featured = [caseStudy("vuboi"), caseStudy("surau"), caseStudy("ipubers")];
 
 export function Home() {
   const { work, systems, process, contact } = sections;
@@ -30,26 +28,23 @@ export function Home() {
 
         <Cell tone="clear" className="cell--orbit" id="work">
           <Orbit anchor="top" />
-          <Head eyebrow={work.eyebrow} title={work.title} body={work.body} align="center" />
+          <Head eyebrow={work.eyebrow} title={work.title} body={work.body} align="center">
+            <Link className="link link--accent" href={work.link.href}>
+              {work.link.label}
+            </Link>
+          </Head>
         </Cell>
-        <Cell className="cell--art">
-          <ProjectArt art="phones" />
-        </Cell>
-        {[vuboi, chicken].map((study) => (
-          <Cell key={study.slug} span={1}>
-            <Blurb
-              title={`${study.title} — ${study.kind}`}
-              body={study.summary}
-              href={`/work/${study.slug}`}
-            />
-          </Cell>
-        ))}
+        <div className="feature-list">
+          {featured.map((study, i) => (
+            <WorkRow key={study.slug} study={study} flip={i % 2 === 1} />
+          ))}
+        </div>
 
         <Cell className="cell--head" id="systems">
           <Head eyebrow={systems.eyebrow} title={systems.title} body={systems.body} />
         </Cell>
         <Cell className="cell--art">
-          <ProjectArt art="systems" />
+          <ProjectArt art="rekanesia" />
         </Cell>
         {systems.points.map((point) => (
           <Cell key={point.title} span={1}>
@@ -65,7 +60,7 @@ export function Home() {
           </Head>
         </Cell>
         <Cell className="cell--art">
-          <ProjectArt art="loop" />
+          <IsoFigure fig={figures.loop} interactive />
         </Cell>
         {process.points.map((point) => (
           <Cell key={point.title} span={1}>
@@ -123,12 +118,7 @@ export function Home() {
 
         <Cell span={1} className="cell--note" id="notes">
           <div className="note__art">
-            <Suspense fallback={null}>
-              <PaperFibre className="note__paper" paper="#F4F4EF" shadow="#CFCFC8" amount={0.35} />
-            </Suspense>
-            <Scaler width={540} height={360}>
-              <CollageArt />
-            </Scaler>
+            <IsoFigure fig={figures.studio} aspect={3 / 2} />
           </div>
           <div className="note__copy">
             <div>
@@ -152,9 +142,7 @@ export function Home() {
 
         <Cell span={1} className="cell--note" id="about">
           <div className="note__art">
-            <Scaler width={540} height={360}>
-              <PortraitArt />
-            </Scaler>
+            <IsoFigure fig={figures.about} aspect={3 / 2} />
           </div>
           <div className="note__copy">
             <div>

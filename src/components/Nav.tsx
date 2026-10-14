@@ -18,10 +18,8 @@ export function Nav() {
         </div>
         <nav className="nav__links" aria-label="Primary">
           {nav.map((item) => {
-            // Case studies count as "work"; everything under /notes as "notes".
-            const current =
-              (section === "notes" && item.href === "/notes") ||
-              (section === "work" && item.href === "/#work");
+            // Every page under /work counts as "work", under /notes as "notes".
+            const current = section !== "" && item.href === `/${section}`;
             return (
               <Link
                 key={item.href}

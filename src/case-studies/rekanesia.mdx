@@ -1,69 +1,81 @@
 export const meta = {
   title: "Rekanesia",
   kind: "design system",
-  tagline: "pictograms and states that speak with one voice",
+  tagline: "one product, many brands",
   summary:
-    "a pictogram family and a status vocabulary drawn on one shared grid, so every icon and every state feels like it belongs",
-  year: "2026", // TODO: confirm
-  role: "icon design, design system, tokens",
-  platform: "web & mobile",
-  tools: ["Paper", "SVG", "Claude Code", "Vite+"],
-  art: "systems",
-  order: 3,
+    "a multi-brand design system: one source of truth that lets one product become many brands across design, web and native, without rebuilding",
+  year: "2021 – now",
+  role: "design system, design tokens, mobile design, frontend",
+  industry: "agriculture & government",
+  platform: "design, web & native",
+  art: "rekanesia",
+  order: 4,
 };
 
-{/* TODO: this is a draft built from the illustration. Replace it with the real story and numbers. */}
+## the day a button took a week
 
-## the brief
+In 2021 I was designing Rekan, a point-of-sale app for fertiliser kiosks, and I didn't think about design systems at all. Then the product scaled. One day I was asked to change a single element, and it was brutal: the same component lived in dozens of places, each slightly different, each fixed by hand. A change that should have taken minutes ate days.
 
-Rekanesia needed a visual language for fields, deliveries, factories and paperwork, plus a clear way to show where every record stands. The icons and the status labels had grown one at a time, and it showed.
+A mentor said what I needed to hear: the smoothness you feel now is debt you haven't paid yet. That sentence is why Rekanesia exists.
 
-## one grid
+## earning the right to a system
 
-Every pictogram is drawn on the same 24 px grid with a 1.5 stroke and sharp corners. Two keylines, a 20 px circle and an 18 px square, keep round and square shapes the same visual size, and a 2 px safe area keeps strokes off the edge.
+I didn't start by designing a system. I started by auditing one: every screen I'd shipped, which elements repeated, how often, and how much logic each one carried.
 
-The set is small on purpose: a leaf, a drop, a truck, a factory, a sack, a chart, and a few more. Each one had to read at 16 px in a table and at 36 px in an empty state, so details that only worked large were removed.
+The winner was the stepper, a humble quantity input. It was the most used and most logic-heavy component in the app, with presets tied to real bag sizes like 50 kg and 30 kg. Getting it right meant understanding the business, not just the pixels. A design system isn't a land grab; you earn it one high-leverage component at a time.
 
-## states
+## the seven-day rebrand, delivered in two
 
-Draft, in review, approved, rejected, archived. Each state is a token, not a one-off colour: `--state-draft`, `--state-review` and so on, each with a background, a text colour and a dot. A screen never picks its own green.
+In 2022 the Ministry of Agriculture noticed Rekan. It was already in the hands of 28,000 kiosks, so it became the natural choice to run the national subsidised-fertiliser program, as iPubers. The catch: rebrand the whole app in seven days, design to release.
 
-Writing the states down as a vocabulary also settled arguments that used to happen in every review. "Pending" and "waiting" are the same state, so only one of them exists.
+Duplicating and recolouring every asset would have been fast to start and impossible to maintain. Rebuilding from scratch was out. So I moved the foundation to variable design tokens and made theming a property of the system instead of a manual repaint. I presented the full rebrand and handed it to development on day two.
+
+<Stats
+  items={[
+    ["day 2", "of a seven-day rebrand window, design handed to development"],
+    ["28,000", "kiosks running the app when the rebrand landed"],
+    ["5", "platforms compiled from one token source"],
+    ["30 × 5", "native components re-skinned into five brands at runtime"],
+  ]}
+/>
+
+## from the design file to production
+
+A design system that lives only in a design file is a suggestion. So one change carries all the way to production: update a variable, sync it through Token Studio, commit to GitHub, build with Style Dictionary, deploy to a CDN. No one re-types values into code. Three principles govern every decision: accessible on small screens and low-end devices, achievable so the right path is the easy one, and scalable as if a fourth, fifth and sixth brand are coming.
 
 <AiLoop
-  flow={["Paper", "Claude Code", "SVG module", "Vite+"]}
+  columns={["the machine", "me"]}
+  flow={["design file", "token sync", "git", "style dictionary", "5 platforms"]}
   rows={[
     [
-      "cleanup",
-      "stripped fills, transforms and stray attributes from every exported SVG",
-      "drew every glyph and chose every metaphor",
+      "platforms",
+      "compiles one DTCG JSON source to Flutter, Jetpack Compose, CSS, Android XML and Swift on every push",
+      "named and layered the tokens so a new brand extends the system instead of rewriting it",
     ],
     [
-      "checks",
-      "flagged glyphs that broke the stroke width or left the safe area",
-      "decided which rules could bend, like the truck wheels",
+      "brands",
+      "a Compose prototype re-skins 30 components into 5 brands at runtime by swapping one parameter",
+      "decided what has to survive every brand: accessible, achievable, scalable",
     ],
     [
-      "module",
-      "generated the typed markup module and a contact sheet of the whole set",
-      "reviewed the sheet at 16 px and 36 px, and redrew what didn't hold",
+      "web",
+      "@rekanesia/ui: about 37 React components on accessible primitives, styled with Tailwind",
+      "chose to lean on libraries already stable in code as the team got leaner",
     ],
     [
-      "states",
-      "wrote the state tokens and a chip component from the spec",
-      "named the states, and merged the ones that meant the same thing",
+      "building with it",
+      "an LLM reads SKILLS.md and assembles screens from Rekanesia",
+      "wrote SKILLS.md so the output stays on the system instead of guessing",
     ],
   ]}
 >
 
-Icon work is mostly drawing and mostly mine. The agent took the mechanical parts around the drawing: export, cleanup, consistency checks and the code that ships the set. There's a short note on how that went: [a pictogram set with an agent](/notes/pictograms-with-an-agent).
+Version 4 is the bet that the next decade of interfaces gets assembled by humans and machines, and that whoever owns the source of truth owns the consistency.
 
 </AiLoop>
 
-## what shipped
+## what I learned
 
-- a pictogram family on one 24 px grid, shipped as a typed SVG module
-- five status states as tokens, with a chip component for each
-- the same set in this portfolio: every icon on this site is Rekanesia
+The most valuable thing Rekanesia gave me wasn't a component library. It was a way of thinking: naming, layering, versioning, making sure the smallest unit is right so the largest structure holds. One source of truth. Many brands. No rebuilds.
 
-{/* TODO: add where the system is used in the real product, and how many screens it covers. */}
+Thanks to @taufik, who defined the new colour set and vectorised the brand assets during the rebrand, and @hilal, who researched the token pipeline.

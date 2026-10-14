@@ -160,7 +160,7 @@ svg {
 }
 
 /* 14px caps, as in the footer column titles. */
-.label {
+.caps {
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
@@ -1016,12 +1016,6 @@ svg {
 
 #notes .note__art {
   background: #f4f4ef;
-}
-
-.note__paper {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
 }
 
 .note__copy {

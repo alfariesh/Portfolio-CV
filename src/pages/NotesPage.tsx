@@ -48,29 +48,32 @@ export function NotesPage() {
           </div>
         </Cell>
 
-        <div className="note-list" aria-busy={isPending || undefined}>
+        <div className="feature-list" aria-busy={isPending || undefined}>
           {visible.map((note, i) => (
             <ViewTransition key={note.slug} enter="list-in" exit="list-out" update="list-move">
-              <article className={i % 2 ? "note-row note-row--flip" : "note-row"}>
+              <article className={i % 2 ? "feature-row feature-row--flip" : "feature-row"}>
                 <Link
-                  className="cell note-row__art"
+                  className="cell feature-row__art"
                   href={`/notes/${note.slug}`}
                   tabIndex={-1}
                   aria-hidden="true"
                 >
-                  <NoteCover slug={note.slug} label={`note · ${note.tag}`} {...note.cover} />
+                  <NoteCover slug={note.slug} cover={note.cover} />
                 </Link>
-                <div className="cell note-row__copy">
-                  <div className="note-row__meta">
+                <div className="cell feature-row__copy">
+                  <div className="feature-row__meta">
                     <time dateTime={note.date}>{formatDate(note.date)}</time>
                     <Tag tag={note.tag} />
                   </div>
                   <div>
-                    <h2 className="note-row__title">
+                    <h2 className="feature-row__title">
                       <Link href={`/notes/${note.slug}`}>{note.title}</Link>
                     </h2>
-                    <p className="note-row__summary">{note.summary}</p>
-                    <Link className="link link--accent note-row__cta" href={`/notes/${note.slug}`}>
+                    <p className="feature-row__summary">{note.summary}</p>
+                    <Link
+                      className="link link--accent feature-row__cta"
+                      href={`/notes/${note.slug}`}
+                    >
                       read the note →
                     </Link>
                   </div>
