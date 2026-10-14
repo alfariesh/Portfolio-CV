@@ -215,18 +215,10 @@ svg {
   position: absolute;
 }
 
-.backdrop__grid {
-  inset: 0;
-  opacity: 0.3;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M60.25 0V120' stroke='%23000' stroke-width='.5' stroke-dasharray='7.56 7.56'/%3E%3Cpath d='M0 60.25H120' stroke='%23000' stroke-width='.5'/%3E%3C/svg%3E");
-  background-size: 120px 120px;
-  background-position: calc(50% + 60px) 0;
-}
-
 /* Zig-zag paper folds: a 1:2 tile, so every fold stays at 45°. */
 .backdrop__folds {
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='200' viewBox='0 0 100 200'%3E%3Cpath d='M0 0H100L0 100Z M0 100V200H100Z' fill='%23FCFCF9'/%3E%3Cpath d='M100 0 0 100 100 200' fill='none' stroke='%23D7D7D6' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='200' viewBox='0 0 100 200'%3E%3Cpath d='M0 0H100L0 100Z M0 100V200H100Z' fill='%23FCFCF9'/%3E%3C/svg%3E");
   background-size: 100% auto;
   background-repeat: repeat-y;
 }
@@ -789,7 +781,7 @@ svg {
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='120'%3E%3Cpath d='M2 .25H29M2 10.25H16M2 20.25H16M2 30.25H22M2 40.25H16M2 50.25H16M2 60.25H26M2 70.25H16M2 80.25H16M2 90.25H22M2 100.25H16M2 110.25H16' stroke='%23000' stroke-width='.5' stroke-linecap='round'/%3E%3C/svg%3E")
       0 -60px / 30px 120px repeat-y,
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M60.25 0V120' stroke='%23000' stroke-width='.5' stroke-dasharray='7.56 7.56'/%3E%3C/svg%3E")
-      60px -61px / 120px 120px repeat-x;
+      60px -61px / 120px 120px no-repeat;
 }
 
 .now__card {
@@ -976,7 +968,18 @@ svg {
 }
 
 .note__art {
+  position: relative;
   overflow: hidden;
+}
+
+#notes .note__art {
+  background: #f4f4ef;
+}
+
+.note__paper {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
 .note__copy {
@@ -1012,9 +1015,17 @@ svg {
   }
 }
 
+/* WebGL paper fibre (PaperFibre.tsx); plain paper shows until it loads. */
+.footer__paper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .footer__inner {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   justify-content: space-between;
   gap: 48px;
@@ -1094,6 +1105,8 @@ svg {
   stroke: #dcdcd4;
   stroke-width: 1.5px;
   paint-order: stroke;
+  z-index: 1;
+  mix-blend-mode: multiply;
 }
 
 /* ------------------------------------------------------------------ */
@@ -1175,10 +1188,6 @@ svg {
 
   .hero {
     padding-block: 48px 40px;
-  }
-
-  .backdrop__grid {
-    opacity: 0.14;
   }
 
   .backdrop__ruler--y {

@@ -13,10 +13,8 @@ const states = [
 export function SystemsArt() {
   return (
     <div className="art art--systems">
-      <div className="art__graph" />
-
       <div className="sys-set">
-        <span className="art__label">Rekanesia / Pictograms — 24 px grid · 1.75 stroke</span>
+        <span className="art__label">Rekanesia / Pictograms — 24 px grid · 1.5 stroke</span>
         <div className="sys-grid">
           {pictogramNames.map((name, i) => (
             <span key={name} className={i === 5 ? "is-selected" : undefined}>
@@ -41,7 +39,7 @@ export function SystemsArt() {
             <rect x="2" y="2" width="20" height="20" className="sys-zoom__safe" />
           </svg>
           <span className="sys-zoom__icon">
-            <Pictogram name="chart" size={320} strokeWidth={1.75} />
+            <Pictogram name="chart" size={320} strokeWidth={1.5} />
           </span>
         </div>
       </div>

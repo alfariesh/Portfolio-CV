@@ -10,7 +10,6 @@ const phones = [
 export function PhonesArt() {
   return (
     <div className="art art--phones">
-      <div className="art__graph" />
       {phones.map((p) => (
         <figure key={p.label} className="phone" style={{ left: p.x, top: p.y }}>
           <figcaption className="art__label">{p.label}</figcaption>

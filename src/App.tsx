@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { LoopArt } from "./art/LoopArt";
 import { CollageArt, PortraitArt } from "./art/NotesArt";
 import { PhonesArt } from "./art/PhonesArt";
@@ -10,6 +11,8 @@ import { Intro } from "./components/Intro";
 import { Nav } from "./components/Nav";
 import { Scaler } from "./components/Scaler";
 import { notes, now, profile, projects, sections } from "./content";
+
+const PaperFibre = lazy(() => import("./components/PaperFibre"));
 
 const noteArt = { notes: <CollageArt />, about: <PortraitArt /> } as const;
 
@@ -143,6 +146,16 @@ export default function App() {
             {notes.map((note) => (
               <Cell key={note.id} span={1} className="cell--note" id={note.id}>
                 <div className="note__art">
+                  {note.id === "notes" && (
+                    <Suspense fallback={null}>
+                      <PaperFibre
+                        className="note__paper"
+                        paper="#F4F4EF"
+                        shadow="#CFCFC8"
+                        amount={0.35}
+                      />
+                    </Suspense>
+                  )}
                   <Scaler width={540} height={360}>
                     {noteArt[note.id as keyof typeof noteArt]}
                   </Scaler>

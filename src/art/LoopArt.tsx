@@ -74,8 +74,6 @@ const code: [string, string][][] = [
 export function LoopArt() {
   return (
     <div className="art art--loop">
-      <div className="art__graph" />
-
       <div className="loop-canvas">
         <span className="art__label">Paper · Tokens</span>
         <div className="loop-board">

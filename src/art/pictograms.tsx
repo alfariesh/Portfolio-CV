@@ -1,8 +1,9 @@
-import { pictograms, type PictogramName } from "./pictogram-data";
+import { pictogramMarkup } from "./pictogram-markup";
+import type { PictogramName } from "./pictogram-data";
 
 type PictogramProps = { name: PictogramName; size?: number; strokeWidth?: number };
 
-export function Pictogram({ name, size = 24, strokeWidth = 1.75 }: PictogramProps) {
+export function Pictogram({ name, size = 24, strokeWidth = 1.5 }: PictogramProps) {
   return (
     <svg
       width={size}
@@ -11,11 +12,8 @@ export function Pictogram({ name, size = 24, strokeWidth = 1.75 }: PictogramProp
       fill="none"
       stroke="currentColor"
       strokeWidth={strokeWidth}
-      strokeLinecap="round"
-      strokeLinejoin="round"
       aria-hidden="true"
-    >
-      <path d={pictograms[name]} />
-    </svg>
+      dangerouslySetInnerHTML={{ __html: pictogramMarkup[name] }}
+    />
   );
 }
