@@ -13,14 +13,15 @@ export const profile = {
   resumeUrl: "#",
 };
 
-// Shown on every page, so home sections are linked as /#section.
+// Shown on every page, so home sections are linked as /#section. The icons are
+// for the bottom bar on small screens.
 export const nav = [
-  { label: "work", href: "/work" },
-  { label: "systems", href: "/#systems" },
-  { label: "process", href: "/#process" },
-  { label: "about", href: "/#about" },
-  { label: "notes", href: "/notes" },
-] as const;
+  { label: "work", href: "/work", icon: "work" },
+  { label: "systems", href: "/#systems", icon: "grid" },
+  { label: "process", href: "/#process", icon: "flow" },
+  { label: "about", href: "/#about", icon: "user" },
+  { label: "notes", href: "/notes", icon: "notes" },
+] as const satisfies readonly { label: string; href: string; icon: IconName }[];
 
 export const hero = {
   lead: "design, then ship it",

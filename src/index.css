@@ -364,6 +364,118 @@ svg {
 }
 
 /* ------------------------------------------------------------------ */
+/* Bottom bar (small screens)                                          */
+/* ------------------------------------------------------------------ */
+
+/* The header links are hidden at 960px and below; this bar replaces them. */
+.bottom-nav {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .bottom-nav {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 50;
+    display: block;
+    height: calc(120px + env(safe-area-inset-bottom));
+    pointer-events: none;
+    view-transition-name: bottom-nav;
+  }
+
+  /* Page content scrolls under the blur; only the icons catch touches. */
+  .bottom-nav__blur {
+    position: absolute;
+    inset: 0;
+  }
+
+  .bottom-nav::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    background: linear-gradient(
+      to bottom,
+      rgb(254 254 252 / 0%),
+      rgb(254 254 252 / 70%) 45%,
+      rgb(254 254 252 / 94%)
+    );
+  }
+
+  .bottom-nav__list {
+    position: absolute;
+    inset: auto 0 env(safe-area-inset-bottom);
+    z-index: 30;
+    display: flex;
+    justify-content: space-around;
+    max-width: 440px;
+    margin-inline: auto;
+    padding: 0 8px 6px;
+    list-style: none;
+  }
+
+  .bottom-nav__link {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    color: var(--ink-soft);
+    pointer-events: auto;
+    transition: color 160ms;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .bottom-nav__link svg {
+    transition: scale 140ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .bottom-nav__link:active svg {
+    scale: 0.82;
+  }
+
+  .bottom-nav__link[aria-current] {
+    color: var(--accent);
+  }
+
+  .bottom-nav__link[aria-current]::after {
+    content: "";
+    position: absolute;
+    bottom: 5px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: bottom-nav-dot 280ms cubic-bezier(0.2, 0, 0, 1) both;
+  }
+}
+
+@keyframes bottom-nav-dot {
+  from {
+    scale: 0;
+    opacity: 0;
+  }
+}
+
+.progressive-blur {
+  pointer-events: none;
+}
+
+.progressive-blur__layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* Keep the bar in place while the page swaps behind it. */
+::view-transition-old(bottom-nav) {
+  display: none;
+}
+
+::view-transition-new(bottom-nav) {
+  animation: none;
+}
+
+/* ------------------------------------------------------------------ */
 /* Hero                                                                */
 /* ------------------------------------------------------------------ */
 
