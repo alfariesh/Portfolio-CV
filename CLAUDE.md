@@ -1,6 +1,6 @@
 # Salman Alfariesh — portfolio
 
-Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug>`: six case studies, four featured on home) and notes (`/notes`, `/notes/<slug>`). React 19.3 + TypeScript on Vite+ 1.1.0, pnpm (pinned via `devEngines`). A small hand-written router, no backend. The user writes in Indonesian; site copy is English, lowercase, paper.design voice.
+Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug>`: six case studies, three featured on home: Rekanesia, Surau, Vuboi) and notes (`/notes`, `/notes/<slug>`). React 19.3 + TypeScript on Vite+ 1.1.0, pnpm (pinned via `devEngines`). A small hand-written router, no backend. The user writes in Indonesian; site copy is English, lowercase, paper.design voice.
 
 ## Setup notes
 
@@ -28,7 +28,7 @@ Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug
 
 ## Where things live
 
-- `src/content.ts`: copy and links for the home page, nav and footer. Email, résumé and social links are placeholders (`hello@example.com`, `#`) and must be replaced before publishing.
+- `src/content.ts`: copy and links for the home page, nav and footer. Every nav item is a home section (`/#work`, `/#systems`, `/#process`, `/#notes`, `/#about`); `page` marks the index page that also counts as it. `useNavCurrent` (`src/components/useNavCurrent.ts`) is the scroll-spy shared by the sticky header (it tucks in to the grid width once the page scrolls, ≥961px) and the bottom bar. Email, résumé and social links are placeholders (`hello@example.com`, `#`) and must be replaced before publishing.
 - `src/case-studies/*.mdx` and `src/notes/*.mdx`: one file per case study or note, `export const meta = {...}` on top (types in each folder's `index.ts`), the file name is the slug. Case studies must include `<AiLoop>` (the "ai in the loop" section; a test enforces it; `columns={["the machine", …]}` when the AI sits inside the product rather than the process). Notes take one tag: experiment, workflow, essay or demo. Draft copy is marked with `TODO` comments.
 - Case study facts come from the user's previous portfolio: `~/Documents/GitHub/portfolio/content/projects/<slug>/overview.mdx` and `metadata.ts` (ipubers, numi, rekan, rekanesia, surau, vuboi). Don't invent projects, numbers or anecdotes; there is no "Chicken Bank".
 - `src/iso/*`: every illustration is an iso-glow figure (interactive isometric SVG, from the `iso-glow` skill). `kernel.ts` is the projection kernel, `IsoFigure.tsx` the host (draws in a layout effect, runs the demo on mount or when scrolled into view, optional shared view-transition `name`), `iso.css` the light-theme vocabulary and tokens (ember accent `#FF7A1A`, no glow), `figures/*.ts` one figure each, keyed in `figures/index.ts`. Case studies pick a figure in `meta.art` (4:3), notes in `meta.cover` (3:2). `vp dev` serves a gallery of all figures at `/iso-glow/` (`?fig=<key>&aspect=3/2&w=540`); `iso-glow/ipubers.html` is the original standalone asset.

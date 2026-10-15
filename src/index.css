@@ -317,17 +317,76 @@ svg {
 /* Navigation                                                          */
 /* ------------------------------------------------------------------ */
 
+/* Sticky on wide screens: at the top it spans the hero; once the page
+   scrolls it tucks in to the width of the content grid and becomes a strip
+   of the sheet, square, flush with the top, with registration marks where
+   its lines meet the grid's. */
 .nav {
-  position: relative;
-  z-index: 2;
+  position: sticky;
+  top: 0;
+  z-index: 40;
   height: 61px;
+  view-transition-name: site-nav;
 }
 
 .nav__inner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 100%;
+  border: 1px solid transparent;
+  border-top: 0;
+  transition:
+    width 480ms var(--nav-ease),
+    padding 480ms var(--nav-ease),
+    background-color 240ms ease,
+    border-color 240ms ease;
+  --nav-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Same marks as .cell::before/::after, on the bar's bottom corners. */
+.nav__inner::before,
+.nav__inner::after {
+  content: "";
+  position: absolute;
+  top: calc(100% - 0.5px);
+  z-index: 3;
+  width: 12px;
+  height: 12px;
+  translate: -50% -50%;
+  border: 1px solid var(--line);
+  border-radius: 1px;
+  background: var(--paper);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms ease;
+}
+
+.nav__inner::before {
+  left: -0.5px;
+}
+
+.nav__inner::after {
+  left: calc(100% - 0.5px);
+}
+
+@media (min-width: 961px) {
+  html {
+    scroll-padding-top: 61px;
+  }
+
+  .nav[data-scrolled] .nav__inner {
+    width: min(var(--grid), 100% - 2 * var(--gutter));
+    padding-inline: 24px;
+    border-color: var(--line);
+    background: var(--paper);
+  }
+
+  .nav[data-scrolled] .nav__inner::before,
+  .nav[data-scrolled] .nav__inner::after {
+    opacity: 1;
+  }
 }
 
 .nav__side {
@@ -349,14 +408,80 @@ svg {
   letter-spacing: -0.03em;
 }
 
-.nav__links {
-  display: flex;
-  gap: 30px;
+.nav__hello {
+  font-size: 16px;
 }
 
-.nav__links [aria-current="page"] {
+.nav__links {
+  position: relative;
+  display: flex;
+  gap: 2px;
+}
+
+.nav__link {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding-inline: 12px;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--ink-soft);
+  transition: color 160ms ease;
+}
+
+.nav__link svg {
+  color: var(--ink-muted);
+  transition: color 160ms ease;
+}
+
+.nav__link:hover,
+.nav__link[aria-current] {
+  color: var(--ink);
+}
+
+.nav__link:hover svg {
+  color: var(--ink);
+}
+
+.nav__link[aria-current] svg {
+  color: var(--accent);
+}
+
+/* One pill behind the current link; it slides from link to link. */
+.nav__pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--pill-w, 0);
+  height: 100%;
+  translate: var(--pill-x, 0) 0;
+  border-radius: 0;
+  background: rgb(35 37 29 / 6%);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.nav__links[data-pill] .nav__pill {
   opacity: 1;
-  text-decoration-line: underline;
+}
+
+.nav__links[data-pill="on"] .nav__pill {
+  transition:
+    opacity 200ms ease,
+    translate 380ms cubic-bezier(0.2, 0, 0, 1),
+    width 380ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* The header stays put while the page slides under it. */
+::view-transition-old(site-nav) {
+  display: none;
+}
+
+::view-transition-new(site-nav) {
+  animation: none;
 }
 
 .sheet[aria-busy="true"] {
@@ -367,7 +492,10 @@ svg {
 /* Bottom bar (small screens)                                          */
 /* ------------------------------------------------------------------ */
 
-/* The header links are hidden at 960px and below; this bar replaces them. */
+/* The header links are hidden at 960px and below; this bar replaces them. It
+   is a strip of the sheet flush with the bottom of the screen: one full-width
+   line on top, with registration marks where the content grid's edges meet
+   it, so the grid's lines run on into the bar. */
 .bottom-nav {
   display: none;
 }
@@ -378,39 +506,43 @@ svg {
     inset: auto 0 0;
     z-index: 50;
     display: block;
-    height: calc(120px + env(safe-area-inset-bottom));
-    pointer-events: none;
+    padding-bottom: env(safe-area-inset-bottom);
+    border-top: 1px solid var(--line);
+    background: var(--paper);
     view-transition-name: bottom-nav;
+    /* Left edge of the content grid. */
+    --grid-edge: calc((100% - min(var(--grid), 100% - 2 * var(--gutter))) / 2);
   }
 
-  /* Page content scrolls under the blur; only the icons catch touches. */
-  .bottom-nav__blur {
+  /* Same marks as .cell::before/::after. */
+  .bottom-nav::before,
+  .bottom-nav::after {
+    content: "";
     position: absolute;
-    inset: 0;
+    top: -0.5px;
+    width: 12px;
+    height: 12px;
+    translate: -50% -50%;
+    border: 1px solid var(--line);
+    border-radius: 1px;
+    background: var(--paper);
+    pointer-events: none;
   }
 
   .bottom-nav::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 20;
-    background: linear-gradient(
-      to bottom,
-      rgb(254 254 252 / 0%),
-      rgb(254 254 252 / 70%) 45%,
-      rgb(254 254 252 / 94%)
-    );
+    left: calc(var(--grid-edge) + 0.5px);
+  }
+
+  .bottom-nav::after {
+    left: calc(100% - var(--grid-edge) - 0.5px);
   }
 
   .bottom-nav__list {
-    position: absolute;
-    inset: auto 0 env(safe-area-inset-bottom);
-    z-index: 30;
     display: flex;
     justify-content: space-around;
     max-width: 440px;
     margin-inline: auto;
-    padding: 0 8px 6px;
+    padding: 2px 0;
     list-style: none;
   }
 
@@ -421,7 +553,6 @@ svg {
     width: 52px;
     height: 52px;
     color: var(--ink-soft);
-    pointer-events: auto;
     transition: color 160ms;
     -webkit-tap-highlight-color: transparent;
   }
@@ -455,15 +586,6 @@ svg {
     scale: 0;
     opacity: 0;
   }
-}
-
-.progressive-blur {
-  pointer-events: none;
-}
-
-.progressive-blur__layer {
-  position: absolute;
-  inset: 0;
 }
 
 /* Keep the bar in place while the page swaps behind it. */
@@ -1177,10 +1299,26 @@ svg {
 .note__art {
   position: relative;
   overflow: hidden;
+  background: #f6f7f3;
 }
 
-#notes .note__art {
-  background: #f6f7f3;
+.note__meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+  color: var(--ink-muted);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.note__copy .blurb__title a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.note__copy .blurb__title a:hover {
+  text-decoration-line: underline;
 }
 
 .note__copy {
@@ -1361,6 +1499,12 @@ svg {
     --leading-display: 48px;
   }
 
+  /* The bottom bar takes over: the header scrolls away with the page. */
+  .nav {
+    position: relative;
+    view-transition-name: none;
+  }
+
   .nav__links {
     display: none;
   }
@@ -1381,11 +1525,11 @@ svg {
 
 @media (max-width: 760px) {
   :root {
-    --gutter: 16px;
+    --gutter: 8px;
     --text-display: 36px;
     --leading-display: 38px;
     --tracking-display: -0.025em;
-    --cell-pad: 28px;
+    --cell-pad: 12px;
     font-size: 17px;
     line-height: 26px;
   }
@@ -1448,7 +1592,7 @@ svg {
 
   .intro__main {
     gap: 40px;
-    padding: 40px 20px 64px;
+    padding: 40px var(--cell-pad) 64px;
   }
 
   .dock {
@@ -1473,7 +1617,7 @@ svg {
   }
 
   .cell--now {
-    padding: 64px 16px 168px;
+    padding: 64px var(--cell-pad) 168px;
   }
 
   .now__card {

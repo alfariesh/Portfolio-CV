@@ -13,15 +13,24 @@ export const profile = {
   resumeUrl: "#",
 };
 
-// Shown on every page, so home sections are linked as /#section. The icons are
-// for the bottom bar on small screens.
-export const nav = [
-  { label: "work", href: "/work", icon: "work" },
+// Shown on every page. Every item is a section of the home page, linked as
+// /#section; `page` is the index page that also counts as that section (the
+// header and bottom bar mark it current there). The icons sit next to the
+// labels in the header and alone in the bottom bar on small screens.
+export type NavItem = {
+  label: string;
+  href: `/#${string}`;
+  icon: IconName;
+  page?: string;
+};
+
+export const nav: NavItem[] = [
+  { label: "work", href: "/#work", icon: "work", page: "/work" },
   { label: "systems", href: "/#systems", icon: "grid" },
   { label: "process", href: "/#process", icon: "flow" },
+  { label: "notes", href: "/#notes", icon: "notes", page: "/notes" },
   { label: "about", href: "/#about", icon: "user" },
-  { label: "notes", href: "/notes", icon: "notes" },
-] as const satisfies readonly { label: string; href: string; icon: IconName }[];
+];
 
 export const hero = {
   lead: "design, then ship it",
@@ -49,7 +58,7 @@ export const sections = {
   work: {
     eyebrow: "selected work",
     title: "from canvas to code, and back again",
-    link: { label: "all six projects →", href: "/work" },
+    link: { label: "see all work", href: "/work" },
     body: "from a national subsidy system to products I build myself — each one designed with real content, real constraints and the people who use it",
   },
   systems: {
@@ -87,6 +96,12 @@ export const sections = {
       },
     ],
   },
+  notes: {
+    eyebrow: "notes",
+    title: "notes from the studio",
+    body: "short notes on experiments, workflows and prompts: what worked, what didn't, and why",
+    link: { label: "see all notes", href: "/notes" },
+  },
   contact: {
     eyebrow: "let's talk",
     title: "have a product that deserves the details?",
@@ -99,11 +114,6 @@ export const now = {
   title: ["Now", "&Next"],
   body: "exploring agent-assisted design systems, SwiftUI motion and faster web toolchains. Always happy to trade notes.",
   cta: { label: "read the notes", href: "/notes" },
-};
-
-export const studio = {
-  title: "what's new in the studio",
-  link: { label: "all notes →", href: "/notes" },
 };
 
 export const about = {

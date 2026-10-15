@@ -2,20 +2,24 @@ import { caseStudy } from "../case-studies";
 import { Blurb, Cell, Head, Orbit } from "../components/Grid";
 import { Hero } from "../components/Hero";
 import { Intro } from "../components/Intro";
-import { ProjectArt } from "../components/ProjectArt";
 import { WorkRow } from "../components/WorkRow";
-import { about, now, profile, sections, studio } from "../content";
+import { NoteCover } from "../components/NoteCover";
+import { Tag } from "../components/Tag";
+import { about, now, profile, sections } from "../content";
 import { figures } from "../iso/figures";
 import { IsoFigure } from "../iso/IsoFigure";
 import { formatDate, notes } from "../notes";
 import { Link } from "../router/Link";
 import { Seo } from "../components/Seo";
 
-// Selected work as rows; Rekanesia leads the design-systems section instead.
-const featured = [caseStudy("vuboi"), caseStudy("surau"), caseStudy("ipubers")];
+// The three strongest case studies; /work has all six.
+const featured = [caseStudy("rekanesia"), caseStudy("surau"), caseStudy("vuboi")];
+
+// The newest notes, one per column; /notes has the rest.
+const latest = notes.slice(0, 2);
 
 export function Home() {
-  const { work, systems, process, contact } = sections;
+  const { work, systems, process, notes: notesSection, contact } = sections;
 
   return (
     <>
@@ -30,7 +34,7 @@ export function Home() {
         <Cell tone="clear" className="cell--orbit" id="work">
           <Orbit anchor="top" />
           <Head eyebrow={work.eyebrow} title={work.title} body={work.body} align="center">
-            <Link className="link link--accent" href={work.link.href}>
+            <Link className="btn btn--ink" href={work.link.href}>
               {work.link.label}
             </Link>
           </Head>
@@ -45,7 +49,7 @@ export function Home() {
           <Head eyebrow={systems.eyebrow} title={systems.title} body={systems.body} />
         </Cell>
         <Cell className="cell--art">
-          <ProjectArt art="rekanesia" />
+          <IsoFigure fig={figures.tokens} interactive />
         </Cell>
         {systems.points.map((point) => (
           <Cell key={point.title} span={1}>
@@ -68,6 +72,55 @@ export function Home() {
             <Blurb title={point.title} body={point.body} />
           </Cell>
         ))}
+
+        <Cell className="cell--head" id="notes">
+          <Head eyebrow={notesSection.eyebrow} title={notesSection.title} body={notesSection.body}>
+            <Link className="btn btn--ink" href={notesSection.link.href}>
+              {notesSection.link.label}
+            </Link>
+          </Head>
+        </Cell>
+        {latest.map((note) => {
+          const href = `/notes/${note.slug}`;
+          return (
+            <Cell key={note.slug} span={1} className="cell--note">
+              <Link className="note__art" href={href} tabIndex={-1} aria-hidden="true">
+                <NoteCover slug={note.slug} cover={note.cover} />
+              </Link>
+              <div className="note__copy">
+                <div>
+                  <div className="note__meta">
+                    <time dateTime={note.date}>{formatDate(note.date)}</time>
+                    <Tag tag={note.tag} />
+                  </div>
+                  <h3 className="blurb__title">
+                    <Link href={href}>{note.title}</Link>
+                  </h3>
+                  <p className="blurb__body">{note.summary}</p>
+                </div>
+                <Link className="link link--accent" href={href}>
+                  read the note →
+                </Link>
+              </div>
+            </Cell>
+          );
+        })}
+
+        <article className="feature-row" id="about">
+          <div className="cell feature-row__art">
+            <IsoFigure fig={figures.about} />
+          </div>
+          <div className="cell feature-row__copy">
+            <p className="feature-row__meta">about</p>
+            <div>
+              <h2 className="feature-row__title">{about.title}</h2>
+              <p className="feature-row__summary">{about.body}</p>
+              <a className="link link--accent feature-row__cta" href={about.link.href}>
+                {about.link.label}
+              </a>
+            </div>
+          </div>
+        </article>
 
         <Cell tone="clear" className="cell--orbit cell--orbit-end" id="contact">
           <Orbit anchor="bottom" />
@@ -115,45 +168,6 @@ export function Home() {
             <i />
             <i />
           </span>
-        </Cell>
-
-        <Cell span={1} className="cell--note" id="notes">
-          <div className="note__art">
-            <IsoFigure fig={figures.studio} aspect={3 / 2} />
-          </div>
-          <div className="note__copy">
-            <div>
-              <h3 className="blurb__title">{studio.title}</h3>
-              <ul className="latest">
-                {notes.slice(0, 3).map((note) => (
-                  <li key={note.slug}>
-                    <Link className="latest__item" href={`/notes/${note.slug}`}>
-                      <time dateTime={note.date}>{formatDate(note.date)}</time>
-                      <span>{note.title}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <Link className="link link--strong" href={studio.link.href}>
-              {studio.link.label}
-            </Link>
-          </div>
-        </Cell>
-
-        <Cell span={1} className="cell--note" id="about">
-          <div className="note__art">
-            <IsoFigure fig={figures.about} aspect={3 / 2} />
-          </div>
-          <div className="note__copy">
-            <div>
-              <h3 className="blurb__title">{about.title}</h3>
-              <p className="blurb__body">{about.body}</p>
-            </div>
-            <a className="link link--strong" href={about.link.href}>
-              {about.link.label}
-            </a>
-          </div>
         </Cell>
       </div>
     </>
