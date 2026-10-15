@@ -1,11 +1,12 @@
 import { caseStudy } from "../case-studies";
-import { Blurb, Cell, Head, Orbit } from "../components/Grid";
+import { Cell, Head, Orbit } from "../components/Grid";
+import { Icon, type IconName } from "../components/Icon";
 import { Hero } from "../components/Hero";
 import { Intro } from "../components/Intro";
 import { WorkRow } from "../components/WorkRow";
 import { NoteCover } from "../components/NoteCover";
 import { Tag } from "../components/Tag";
-import { about, now, profile, sections } from "../content";
+import { facts, profile, sections, type Fact } from "../content";
 import { figures } from "../iso/figures";
 import { IsoFigure } from "../iso/IsoFigure";
 import { formatDate, notes } from "../notes";
@@ -13,13 +14,13 @@ import { Link } from "../router/Link";
 import { Seo } from "../components/Seo";
 
 // The three strongest case studies; /work has all six.
-const featured = [caseStudy("rekanesia"), caseStudy("surau"), caseStudy("vuboi")];
+const featured = [caseStudy("rekanesia"), caseStudy("surau"), caseStudy("ipubers")];
 
 // The newest notes, one per column; /notes has the rest.
 const latest = notes.slice(0, 2);
 
 export function Home() {
-  const { work, systems, process, notes: notesSection, contact } = sections;
+  const { about, process, work, notes: notesSection, contact } = sections;
 
   return (
     <>
@@ -30,6 +31,71 @@ export function Home() {
         <Cell tone="clear" className="cell--intro">
           <Intro />
         </Cell>
+
+        <Cell className="cell--head" id="about">
+          <Head eyebrow={about.eyebrow} title={about.title} body={about.body}>
+            <a className="link link--accent" href={about.link.href}>
+              {about.link.label}
+            </a>
+          </Head>
+        </Cell>
+        <Cell className="cell--art">
+          <IsoFigure fig={figures.about} />
+        </Cell>
+        <Cell className="cell--stats">
+          <dl className="stats stats--row">
+            {about.stats.map(([value, label]) => (
+              <div key={label} className="stats__item">
+                <dt className="stats__value">{value}</dt>
+                <dd className="stats__label">{label}</dd>
+              </div>
+            ))}
+          </dl>
+        </Cell>
+        <Cell span={1}>
+          <FactList label="experience" icon="work" items={facts.experience} />
+        </Cell>
+        <Cell span={1}>
+          <FactList label="education" icon="page" items={facts.education} />
+        </Cell>
+        <Cell span={1}>
+          <FactList label="awards" icon="bolt" items={facts.awards} />
+        </Cell>
+        <Cell span={1}>
+          <div className="bio">
+            <p className="bio__label caps">
+              <Icon name="grid" size={16} />
+              expertise
+            </p>
+            <ul className="skills">
+              {facts.expertise.map((skill) => (
+                <li key={skill} className="skill">
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Cell>
+
+        <Cell className="cell--head" id="process">
+          <Head eyebrow={process.eyebrow} title={process.title} body={process.body}>
+            <Link className="link link--accent" href={process.link.href}>
+              {process.link.label}
+            </Link>
+          </Head>
+        </Cell>
+        <Cell className="cell--art">
+          <IsoFigure fig={figures.loop} interactive />
+        </Cell>
+        {process.steps.map((step, i) => (
+          <Cell key={step.title} span={1}>
+            <div className="blurb">
+              <p className="blurb__step caps">{String(i + 1).padStart(2, "0")}</p>
+              <h3 className="blurb__title">{step.title}</h3>
+              <p className="blurb__body">{step.body}</p>
+            </div>
+          </Cell>
+        ))}
 
         <Cell tone="clear" className="cell--orbit" id="work">
           <Orbit anchor="top" />
@@ -44,34 +110,6 @@ export function Home() {
             <WorkRow key={study.slug} study={study} flip={i % 2 === 1} />
           ))}
         </div>
-
-        <Cell className="cell--head" id="systems">
-          <Head eyebrow={systems.eyebrow} title={systems.title} body={systems.body} />
-        </Cell>
-        <Cell className="cell--art">
-          <IsoFigure fig={figures.tokens} interactive />
-        </Cell>
-        {systems.points.map((point) => (
-          <Cell key={point.title} span={1}>
-            <Blurb {...point} />
-          </Cell>
-        ))}
-
-        <Cell className="cell--head" id="process">
-          <Head eyebrow={process.eyebrow} title={process.title} body={process.body}>
-            <Link className="link link--accent" href={process.link.href}>
-              {process.link.label}
-            </Link>
-          </Head>
-        </Cell>
-        <Cell className="cell--art">
-          <IsoFigure fig={figures.loop} interactive />
-        </Cell>
-        {process.points.map((point) => (
-          <Cell key={point.title} span={1}>
-            <Blurb title={point.title} body={point.body} />
-          </Cell>
-        ))}
 
         <Cell className="cell--head" id="notes">
           <Head eyebrow={notesSection.eyebrow} title={notesSection.title} body={notesSection.body}>
@@ -106,22 +144,6 @@ export function Home() {
           );
         })}
 
-        <article className="feature-row" id="about">
-          <div className="cell feature-row__art">
-            <IsoFigure fig={figures.about} />
-          </div>
-          <div className="cell feature-row__copy">
-            <p className="feature-row__meta">about</p>
-            <div>
-              <h2 className="feature-row__title">{about.title}</h2>
-              <p className="feature-row__summary">{about.body}</p>
-              <a className="link link--accent feature-row__cta" href={about.link.href}>
-                {about.link.label}
-              </a>
-            </div>
-          </div>
-        </article>
-
         <Cell tone="clear" className="cell--orbit cell--orbit-end" id="contact">
           <Orbit anchor="bottom" />
           <Head eyebrow={contact.eyebrow} title={contact.title} body={contact.body} align="center">
@@ -139,37 +161,32 @@ export function Home() {
             </a>
           </Head>
         </Cell>
-
-        <Cell className="cell--now">
-          <div className="now__texture" aria-hidden="true" />
-          <div className="now__card">
-            <div className="now__copy">
-              <h2 className="now__title">
-                {now.title[0]}
-                <span>{now.title[1]}</span>
-              </h2>
-              <p className="now__body">{now.body}</p>
-            </div>
-            <Link className="btn btn--ink" href={now.cta.href}>
-              {now.cta.label}
-            </Link>
-          </div>
-          <span className="decor decor--tape" aria-hidden="true">
-            <i />
-            <i />
-          </span>
-          <span className="decor decor--halftone" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </span>
-          <span className="decor decor--weave" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </span>
-        </Cell>
       </div>
     </>
+  );
+}
+
+type FactListProps = { label: string; icon: IconName; items: Fact[] };
+
+// One group of the about fact sheet: a caps label, then title, place and years.
+function FactList({ label, icon, items }: FactListProps) {
+  return (
+    <div className="bio">
+      <p className="bio__label caps">
+        <Icon name={icon} size={16} />
+        {label}
+      </p>
+      <ul className="bio__list">
+        {items.map((item) => (
+          <li key={item.title} className="bio__item">
+            <div>
+              <h3 className="blurb__title">{item.title}</h3>
+              <p className="bio__place">{item.place}</p>
+            </div>
+            <span className="bio__years">{item.years}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

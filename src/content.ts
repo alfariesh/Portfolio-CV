@@ -8,8 +8,8 @@ export const profile = {
   handle: "salman",
   role: "product designer & design engineer",
   location: "Indonesia",
-  // TODO: replace with your real contact details before publishing.
-  email: "hello@example.com",
+  email: "hi@salman.ai.id",
+  // TODO: link the résumé PDF before publishing.
   resumeUrl: "#",
 };
 
@@ -25,11 +25,10 @@ export type NavItem = {
 };
 
 export const nav: NavItem[] = [
-  { label: "work", href: "/#work", icon: "work", page: "/work" },
-  { label: "systems", href: "/#systems", icon: "grid" },
-  { label: "process", href: "/#process", icon: "flow" },
-  { label: "notes", href: "/#notes", icon: "notes", page: "/notes" },
   { label: "about", href: "/#about", icon: "user" },
+  { label: "process", href: "/#process", icon: "flow" },
+  { label: "work", href: "/#work", icon: "work", page: "/work" },
+  { label: "notes", href: "/#notes", icon: "notes", page: "/notes" },
 ];
 
 export const hero = {
@@ -51,50 +50,52 @@ export const tools = {
 export const intro = {
   title: ["hello, I'm Salman", "one designer, one canvas,", "a whole connected workflow"],
   body: "I work where design meets engineering: prototyping on the canvas, syncing tokens to code, and pairing with agents so the craft gets the attention, not the boilerplate.",
-  cta: { label: "view selected work", href: "#work" },
+  cta: { label: "more about me", href: "#about" },
 };
 
+// The home page reads top to bottom: about, process, work, notes, contact.
 export const sections = {
+  about: {
+    eyebrow: "about",
+    title: "five years of products people use every day",
+    body: "a UI/UX designer who works end to end: field research with kiosk owners, design systems a whole holding company builds on, and prototypes I code myself",
+    link: { label: "download résumé →", href: profile.resumeUrl },
+    stats: [
+      ["5+", "years designing end-to-end products"],
+      ["28,000+", "kiosks running the system I designed"],
+      ["5", "brands from one token file"],
+      ["2", "international awards for Rekan"],
+    ] as [string, string][],
+  },
+  process: {
+    eyebrow: "how I work",
+    title: "from the field to the codebase",
+    body: "research before pixels, a system before screens, and agents for the boilerplate so the details get my attention",
+    link: { label: "how this site was built →", href: "/notes/rebuilding-in-an-afternoon" },
+    steps: [
+      {
+        title: "start in the field",
+        body: "I sit with the people who will use it: kiosk owners, distributors, the staff behind the counter. Their day decides the design",
+      },
+      {
+        title: "build the system first",
+        body: "variable tokens and multi-brand themes come before screens, so a rebrand is a two-day job instead of a week",
+      },
+      {
+        title: "prototype in code",
+        body: "agents read the canvas and scaffold the components, so stakeholders test a working web prototype, not a slideshow",
+      },
+      {
+        title: "ship it with care",
+        body: "every generated line is reviewed, formatted, linted and type-checked before it ships. Taste and motion stay with me",
+      },
+    ],
+  },
   work: {
     eyebrow: "selected work",
     title: "from canvas to code, and back again",
     link: { label: "see all work", href: "/work" },
-    body: "from a national subsidy system to products I build myself — each one designed with real content, real constraints and the people who use it",
-  },
-  systems: {
-    eyebrow: "design systems",
-    title: "one source of truth, many brands",
-    body: "Rekanesia: tokens, components and a pipeline built once and used everywhere — from the design file all the way to five platforms",
-    points: [
-      {
-        title: "the seven-day rebrand, delivered in two",
-        body: "when a national program needed the whole app rebranded in a week, variable design tokens turned it into a two-day job",
-        href: "/work/rekanesia#the-seven-day-rebrand-delivered-in-two",
-        cta: "read the case study",
-      },
-      {
-        title: "one source, five platforms",
-        body: "one token file compiles to Flutter, Compose, CSS, Android XML and Swift, and re-skins 30 components into five brands",
-        href: "/work/rekanesia#ai-in-the-loop",
-        cta: "see how",
-      },
-    ],
-  },
-  process: {
-    eyebrow: "process",
-    title: "hand off the boilerplate, keep the human touch",
-    body: "agents read my canvas, scaffold the components and sync the tokens. I stay on taste, motion and the details that make it feel alive",
-    link: { label: "how this site was built →", href: "/notes/rebuilding-in-an-afternoon" },
-    points: [
-      {
-        title: "agents that see the canvas",
-        body: "MCP connects the design file to the editor, so components start from the real design, not from a screenshot",
-      },
-      {
-        title: "stay in control",
-        body: "every generated line is reviewed, formatted, linted and type-checked with Vite+ before it ships",
-      },
-    ],
+    body: "a multi-brand design system, an Islamic wiki built on classical texts and a national subsidy app: real content, real constraints, real people",
   },
   notes: {
     eyebrow: "notes",
@@ -105,22 +106,52 @@ export const sections = {
   contact: {
     eyebrow: "let's talk",
     title: "have a product that deserves the details?",
-    body: "I'm open to product design, design-system and design-engineering work. Tell me what you're building.",
+    body: "I'm open to product design, design-system and design-engineering roles, remote or in Jakarta. Tell me what you're building.",
     cta: "say hello",
   },
 };
 
-export const now = {
-  title: ["Now", "&Next"],
-  body: "exploring agent-assisted design systems, SwiftUI motion and faster web toolchains. Always happy to trade notes.",
-  cta: { label: "read the notes", href: "/notes" },
-};
+// The about section's fact sheet, from the résumé. Newest first in each group.
+export type Fact = { title: string; place: string; years: string };
 
-export const about = {
-  title: "about Salman",
-  body: "a designer who codes. I sketch on the canvas, ship in React and Swift, and let agents handle the boilerplate",
-  link: { label: "download résumé →", href: profile.resumeUrl },
-};
+export const facts: { experience: Fact[]; education: Fact[]; awards: Fact[]; expertise: string[] } =
+  {
+    experience: [
+      { title: "UI/UX designer", place: "PT Pupuk Indonesia, Jakarta", years: "2021 – now" },
+      { title: "graphic designer", place: "MAK Travel, Egypt", years: "2020" },
+    ],
+    education: [
+      {
+        title: "UI/UX design bootcamp",
+        place: "Purwadhika Digital Technology School",
+        years: "2021",
+      },
+      { title: "Islamic theology", place: "Al-Azhar University, Cairo", years: "2016 – 2020" },
+    ],
+    awards: [
+      {
+        title: "Gold Stevie® Award",
+        place: "innovation in shopping or e-commerce apps, for Rekan",
+        years: "2023",
+      },
+      {
+        title: "IDC Future Enterprise Award",
+        place: "best in future of industry ecosystem, Asia-Pacific, for Rekan",
+        years: "2022",
+      },
+    ],
+    expertise: [
+      "design systems",
+      "multi-brand tokens",
+      "mobile app design",
+      "web dashboards",
+      "field research",
+      "user interviews",
+      "AI-assisted prototyping",
+      "developer handoff",
+      "graphic design",
+    ],
+  };
 
 type FooterLink = { label: string; href: string; icon?: IconName };
 type FooterColumn = { title: string; links: FooterLink[] };
