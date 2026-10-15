@@ -139,6 +139,12 @@
   min-width: 0;
 }
 
+.facts__label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .facts dd {
   margin: 0;
   color: var(--ink-80);

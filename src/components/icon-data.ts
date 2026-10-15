@@ -22,6 +22,8 @@ export const iconMarkup = {
   search:
     '<path d="M17 17L21 21" stroke="currentColor" stroke-linecap="square" /> <path d="M19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C15.4183 19 19 15.4183 19 11Z" stroke="currentColor" stroke-linecap="square" />',
   link: '<path d="M9.14339 10.691L9.35031 10.4841C11.329 8.50532 14.5372 8.50532 16.5159 10.4841C18.4947 12.4628 18.4947 15.671 16.5159 17.6497L13.6497 20.5159C11.671 22.4947 8.46279 22.4947 6.48405 20.5159C4.50532 18.5372 4.50532 15.329 6.48405 13.3503L6.9484 12.886" stroke="currentColor" stroke-linejoin="round" /> <path d="M17.0516 11.114L17.5159 10.6497C19.4947 8.67095 19.4947 5.46279 17.5159 3.48405C15.5372 1.50532 12.329 1.50532 10.3503 3.48405L7.48405 6.35031C5.50532 8.32904 5.50532 11.5372 7.48405 13.5159C9.46279 15.4947 12.671 15.4947 14.6497 13.5159L14.8566 13.309" stroke="currentColor" stroke-linejoin="round" />',
+  calendar:
+    '<path d="M3 5H21V21H3V5Z" stroke="currentColor" stroke-linecap="square" /> <path d="M3 10H21" stroke="currentColor" /> <path d="M8 3V7M16 3V7" stroke="currentColor" stroke-linecap="square" />',
   home: '<path d="M3 9V21.5H21V9L12 2.5L3 9Z" stroke="currentColor" stroke-linecap="square" />',
   grid: '<path d="M10 3H3V10H10V3Z" stroke="currentColor" /> <path d="M21 3H14V10H21V3Z" stroke="currentColor" /> <path d="M10 14H3V21H10V14Z" stroke="currentColor" /> <path d="M21 14H14V21H21V14Z" stroke="currentColor" />',
   user: '<path d="M20 21.0001C19.713 17.269 16.7289 14.3151 12.995 14.0662L12 13.9999C11.6446 14.0096 11.3134 14.0225 11.0008 14.0378C7.3 14.2192 4.28417 17.3057 4 21.0001" stroke="currentColor" stroke-linecap="square" /> <circle cx="12" cy="6.99988" r="4" stroke="currentColor" stroke-linecap="square" />',

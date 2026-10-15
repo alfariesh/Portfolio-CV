@@ -1,5 +1,6 @@
 import { caseStudies, type CaseStudy } from "../case-studies";
 import { Cell } from "../components/Grid";
+import { Icon, type IconName } from "../components/Icon";
 import { ProjectArt } from "../components/ProjectArt";
 import { proseComponents } from "../components/prose";
 import { Link } from "../router/Link";
@@ -13,11 +14,11 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
   const next = caseStudies[(index + 1) % caseStudies.length];
   const { Content } = study;
 
-  const facts = [
-    { label: "role", value: study.role },
-    { label: "industry", value: study.industry },
-    { label: "platform", value: study.platform },
-    { label: "year", value: study.year },
+  const facts: { label: string; icon: IconName; value: string }[] = [
+    { label: "role", icon: "user", value: study.role },
+    { label: "industry", icon: "work", value: study.industry },
+    { label: "platform", icon: "panel", value: study.platform },
+    { label: "year", icon: "calendar", value: study.year },
   ];
 
   return (
@@ -54,7 +55,10 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
           <dl className="facts">
             {facts.map((fact) => (
               <div key={fact.label} className="facts__item">
-                <dt className="caps">{fact.label}</dt>
+                <dt className="caps facts__label">
+                  <Icon name={fact.icon} size={16} />
+                  {fact.label}
+                </dt>
                 <dd>{fact.value}</dd>
               </div>
             ))}
