@@ -1651,8 +1651,11 @@ svg {
     padding: 28px var(--cell-pad) 36px;
   }
 
+  /* Line the footer up with the text inside the grid's cells (gutter, cell
+     border, cell padding). */
   .footer__inner {
     gap: 40px;
+    padding-inline: calc(1px + var(--cell-pad));
   }
 
   .footer__cols {

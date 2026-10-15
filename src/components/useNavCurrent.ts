@@ -2,12 +2,10 @@ import { useEffect, useState } from "react";
 import { nav, type NavItem } from "../content";
 import { useRouter } from "../router/context";
 
-const sections = nav.map((item) => item.href.slice(2));
-
 // A section runs from its anchor to the next one, so the nav follows the page
-// even where a section is taller than its heading cell. "contact" ends the last
-// one: below it the page is plain home again.
-const anchors = [...sections, "contact"];
+// even where a section is taller than its heading cell. The last one runs to
+// the end of the page, footer included; only above the first is it plain home.
+const sections = nav.map((item) => item.href.slice(2));
 
 // Where on screen a section counts as the one being read.
 const READING_LINE = 0.4;
@@ -21,14 +19,14 @@ function useHomeSection(active: boolean) {
       const line = window.innerHeight * READING_LINE;
       let found: string | null = null;
       let top = -Infinity;
-      for (const anchor of anchors) {
+      for (const anchor of sections) {
         const rect = document.getElementById(anchor)?.getBoundingClientRect();
         if (rect && rect.top <= line && rect.top > top) {
           found = anchor;
           top = rect.top;
         }
       }
-      setId(found && sections.includes(found) ? found : null);
+      setId(found);
     };
     update();
     window.addEventListener("scroll", update, { passive: true });
