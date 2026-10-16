@@ -1,6 +1,6 @@
 import type { ComponentProps, MouseEvent } from "react";
 import { useRouter } from "./context";
-import { getNavigation } from "./routes";
+import { getNavigation, isFile } from "./routes";
 
 type LinkProps = ComponentProps<"a"> & { href: string };
 
@@ -24,7 +24,7 @@ export function Link({ href, onClick, ...props }: LinkProps) {
       return;
     }
     const to = new URL(href, window.location.href);
-    if (to.origin !== window.location.origin) return;
+    if (to.origin !== window.location.origin || isFile(to.pathname)) return;
     if (to.pathname === window.location.pathname && to.hash) return;
     event.preventDefault();
     navigate(to.href);

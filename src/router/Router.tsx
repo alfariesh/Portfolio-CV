@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { RouterContext } from "./context";
-import { directionOf, getNavigation, matchRoute, type NavDirection } from "./routes";
+import { directionOf, getNavigation, isFile, matchRoute, type NavDirection } from "./routes";
 
 type State = { pathname: string; settle: () => void };
 
@@ -63,6 +63,7 @@ export function Router({ url, children }: { url?: string; children: ReactNode })
           event.downloadRequest !== null ||
           event.formData ||
           event.navigationType === "reload" ||
+          isFile(new URL(event.destination.url).pathname) ||
           // React's own placeholder navigation for the browser loading indicator.
           event.info === "react-transition"
         ) {

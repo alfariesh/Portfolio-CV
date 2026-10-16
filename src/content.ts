@@ -175,6 +175,7 @@ export const footer: { columns: FooterColumn[] } = {
           { label: "work", href: "/work", icon: "work" },
           { label: "notes", href: "/notes", icon: "notes" },
           { label: "about", href: "/#about", icon: "user" },
+          { label: "feed", href: "/notes/feed.xml", icon: "feed" },
         ],
       },
       {
