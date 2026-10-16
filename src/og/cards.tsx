@@ -6,6 +6,7 @@ import { createRoot } from "react-dom/client";
 import "@fontsource-variable/caveat/wght.css";
 import "../index.css";
 import "../iso/iso.css";
+import { figures } from "../iso/figures";
 import { pages } from "../seo";
 import { Card } from "./Card";
 
@@ -20,6 +21,9 @@ Object.assign(window, { ogPaths: pages.map((page) => page.path) });
 void document.fonts.ready.then(() =>
   setTimeout(() => (document.documentElement.dataset.ready = "true"), settle),
 );
+
+// Figures load on demand; this page shows them all, so fetch them up front.
+await Promise.all(Object.values(figures).map((figure) => figure.load()));
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

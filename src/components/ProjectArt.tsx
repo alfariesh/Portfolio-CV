@@ -1,4 +1,4 @@
-import { figures, type FigureKey } from "../iso/figures";
+import { useFigure, type FigureKey } from "../iso/figures";
 import { IsoFigure } from "../iso/IsoFigure";
 
 type ProjectArtProps = { art: FigureKey; interactive?: boolean };
@@ -8,7 +8,7 @@ type ProjectArtProps = { art: FigureKey; interactive?: boolean };
 export function ProjectArt({ art, interactive = false }: ProjectArtProps) {
   return (
     <IsoFigure
-      fig={figures[art]}
+      fig={useFigure(art)}
       name={`art-${art}`}
       interactive={interactive}
       demo={interactive ? "mount" : "visible"}

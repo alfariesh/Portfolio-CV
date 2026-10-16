@@ -1,4 +1,5 @@
 import type { MDXContent } from "mdx/types";
+import { chunk, type Chunk } from "../chunk";
 import type { FigureKey } from "../iso/figures";
 
 // Each case study is an MDX file in this folder: `export const meta = {...}`
@@ -21,17 +22,23 @@ export type CaseStudyMeta = {
   processOnly?: boolean;
 };
 
-export type CaseStudy = CaseStudyMeta & { slug: string; Content: MDXContent };
+export type CaseStudy = CaseStudyMeta & { slug: string; body: Chunk<MDXContent> };
 
-const files = import.meta.glob<{ meta: CaseStudyMeta; default: MDXContent }>("./*.mdx", {
+// The meta of every case study ships with the site (home and /work list them);
+// `?meta` imports a copy of the file the build trims down to that export. The
+// story is a chunk of its own, loaded for its page.
+const metas = import.meta.glob<CaseStudyMeta>("./*.mdx", {
   eager: true,
+  query: "?meta",
+  import: "meta",
 });
+const bodies = import.meta.glob<MDXContent>("./*.mdx", { import: "default" });
 
-export const caseStudies: CaseStudy[] = Object.entries(files)
-  .map(([path, file]) => ({
-    ...file.meta,
+export const caseStudies: CaseStudy[] = Object.entries(metas)
+  .map(([path, meta]) => ({
+    ...meta,
     slug: path.slice(2, -".mdx".length),
-    Content: file.default,
+    body: chunk(`src/case-studies${path.slice(1)}`, bodies[path]),
   }))
   .sort((a, b) => a.order - b.order);
 

@@ -2,7 +2,7 @@ import { caseStudies, type CaseStudy } from "../case-studies";
 import { Cell } from "../components/Grid";
 import { Icon, type IconName } from "../components/Icon";
 import { ProjectArt } from "../components/ProjectArt";
-import { proseComponents } from "../components/prose";
+import { ProseBody } from "../components/prose/ProseBody";
 import { Link } from "../router/Link";
 import { Seo } from "../components/Seo";
 
@@ -12,7 +12,6 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
   const index = caseStudies.indexOf(study);
   const previous = caseStudies[(index - 1 + caseStudies.length) % caseStudies.length];
   const next = caseStudies[(index + 1) % caseStudies.length];
-  const { Content } = study;
 
   const facts: { label: string; icon: IconName; value: string }[] = [
     { label: "role", icon: "user", value: study.role },
@@ -67,7 +66,7 @@ export function CaseStudyPage({ study }: { study: CaseStudy }) {
 
         <Cell className="cell--prose">
           <div className="prose prose--split">
-            <Content components={proseComponents} />
+            <ProseBody body={study.body} />
           </div>
         </Cell>
 

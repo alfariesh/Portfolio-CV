@@ -29,11 +29,24 @@ function scrollToHash(hash: string) {
 // Scroll position of each history entry, for back and forward.
 const scrollByEntry = new Map<string, number>();
 
+type RouterProps = {
+  url?: string;
+  /** Fetches what a page needs to render, so a route change never suspends. */
+  preload?: (pathname: string) => Promise<unknown>;
+  children: ReactNode;
+};
+
+const ready = () => Promise.resolve();
+
 // A small client router. Route changes run in a Transition so <ViewTransition>
 // boundaries animate them. With the Navigation API every same-origin link and
 // the back/forward buttons are intercepted; without it, <Link> pushes history
-// itself and back/forward swap pages without animation.
-export function Router({ url, children }: { url?: string; children: ReactNode }) {
+// itself and back/forward swap pages without animation. Each change waits for
+// `preload` first, so the transition starts with the next page ready to draw.
+export function Router({ url, preload = ready, children }: RouterProps) {
+  // A failed load doesn't stop the route change: the page fetches what is
+  // missing while it renders (and a stale build reloads, see src/main.tsx).
+  const load = useCallback((pathname: string) => preload(pathname).catch(() => {}), [preload]);
   const [isPending, startTransition] = useTransition();
   const [state, setState] = useState<State>(() => ({
     pathname: url ?? currentPathname(),
@@ -90,23 +103,49 @@ export function Router({ url, children }: { url?: string; children: ReactNode })
           scroll: "manual",
           // React waits for this navigation to finish before it captures the
           // new page, so resolve as soon as the page has committed.
-          handler: () =>
-            new Promise<void>((resolve) => {
+          handler: async () => {
+            await load(to.pathname);
+            // A newer navigation took over while this page was loading.
+            if (event.signal.aborted) return;
+            await new Promise<void>((resolve) => {
               go(to.pathname, direction, () => {
                 restore();
                 resolve();
               });
-            }),
+            });
+          },
         });
       };
       nav.addEventListener("navigate", onNavigate);
       return () => nav.removeEventListener("navigate", onNavigate);
     }
 
-    const onPopState = () => setState({ pathname: currentPathname(), settle: idle });
+    const onPopState = () => {
+      const pathname = currentPathname();
+      void load(pathname).then(() => {
+        if (currentPathname() === pathname) setState({ pathname, settle: idle });
+      });
+    };
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
-  }, [go]);
+  }, [go, load]);
+
+  // Start fetching a page as soon as a pointer or the focus reaches a link
+  // to it, so the click rarely waits.
+  useEffect(() => {
+    const warm = (event: Event) => {
+      const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
+      if (link instanceof HTMLAnchorElement && link.origin === window.location.origin) {
+        void load(link.pathname);
+      }
+    };
+    document.addEventListener("pointerover", warm, { passive: true });
+    document.addEventListener("focusin", warm);
+    return () => {
+      document.removeEventListener("pointerover", warm);
+      document.removeEventListener("focusin", warm);
+    };
+  }, [load]);
 
   const navigate = useCallback(
     (href: string) => {
@@ -116,12 +155,15 @@ export function Router({ url, children }: { url?: string; children: ReactNode })
         nav.navigate(to.href);
         return;
       }
-      go(to.pathname, directionOf(window.location.pathname, to.pathname), () => {
-        window.history.pushState(null, "", to.href);
-        scrollToHash(to.hash);
-      });
+      const direction = directionOf(window.location.pathname, to.pathname);
+      void load(to.pathname).then(() =>
+        go(to.pathname, direction, () => {
+          window.history.pushState(null, "", to.href);
+          scrollToHash(to.hash);
+        }),
+      );
     },
-    [go],
+    [go, load],
   );
 
   const value = useMemo(

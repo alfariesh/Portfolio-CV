@@ -1,7 +1,7 @@
 import "./og.css";
 import { Mark } from "../components/Mark";
 import { profile } from "../content";
-import { figures } from "../iso/figures";
+import { useFigure } from "../iso/figures";
 import { IsoFigure } from "../iso/IsoFigure";
 import { ogSize, type PageSeo } from "../seo";
 
@@ -11,6 +11,7 @@ export function Card({ page }: { page: PageSeo }) {
   const { eyebrow, title, subtitle, figure } = page.card;
   // Case-study art is 4:3 on the site, note covers and the rest 3:2.
   const aspect = page.path.startsWith("/work/") ? 4 / 3 : 3 / 2;
+  const fig = useFigure(figure);
   return (
     <article className="og" style={ogSize}>
       <div className="og__copy">
@@ -28,7 +29,7 @@ export function Card({ page }: { page: PageSeo }) {
         <p className="og__role">{profile.role}</p>
       </div>
       <div className="og__plate">
-        <IsoFigure fig={figures[figure]} aspect={aspect} demo="mount" />
+        <IsoFigure fig={fig} aspect={aspect} demo="mount" />
       </div>
     </article>
   );

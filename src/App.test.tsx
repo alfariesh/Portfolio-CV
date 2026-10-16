@@ -4,12 +4,16 @@ import App from "./App";
 import { caseStudies } from "./case-studies";
 import { footer, nav } from "./content";
 import { notes, tags } from "./notes";
+import { preloadPage } from "./preload";
 import { matchRoute } from "./router/routes";
 import { absolute, ogImage, pages as seoPages, site } from "./seo";
 
 const render = (url: string) => renderToString(<App url={url} />);
 
 const pages = seoPages.map((page) => page.path);
+
+// Figures and bodies are lazy chunks; load every page's before rendering.
+await Promise.all(pages.map(preloadPage));
 
 // Social cards drawn by scripts/og.ts, as "../public/og/….png".
 const cards = Object.keys(import.meta.glob("../public/og/**/*.png"));
