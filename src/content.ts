@@ -9,9 +9,9 @@ export const profile = {
   role: "product designer & design engineer",
   location: "Indonesia",
   email: "hi@salman.ai.id",
-  // Leave a link empty to hide it: the résumé link on the home page, a social
-  // link in the footer.
-  resumeUrl: "",
+  // Leave a link empty to hide it: the résumé link on the home page and in the
+  // footer, a social link in the footer.
+  resumeUrl: "/resume",
   socials: {
     github: "https://github.com/alfariesh",
     linkedin: "",
@@ -35,7 +35,7 @@ export type NavItem = {
 };
 
 export const nav: NavItem[] = [
-  { label: "about", href: "/#about", icon: "user" },
+  { label: "about", href: "/#about", icon: "user", page: "/resume" },
   { label: "process", href: "/#process", icon: "flow" },
   { label: "work", href: "/#work", icon: "work", page: "/work" },
   { label: "notes", href: "/#notes", icon: "notes", page: "/notes" },
@@ -61,7 +61,7 @@ export const sections = {
     eyebrow: "about",
     title: "five years of products people use every day",
     body: "a UI/UX designer who works end to end: field research with kiosk owners, design systems a whole holding company builds on, and prototypes I code myself",
-    link: profile.resumeUrl ? { label: "download résumé →", href: profile.resumeUrl } : null,
+    link: profile.resumeUrl ? { label: "résumé →", href: profile.resumeUrl } : null,
     tools: "tools I design and ship with",
     stats: [
       ["5+", "years designing end-to-end products"],
@@ -175,6 +175,9 @@ export const footer: { columns: FooterColumn[] } = {
           { label: "work", href: "/work", icon: "work" },
           { label: "notes", href: "/notes", icon: "notes" },
           { label: "about", href: "/#about", icon: "user" },
+          ...(profile.resumeUrl
+            ? [{ label: "résumé", href: profile.resumeUrl, icon: "file" as const }]
+            : []),
         ],
       },
       {

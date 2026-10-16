@@ -823,6 +823,63 @@
 }
 
 /* ------------------------------------------------------------------ */
+/* Résumé                                                              */
+/* ------------------------------------------------------------------ */
+
+.cell--resume-head {
+  align-items: flex-start;
+}
+
+.resume__contact {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.resume__contact dd {
+  overflow-wrap: anywhere;
+}
+
+/* The portfolio's host name is too long for one column. */
+.resume__contact .facts__item--wide {
+  grid-column: span 2;
+}
+
+.resume-work {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.resume-work__item {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 4px 24px;
+}
+
+@media (max-width: 760px) {
+  /* Beats the case study facts' two columns further down. */
+  .facts.resume__contact {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .resume__contact .facts__item--wide {
+    grid-column: auto;
+  }
+
+  .resume-work__item {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .resume-work__item .bio__place {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /* View transitions                                                    */
 /* ------------------------------------------------------------------ */
 
@@ -1042,5 +1099,164 @@
   ::view-transition-old(*),
   ::view-transition-new(*) {
     animation: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Print                                                               */
+/* ------------------------------------------------------------------ */
+
+/* Any page prints as ink on white without the site's chrome; the résumé also
+   tightens to one or two A4 pages. An A4 page is narrower than 760px, so the
+   small-screen rules apply and the résumé puts its two columns back. */
+@page {
+  size: A4;
+  margin: 12mm;
+}
+
+@media print {
+  :root {
+    --paper: #fff;
+    --paper-deep: #fff;
+    --accent-ink: var(--ink);
+    background: #fff;
+  }
+
+  .skip-link,
+  .nav,
+  .backdrop,
+  .footer,
+  .bottom-nav,
+  .resume__print {
+    display: none !important;
+  }
+
+  /* The paper grain over the whole page. */
+  body::after {
+    content: none;
+  }
+
+  .sheet {
+    overflow: visible;
+    padding: 0;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  .cell {
+    break-inside: avoid;
+  }
+
+  .resume {
+    --cell-pad: 20px;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    font-size: 12px;
+    line-height: 17px;
+  }
+
+  .resume .cell--span2 {
+    grid-column: span 2;
+  }
+
+  .resume .cell--masthead {
+    gap: 12px;
+    min-height: 0;
+    padding: 24px var(--cell-pad) 20px;
+  }
+
+  .resume .masthead {
+    gap: 8px;
+  }
+
+  .resume .masthead__title {
+    font-size: 30px;
+    line-height: 32px;
+  }
+
+  .resume .masthead__body {
+    max-width: none;
+    font-size: 12px;
+    line-height: 17px;
+  }
+
+  .resume .caps {
+    font-size: 10px;
+    line-height: 14px;
+  }
+
+  .resume .facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px 24px;
+    padding: 14px var(--cell-pad);
+  }
+
+  .resume .facts__item {
+    gap: 2px;
+  }
+
+  .resume .resume__contact .facts__item--wide {
+    grid-column: span 2;
+  }
+
+  .resume .facts dd,
+  .resume .bio__place,
+  .resume .bio__years,
+  .resume .stats__label {
+    font-size: 11px;
+    line-height: 15px;
+  }
+
+  .resume .cell--stats {
+    padding: 14px var(--cell-pad);
+  }
+
+  .resume .stats.stats--row {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .resume .stats__value {
+    font-size: 22px;
+    line-height: 26px;
+  }
+
+  .resume .bio {
+    gap: 10px;
+    min-height: 0;
+    padding: 16px var(--cell-pad);
+  }
+
+  .resume .bio__list {
+    gap: 8px;
+  }
+
+  .resume .blurb__title {
+    font-size: 12px;
+    line-height: 17px;
+  }
+
+  .resume .skills {
+    gap: 4px;
+  }
+
+  .resume .skill {
+    padding: 1px 8px;
+    font-size: 10px;
+    line-height: 15px;
+  }
+
+  .resume .resume-work {
+    gap: 6px;
+  }
+
+  .resume .resume-work__item {
+    grid-template-columns: 90px minmax(0, 1fr) auto;
+    gap: 2px 16px;
+  }
+
+  .resume .resume-work__item .bio__place {
+    grid-row: auto;
+    grid-column: auto;
   }
 }

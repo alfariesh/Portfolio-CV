@@ -3,7 +3,7 @@
 // indexable URL; the prerender (scripts/prerender.ts) writes a static HTML
 // file for each, the sitemap lists them and scripts/og.ts draws their cards.
 import { caseStudies } from "./case-studies";
-import { footer, profile } from "./content";
+import { facts, footer, profile } from "./content";
 import { figures, type FigureKey } from "./iso/figures";
 import { notes } from "./notes";
 
@@ -122,6 +122,41 @@ const notesIndex: PageSeo = {
   schema: [breadcrumbs([["notes", "/notes"]])],
 };
 
+const resume: PageSeo = {
+  path: "/resume",
+  title: `résumé | ${profile.name}`,
+  description:
+    "The résumé of Salman Alfariesh, product designer and design engineer: UI/UX designer at PT Pupuk Indonesia since 2021, a Gold Stevie® and an IDC Future Enterprise award for Rekan, and Islamic theology at Al-Azhar University, Cairo.",
+  type: "website",
+  card: {
+    eyebrow: "résumé",
+    title: profile.name,
+    subtitle: "experience, education and awards",
+    figure: "about",
+  },
+  schema: [
+    {
+      "@type": "ProfilePage",
+      "@id": absolute("/resume"),
+      url: absolute("/resume"),
+      name: `résumé | ${profile.name}`,
+      mainEntity: {
+        ...person,
+        email: `mailto:${profile.email}`,
+        knowsAbout: facts.expertise,
+        alumniOf: facts.education.map((school) => ({
+          "@type": "EducationalOrganization",
+          name: school.place.split(",")[0],
+        })),
+        award: facts.awards.map((award) => `${award.title} (${award.years}), ${award.place}`),
+        // The first entry is the current job.
+        worksFor: { "@type": "Organization", name: facts.experience[0].place.split(",")[0] },
+      },
+    },
+    breadcrumbs([["résumé", "/resume"]]),
+  ],
+};
+
 const studyPages = caseStudies.map((study): PageSeo => {
   const path = `/work/${study.slug}`;
   return {
@@ -182,7 +217,7 @@ const notePages = notes.map((note): PageSeo => {
 });
 
 /** Every indexable page, in sitemap order. */
-export const pages: PageSeo[] = [home, work, notesIndex, ...studyPages, ...notePages];
+export const pages: PageSeo[] = [home, work, notesIndex, resume, ...studyPages, ...notePages];
 
 export function seoFor(path: string) {
   const page = pages.find((entry) => entry.path === path);
