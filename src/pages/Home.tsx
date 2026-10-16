@@ -1,8 +1,10 @@
+import type { CSSProperties } from "react";
 import { caseStudy } from "../case-studies";
-import { Cell, Head, Orbit } from "../components/Grid";
+import { Cell, Fold, Head, Orbit } from "../components/Grid";
 import { Icon, type IconName } from "../components/Icon";
 import { Hero } from "../components/Hero";
-import { Intro } from "../components/Intro";
+import { Shipped } from "../components/Shipped";
+import { ToolBelt } from "../components/ToolBelt";
 import { WorkRow } from "../components/WorkRow";
 import { NoteCover } from "../components/NoteCover";
 import { Tag } from "../components/Tag";
@@ -16,8 +18,10 @@ import { Seo } from "../components/Seo";
 // The three strongest case studies; /work has all six.
 const featured = [caseStudy("rekanesia"), caseStudy("surau"), caseStudy("ipubers")];
 
-// The newest notes, one per column; /notes has the rest.
+// The newest notes, one per column, then the next few as a list; /notes has
+// the rest.
 const latest = notes.slice(0, 2);
+const earlier = notes.slice(2, 5);
 
 export function Home() {
   const { about, process, work, notes: notesSection, contact } = sections;
@@ -28,18 +32,18 @@ export function Home() {
       <Hero />
 
       <div className="grid">
-        <Cell tone="clear" className="cell--intro">
-          <Intro />
+        <Cell tone="clear" className="cell--shipped">
+          <Shipped />
         </Cell>
 
-        <Cell className="cell--head" id="about">
+        <Cell span={1} className="cell--head cell--split" id="about">
           <Head eyebrow={about.eyebrow} title={about.title} body={about.body}>
             <a className="link link--accent" href={about.link.href}>
               {about.link.label}
             </a>
           </Head>
         </Cell>
-        <Cell className="cell--art">
+        <Cell span={1} className="cell--art cell--split-art">
           <IsoFigure fig={figures.about} />
         </Cell>
         <Cell className="cell--stats">
@@ -77,7 +81,12 @@ export function Home() {
           </div>
         </Cell>
 
+        <Cell className="cell--toolbelt">
+          <ToolBelt label={about.tools} />
+        </Cell>
+
         <Cell className="cell--head" id="process">
+          <Fold corner="tr" />
           <Head eyebrow={process.eyebrow} title={process.title} body={process.body}>
             <Link className="link link--accent" href={process.link.href}>
               {process.link.label}
@@ -87,15 +96,24 @@ export function Home() {
         <Cell className="cell--art">
           <IsoFigure fig={figures.loop} interactive />
         </Cell>
-        {process.steps.map((step, i) => (
-          <Cell key={step.title} span={1}>
-            <div className="blurb">
-              <p className="blurb__step caps">{String(i + 1).padStart(2, "0")}</p>
-              <h3 className="blurb__title">{step.title}</h3>
-              <p className="blurb__body">{step.body}</p>
-            </div>
-          </Cell>
-        ))}
+        <Cell className="cell--path">
+          <ol className="path">
+            {process.steps.map((step, i) => (
+              <li key={step.title} className="path__step" style={{ "--step": i } as CSSProperties}>
+                <span className="path__node">{String(i + 1).padStart(2, "0")}</span>
+                {i < process.steps.length - 1 && (
+                  <span className="path__link" aria-hidden="true">
+                    <svg viewBox="0 0 40 40" preserveAspectRatio="none">
+                      <path d="M0 39.5L40 0" />
+                    </svg>
+                  </span>
+                )}
+                <h3 className="blurb__title">{step.title}</h3>
+                <p className="blurb__body">{step.body}</p>
+              </li>
+            ))}
+          </ol>
+        </Cell>
 
         <Cell tone="clear" className="cell--orbit" id="work">
           <Orbit anchor="top" />
@@ -111,12 +129,30 @@ export function Home() {
           ))}
         </div>
 
-        <Cell className="cell--head" id="notes">
+        <Cell span={1} className="cell--head cell--split" id="notes">
           <Head eyebrow={notesSection.eyebrow} title={notesSection.title} body={notesSection.body}>
             <Link className="btn btn--ink" href={notesSection.link.href}>
               {notesSection.link.label}
             </Link>
           </Head>
+        </Cell>
+        <Cell span={1} className="cell--index">
+          <Fold corner="br" />
+          <div className="index">
+            <p className="caps">earlier notes</p>
+            <ul className="index__list">
+              {earlier.map((note) => (
+                <li key={note.slug} className="index__item">
+                  <time className="index__date" dateTime={note.date}>
+                    {formatDate(note.date)}
+                  </time>
+                  <Link className="index__title" href={`/notes/${note.slug}`}>
+                    {note.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </Cell>
         {latest.map((note) => {
           const href = `/notes/${note.slug}`;

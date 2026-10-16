@@ -6,7 +6,7 @@ import { profile } from "../content";
 import { Icon, type IconName } from "./Icon";
 
 const tabs = ["Portfolio 2026", "Rekanesia", "Vuboi", "Surau", "iPubers"];
-const pages = ["Selected work", "Systems", "Process", "About"];
+const pages = ["About", "Process", "Selected work", "Notes"];
 const artboards = [
   "Vuboi / Planner",
   "Vuboi / Tracker",

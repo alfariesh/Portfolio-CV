@@ -84,3 +84,11 @@ export function Head({ id, eyebrow, title, body, align = "start", children }: He
     </div>
   );
 }
+
+type FoldProps = { corner: "tl" | "tr" | "bl" | "br" };
+
+// A dog-eared cell corner: the corner turned over at 45°, fill only (no
+// stroke), so it reads as paper rather than as another line.
+export function Fold({ corner }: FoldProps) {
+  return <span className={`fold fold--${corner}`} aria-hidden="true" />;
+}

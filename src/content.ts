@@ -39,18 +39,10 @@ export const hero = {
   secondary: { label: "currently open to new work →", href: "#contact" },
 };
 
-export const tools = {
-  label: "tools I design and ship with",
-  rows: [
-    ["Paper", "React", "SwiftUI", "TypeScript", "Vite+", "Supabase"],
-    ["React Native", "Expo", "Cloudflare", "Claude Code", "HeroUI"],
-  ],
-};
-
-export const intro = {
-  title: ["hello, I'm Salman", "one designer, one canvas,", "a whole connected workflow"],
-  body: "I work where design meets engineering: prototyping on the canvas, syncing tokens to code, and pairing with agents so the craft gets the attention, not the boilerplate.",
-  cta: { label: "more about me", href: "#about" },
+// The band under the hero: every product with a case study, set like a logo
+// wall and linked to its page.
+export const shipped = {
+  label: "products I've designed and shipped",
 };
 
 // The home page reads top to bottom: about, process, work, notes, contact.
@@ -60,6 +52,7 @@ export const sections = {
     title: "five years of products people use every day",
     body: "a UI/UX designer who works end to end: field research with kiosk owners, design systems a whole holding company builds on, and prototypes I code myself",
     link: { label: "download résumé →", href: profile.resumeUrl },
+    tools: "tools I design and ship with",
     stats: [
       ["5+", "years designing end-to-end products"],
       ["28,000+", "kiosks running the system I designed"],
@@ -114,44 +107,50 @@ export const sections = {
 // The about section's fact sheet, from the résumé. Newest first in each group.
 export type Fact = { title: string; place: string; years: string };
 
-export const facts: { experience: Fact[]; education: Fact[]; awards: Fact[]; expertise: string[] } =
-  {
-    experience: [
-      { title: "UI/UX designer", place: "PT Pupuk Indonesia, Jakarta", years: "2021 – now" },
-      { title: "graphic designer", place: "MAK Travel, Egypt", years: "2020" },
-    ],
-    education: [
-      {
-        title: "UI/UX design bootcamp",
-        place: "Purwadhika Digital Technology School",
-        years: "2021",
-      },
-      { title: "Islamic theology", place: "Al-Azhar University, Cairo", years: "2016 – 2020" },
-    ],
-    awards: [
-      {
-        title: "Gold Stevie® Award",
-        place: "innovation in shopping or e-commerce apps, for Rekan",
-        years: "2023",
-      },
-      {
-        title: "IDC Future Enterprise Award",
-        place: "best in future of industry ecosystem, Asia-Pacific, for Rekan",
-        years: "2022",
-      },
-    ],
-    expertise: [
-      "design systems",
-      "multi-brand tokens",
-      "mobile app design",
-      "web dashboards",
-      "field research",
-      "user interviews",
-      "AI-assisted prototyping",
-      "developer handoff",
-      "graphic design",
-    ],
-  };
+type Facts = {
+  experience: Fact[];
+  education: Fact[];
+  awards: Fact[];
+  expertise: string[];
+};
+
+export const facts: Facts = {
+  experience: [
+    { title: "UI/UX designer", place: "PT Pupuk Indonesia, Jakarta", years: "2021 – now" },
+    { title: "graphic designer", place: "MAK Travel, Egypt", years: "2020" },
+  ],
+  education: [
+    {
+      title: "UI/UX design bootcamp",
+      place: "Purwadhika Digital Technology School",
+      years: "2021",
+    },
+    { title: "Islamic theology", place: "Al-Azhar University, Cairo", years: "2016 – 2020" },
+  ],
+  awards: [
+    {
+      title: "Gold Stevie® Award",
+      place: "innovation in shopping or e-commerce apps, for Rekan",
+      years: "2023",
+    },
+    {
+      title: "IDC Future Enterprise Award",
+      place: "best in future of industry ecosystem, Asia-Pacific, for Rekan",
+      years: "2022",
+    },
+  ],
+  expertise: [
+    "design systems",
+    "multi-brand tokens",
+    "mobile app design",
+    "web dashboards",
+    "field research",
+    "user interviews",
+    "AI-assisted prototyping",
+    "developer handoff",
+    "graphic design",
+  ],
+};
 
 type FooterLink = { label: string; href: string; icon?: IconName };
 type FooterColumn = { title: string; links: FooterLink[] };
