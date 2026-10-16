@@ -9,9 +9,19 @@ export const profile = {
   role: "product designer & design engineer",
   location: "Indonesia",
   email: "hi@salman.ai.id",
-  // TODO: link the résumé PDF before publishing.
-  resumeUrl: "#",
+  // Leave a link empty to hide it: the résumé link on the home page, a social
+  // link in the footer.
+  resumeUrl: "",
+  socials: {
+    github: "https://github.com/alfariesh",
+    linkedin: "",
+    dribbble: "",
+    instagram: "",
+  } satisfies Partial<Record<IconName, string>>,
 };
+
+// Case studies on the home page, strongest first; /work lists all six.
+export const featuredWork = ["rekanesia", "surau", "ipubers"];
 
 // Shown on every page. Every item is a section of the home page, linked as
 // /#section; `page` is the index page that also counts as that section (the
@@ -51,7 +61,7 @@ export const sections = {
     eyebrow: "about",
     title: "five years of products people use every day",
     body: "a UI/UX designer who works end to end: field research with kiosk owners, design systems a whole holding company builds on, and prototypes I code myself",
-    link: { label: "download résumé →", href: profile.resumeUrl },
+    link: profile.resumeUrl ? { label: "download résumé →", href: profile.resumeUrl } : null,
     tools: "tools I design and ship with",
     stats: [
       ["5+", "years designing end-to-end products"],
@@ -156,31 +166,29 @@ type FooterLink = { label: string; href: string; icon?: IconName };
 type FooterColumn = { title: string; links: FooterLink[] };
 
 export const footer: { columns: FooterColumn[] } = {
-  columns: [
-    {
-      title: "portfolio",
-      links: [
-        { label: "home", href: "/", icon: "home" },
-        { label: "work", href: "/work", icon: "work" },
-        { label: "notes", href: "/notes", icon: "notes" },
-        { label: "about", href: "/#about", icon: "user" },
-      ],
-    },
-    {
-      title: "case studies",
-      links: caseStudies
-        .filter((study) => !["numi", "rekan"].includes(study.slug))
-        .map((study) => ({ label: study.title, href: `/work/${study.slug}` })),
-    },
-    {
-      // TODO: point these at your real profiles.
-      title: "elsewhere",
-      links: [
-        { label: "github", href: "#", icon: "github" },
-        { label: "linkedin", href: "#", icon: "linkedin" },
-        { label: "dribbble", href: "#", icon: "dribbble" },
-        { label: "instagram", href: "#", icon: "instagram" },
-      ],
-    },
-  ],
+  columns: (
+    [
+      {
+        title: "portfolio",
+        links: [
+          { label: "home", href: "/", icon: "home" },
+          { label: "work", href: "/work", icon: "work" },
+          { label: "notes", href: "/notes", icon: "notes" },
+          { label: "about", href: "/#about", icon: "user" },
+        ],
+      },
+      {
+        title: "case studies",
+        links: caseStudies
+          .filter((study) => !["numi", "rekan"].includes(study.slug))
+          .map((study) => ({ label: study.title, href: `/work/${study.slug}` })),
+      },
+      {
+        title: "elsewhere",
+        links: Object.entries(profile.socials)
+          .filter(([, href]) => href)
+          .map(([name, href]) => ({ label: name, href, icon: name as IconName })),
+      },
+    ] satisfies FooterColumn[]
+  ).filter((column) => column.links.length > 0),
 };

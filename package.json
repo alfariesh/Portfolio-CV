@@ -1,7 +1,11 @@
 {
-  "name": "portfolio",
+  "name": "salman-portfolio",
   "version": "0.0.0",
   "private": true,
+  "description": "Salman Alfariesh's portfolio: React 19 + MDX, prerendered and served from Cloudflare Workers.",
+  "homepage": "https://salman-alfariesh.alfarieshsalman.workers.dev",
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "Salman Alfariesh <hi@salman.ai.id>",
   "type": "module",
   "scripts": {
     "dev": "vp dev",
@@ -17,15 +21,15 @@
   "dependencies": {
     "@fontsource-variable/caveat": "^5.3.0",
     "@paper-design/shaders-react": "^0.0.81",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
     "@mdx-js/rollup": "^3.1.1",
     "@types/mdx": "^2.0.14",
     "@types/node": "^24.13.3",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.7",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
     "typescript": "~6.0.2",
     "vite": "catalog:",
@@ -38,5 +42,8 @@
       "version": "12.11.2",
       "onFail": "download"
     }
+  },
+  "engines": {
+    "node": ">=22.18"
   }
 }

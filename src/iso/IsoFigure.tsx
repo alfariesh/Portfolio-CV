@@ -1,4 +1,5 @@
 import {
+  useId,
   useLayoutEffect,
   useRef,
   useState,
@@ -35,6 +36,7 @@ export function IsoFigure({
   const stageRef = useRef<SVGSVGElement>(null);
   const handle = useRef<IsoHandle>({});
   const [readout, setReadout] = useState("");
+  const hintId = useId();
 
   useLayoutEffect(() => {
     const holder = holderRef.current;
@@ -44,6 +46,11 @@ export function IsoFigure({
     const timers: number[] = [];
     const loops: (() => void)[] = [];
     const flashes = new Map<Element, number[]>();
+    // Figures tween from `now - t0`, so with reduced motion a clock far ahead
+    // lands every tween on its last frame at once. CSS animations stop in
+    // iso.css; the lights and the demo still run.
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const clock = (now: number) => (reduced ? now + 1e7 : now);
 
     const api: IsoApi = {
       iso: { frame: (points, margin) => frame(points, margin, aspect), kernel, slits, esc },
@@ -58,7 +65,7 @@ export function IsoFigure({
         let alive = true;
         const tick = (now: number) => {
           if (!alive) return;
-          fn(now);
+          fn(clock(now));
           requestAnimationFrame(tick);
         };
         requestAnimationFrame(tick);
@@ -131,8 +138,12 @@ export function IsoFigure({
         ref={stageRef}
         className="iso__stage"
         data-fig={fig.id}
-        role="img"
+        // A live figure takes focus and keys, so it's a group with a hint, not
+        // an image (an img role hides its interactivity from screen readers).
+        role={interactive ? "group" : "img"}
+        aria-roledescription={interactive ? "interactive figure" : undefined}
         aria-label={fig.aria}
+        aria-describedby={interactive ? hintId : undefined}
         tabIndex={interactive ? 0 : undefined}
         onKeyDown={interactive ? onKeyDown : undefined}
         onKeyUp={interactive ? (event) => handle.current.keyup?.(event.nativeEvent) : undefined}
@@ -160,8 +171,10 @@ export function IsoFigure({
       )}
       {interactive && (
         <figcaption className="iso__cap">
-          <span>{fig.hint}</span>
-          <span className="iso__readout">{readout}</span>
+          <span id={hintId}>{fig.hint}</span>
+          <span className="iso__readout" aria-live="polite">
+            {readout}
+          </span>
         </figcaption>
       )}
     </figure>

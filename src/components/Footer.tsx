@@ -23,6 +23,9 @@ export function Footer() {
               {profile.email}
             </a>
             <span className="footer__meta">© 2026 {profile.name}</span>
+            <a className="footer__meta link link--soft" href="https://iso-glow.vercel.app">
+              figures made with iso-glow ↗
+            </a>
           </div>
         </div>
         <div className="footer__cols">

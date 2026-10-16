@@ -10,9 +10,10 @@ import { Seo } from "../components/Seo";
 
 type Filter = TagName | "all";
 
-const filters: Filter[] = ["all", ...tags];
 const count = (filter: Filter) =>
   filter === "all" ? notes.length : notes.filter((note) => note.tag === filter).length;
+// Only tags that have notes; the rest wait in `tags` for their first one.
+const filters: Filter[] = ["all", ...tags.filter((tag) => count(tag) > 0)];
 
 export function NotesPage() {
   const [filter, setFilter] = useState<Filter>("all");
@@ -41,7 +42,6 @@ export function NotesPage() {
                 type="button"
                 className="filter"
                 aria-pressed={filter === option}
-                disabled={count(option) === 0}
                 onClick={() => startTransition(() => setFilter(option))}
               >
                 <Icon name={tagIcons[option]} size={16} />

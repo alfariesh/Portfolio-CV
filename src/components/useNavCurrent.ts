@@ -15,7 +15,9 @@ function useHomeSection(active: boolean) {
 
   useEffect(() => {
     if (!active) return;
-    const update = () => {
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
       const line = window.innerHeight * READING_LINE;
       let found: string | null = null;
       let top = -Infinity;
@@ -28,10 +30,15 @@ function useHomeSection(active: boolean) {
       }
       setId(found);
     };
-    update();
+    // At most one layout read per frame, however often scroll fires.
+    const update = () => {
+      frame ||= requestAnimationFrame(measure);
+    };
+    measure();
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
     return () => {
+      cancelAnimationFrame(frame);
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };

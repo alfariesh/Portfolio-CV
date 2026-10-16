@@ -8,15 +8,14 @@ import { ToolBelt } from "../components/ToolBelt";
 import { WorkRow } from "../components/WorkRow";
 import { NoteCover } from "../components/NoteCover";
 import { Tag } from "../components/Tag";
-import { facts, profile, sections, type Fact } from "../content";
+import { facts, featuredWork, profile, sections, type Fact } from "../content";
 import { figures } from "../iso/figures";
 import { IsoFigure } from "../iso/IsoFigure";
 import { formatDate, notes } from "../notes";
 import { Link } from "../router/Link";
 import { Seo } from "../components/Seo";
 
-// The three strongest case studies; /work has all six.
-const featured = [caseStudy("rekanesia"), caseStudy("surau"), caseStudy("ipubers")];
+const featured = featuredWork.map((slug) => caseStudy(slug));
 
 // The newest notes, one per column, then the next few as a list; /notes has
 // the rest.
@@ -38,9 +37,11 @@ export function Home() {
 
         <Cell span={1} className="cell--head cell--split" id="about">
           <Head eyebrow={about.eyebrow} title={about.title} body={about.body}>
-            <a className="link link--accent" href={about.link.href}>
-              {about.link.label}
-            </a>
+            {about.link && (
+              <a className="link link--accent" href={about.link.href}>
+                {about.link.label}
+              </a>
+            )}
           </Head>
         </Cell>
         <Cell span={1} className="cell--art cell--split-art">

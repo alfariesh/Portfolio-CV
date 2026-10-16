@@ -131,6 +131,29 @@ svg {
   background: rgb(245 78 0 / 35%);
 }
 
+/* Off screen until a keyboard user tabs to it. */
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 200;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 14px;
+  line-height: 20px;
+  translate: 0 -200%;
+}
+
+.skip-link:focus-visible {
+  translate: 0 0;
+}
+
+main:focus {
+  outline: none;
+}
+
 .container {
   width: min(var(--container), 100% - 2 * var(--gutter));
   margin-inline: auto;
@@ -837,14 +860,6 @@ svg {
   min-height: 360px;
 }
 
-.blurb {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-height: 240px;
-  padding: var(--cell-pad);
-}
-
 .blurb__title {
   font-size: 18px;
   line-height: 28px;
@@ -854,12 +869,6 @@ svg {
 .blurb__body {
   color: var(--ink-soft);
   text-wrap: balance;
-}
-
-.blurb__cta {
-  align-self: flex-start;
-  margin-top: auto;
-  padding-top: 22px;
 }
 
 .cell--art {
@@ -1582,8 +1591,7 @@ svg {
     grid-column: auto;
   }
 
-  .cell--head,
-  .blurb {
+  .cell--head {
     min-height: 0;
   }
 

@@ -7,8 +7,12 @@ export default defineConfig({
   staged: {
     "*": "vp check --fix",
   },
-  fmt: {},
+  // The vendored iso-glow skill stays byte-for-byte as published.
+  fmt: {
+    ignorePatterns: [".claude/skills/**"],
+  },
   lint: {
+    ignorePatterns: [".claude/skills/**"],
     plugins: ["react", "typescript", "oxc"],
     rules: {
       "react/rules-of-hooks": "error",
@@ -31,8 +35,8 @@ export default defineConfig({
       },
     ],
   },
-  // Case studies and notes are MDX files in src/content. MDX compiles them to
-  // React components before the React plugin sees them.
+  // Case studies and notes are MDX files in src/case-studies and src/notes.
+  // MDX compiles them to React components before the React plugin sees them.
   plugins: lazyPlugins(() => [
     { enforce: "pre", ...mdx() },
     react({ include: /\.(mdx|jsx|tsx|ts|js)$/ }),

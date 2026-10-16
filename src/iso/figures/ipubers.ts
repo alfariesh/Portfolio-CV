@@ -1,6 +1,6 @@
 // iPubers: a village kiosk redeeming subsidised fertiliser in five steps
-// (farmer id, stock, quota, id card photo, redeem). Ported from
-// iso-glow/ipubers.html.
+// (farmer id, stock, quota, id card photo, redeem). Ported from a standalone
+// iso-glow page.
 import type { IsoFig } from "../types";
 
 export const ipubers: IsoFig = {

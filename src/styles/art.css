@@ -11,16 +11,6 @@
   line-height: 20px;
 }
 
-.art__label {
-  display: block;
-  margin-bottom: 10px;
-  color: #65675e;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  line-height: 16px;
-  white-space: nowrap;
-}
-
 /* Collaborator cursors */
 .cursor {
   --c: #f54e00;
@@ -50,10 +40,6 @@
   --c: #8a63d2;
 }
 
-.cursor--mcp {
-  --c: #3e9a7a;
-}
-
 /* Status chips */
 .chip {
   --bg: #f6f7f3;
@@ -80,19 +66,6 @@
   background: var(--dot);
 }
 
-.chip--lg {
-  gap: 8px;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 20px;
-  font-size: 16px;
-}
-
-.chip--lg i {
-  width: 8px;
-  height: 8px;
-}
-
 .chip--review {
   --bg: #fbf0d9;
   --fg: #7a5512;
@@ -103,12 +76,6 @@
   --bg: #e3f1e6;
   --fg: #2e6b3f;
   --dot: #46a35e;
-}
-
-.chip--no {
-  --bg: #f8e3e0;
-  --fg: #8e2f22;
-  --dot: #d9573f;
 }
 
 .chip--archived {

@@ -29,8 +29,6 @@ export const iconMarkup = {
   user: '<path d="M20 21.0001C19.713 17.269 16.7289 14.3151 12.995 14.0662L12 13.9999C11.6446 14.0096 11.3134 14.0225 11.0008 14.0378C7.3 14.2192 4.28417 17.3057 4 21.0001" stroke="currentColor" stroke-linecap="square" /> <circle cx="12" cy="6.99988" r="4" stroke="currentColor" stroke-linecap="square" />',
   close:
     '<path d="M18 6L6.00081 17.9992M17.9992 18L6 6.00085" stroke="currentColor" stroke-linecap="square" />',
-  arrow:
-    '<path d="M13 18L19 12L13 6M18.5 12L5 12" stroke="currentColor" stroke-linecap="square" />',
   bolt: '<path d="M4.9992 13.197L13.5 2.19702V11.1822L19 11.197L10.4992 22.197V13.197H4.9992Z" stroke="currentColor" stroke-linecap="round" />',
   work: '<path d="M2.00121 8.5L1.99866 20.9995L22.0011 21L22.0012 8.5" stroke="currentColor" stroke-linecap="square" /> <path d="M15.4987 6.5V3H8.49875V6.5" stroke="currentColor" stroke-linecap="square" /> <path d="M1.99875 6.5V9.50039C1.99875 11.1572 3.34189 12.5004 4.99875 12.5004H18.9983C20.6551 12.5004 21.9983 11.1572 21.9983 9.50039V6.5H1.99875Z" stroke="currentColor" stroke-linecap="square" /> <path d="M9.99875 12.5V15.5H13.9987V12.5" stroke="currentColor" stroke-linecap="square" />',
   notes:
@@ -55,12 +53,6 @@ export const iconMarkup = {
     '<path d="M12 4V2" stroke="currentColor" stroke-linecap="square" /> <path d="M20 22C20 17.5817 16.4183 14 12 14C7.58172 14 4 17.5817 4 22" stroke="currentColor" stroke-linecap="square" /> <path d="M9.375 8.25H9.25M9.5 8.25C9.5 8.38807 9.38807 8.5 9.25 8.5C9.11193 8.5 9 8.38807 9 8.25C9 8.11193 9.11193 8 9.25 8C9.38807 8 9.5 8.11193 9.5 8.25Z" stroke="currentColor" stroke-linecap="round" /> <path d="M14.875 8.25H14.75M15 8.25C15 8.38807 14.8881 8.5 14.75 8.5C14.6119 8.5 14.5 8.38807 14.5 8.25C14.5 8.11193 14.6119 8 14.75 8C14.8881 8 15 8.11193 15 8.25Z" stroke="currentColor" stroke-linecap="round" /> <path d="M17 4H7C5.89543 4 5 4.89543 5 6V10C5 12.2091 6.79086 14 9 14H15C17.2091 14 19 12.2091 19 10V6C19 4.89543 18.1046 4 17 4Z" stroke="currentColor" stroke-linecap="square" />',
   shapes:
     '<path d="M22 10L17.5 2L13 10H22Z" stroke="currentColor" stroke-linejoin="round" /> <path d="M10 2H2V10H10V2Z" stroke="currentColor" stroke-linejoin="round" /> <ellipse cx="17.5" cy="18" rx="4" ry="4" stroke="currentColor" stroke-linejoin="round" /> <path d="M9.99994 14L2 22M2.00007 14L10 22" stroke="currentColor" stroke-linejoin="round" />',
-  motion:
-    '<path d="M22 12V22H12V12H22Z" stroke="currentColor" /> <path d="M17 9V7H7V17H9" stroke="currentColor" /> <path d="M12 4V2H2V12H4" stroke="currentColor" />',
-  terminal:
-    '<path d="M4.00004 17L10 11L4 5" stroke="currentColor" stroke-linecap="square" /> <path d="M12 19H20" stroke="currentColor" stroke-linecap="square" />',
-  research:
-    '<path d="M17 17L21 21" stroke="currentColor" stroke-linecap="square" /> <path d="M19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C15.4183 19 19 15.4183 19 11Z" stroke="currentColor" stroke-linecap="square" />',
   plug: '<path d="M15.5 2V6M8.5 6V2" stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" /> <path d="M18.0004 6H6V12L9.5 17H14.5L18 12L18.0004 6Z" stroke="currentColor" /> <path d="M12 17V22" stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" /> <path d="M11 9H13" stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" />',
   brush:
     '<path d="M5.99609 15L8.99265 18M8.49323 12.5L11.4898 15.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" /> <path d="M2.98828 17.999L17.9814 3.00488C17.9853 3.00098 17.9916 3.00098 17.9955 3.00488L20.9829 5.99579C20.9868 5.9997 20.9868 6.00604 20.9829 6.00994L5.99068 20.9977H2.98828V17.999Z" stroke="currentColor" />',

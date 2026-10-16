@@ -51,11 +51,14 @@ function Site() {
   preload(bold, { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
   return (
     <>
+      <a className="skip-link" href="#main">
+        skip to content
+      </a>
       <div className="sheet" id="top" aria-busy={isPending || undefined}>
         <Backdrop />
         <Nav />
         <ViewTransition key={pathname} default="none" enter={swap} exit={swap}>
-          <main>
+          <main id="main" tabIndex={-1}>
             <Page route={route} />
           </main>
         </ViewTransition>
