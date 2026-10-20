@@ -3,7 +3,8 @@
 import { renderToString } from "react-dom/server";
 import App from "./App";
 
-export { pages, site } from "./seo";
+export { notesFeed, pages, site } from "./seo";
+export { escapeXml, feed } from "./feed";
 
 export function render(url: string) {
   return renderToString(<App url={url} />);

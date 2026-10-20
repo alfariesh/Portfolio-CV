@@ -54,6 +54,7 @@ export const iconMarkup = {
   shapes:
     '<path d="M22 10L17.5 2L13 10H22Z" stroke="currentColor" stroke-linejoin="round" /> <path d="M10 2H2V10H10V2Z" stroke="currentColor" stroke-linejoin="round" /> <ellipse cx="17.5" cy="18" rx="4" ry="4" stroke="currentColor" stroke-linejoin="round" /> <path d="M9.99994 14L2 22M2.00007 14L10 22" stroke="currentColor" stroke-linejoin="round" />',
   plug: '<path d="M15.5 2V6M8.5 6V2" stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" /> <path d="M18.0004 6H6V12L9.5 17H14.5L18 12L18.0004 6Z" stroke="currentColor" /> <path d="M12 17V22" stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" /> <path d="M11 9H13" stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" />',
+  feed: '<path d="M4 11C8.97056 11 13 15.0294 13 20" stroke="currentColor" stroke-linecap="square" /> <path d="M4 4C12.8366 4 20 11.1634 20 20" stroke="currentColor" stroke-linecap="square" /> <path d="M4 18H6V20H4V18Z" stroke="currentColor" stroke-linejoin="round" />',
   brush:
     '<path d="M5.99609 15L8.99265 18M8.49323 12.5L11.4898 15.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" /> <path d="M2.98828 17.999L17.9814 3.00488C17.9853 3.00098 17.9916 3.00098 17.9955 3.00488L20.9829 5.99579C20.9868 5.9997 20.9868 6.00604 20.9829 6.00994L5.99068 20.9977H2.98828V17.999Z" stroke="currentColor" />',
 } as const;

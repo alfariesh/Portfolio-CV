@@ -1,4 +1,4 @@
-import { absolute, cardAlt, ogImage, ogSize, seoFor, site } from "../seo";
+import { absolute, cardAlt, notesFeed, ogImage, ogSize, seoFor, site } from "../seo";
 
 // Head tags for one page, from its entry in src/seo.ts. React hoists <title>,
 // <meta> and <link> into <head> (and swaps them on navigation); the prerender
@@ -16,6 +16,12 @@ export function Seo({ path }: { path: string }) {
       <meta name="description" content={page.description} />
       <meta name="robots" content="max-image-preview:large" />
       <link rel="canonical" href={url} />
+      <link
+        rel="alternate"
+        type="application/atom+xml"
+        title={notesFeed.title}
+        href={absolute(notesFeed.path)}
+      />
       <meta property="og:type" content={page.type} />
       <meta property="og:site_name" content={site.name} />
       <meta property="og:locale" content={site.locale} />

@@ -1,6 +1,6 @@
 // Turns the client build (dist/) into a static site: one HTML file per page in
 // src/seo.ts, rendered by the server build (dist-ssr/), plus 404.html,
-// sitemap.xml and robots.txt. Runs as the last step of `vp run build`.
+// sitemap.xml, robots.txt and the notes' Atom feed. Runs as the last step of `vp run build`.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -9,11 +9,16 @@ type ServerEntry = {
   render: (url: string) => string;
   pages: { path: string; published?: string }[];
   site: { url: string };
+  escapeXml: (text: string) => string;
+  feed: () => string;
+  notesFeed: { path: string };
 };
 
 const dist = new URL("../dist/", import.meta.url);
 const entry = new URL("../dist-ssr/entry-server.js", import.meta.url);
-const { render, pages, site } = (await import(entry.href)) as ServerEntry;
+const { render, pages, site, escapeXml, feed, notesFeed } = (await import(
+  entry.href
+)) as ServerEntry;
 
 const template = await readFile(new URL("index.html", dist), "utf8");
 for (const marker of ["<!--app-head-->", "<!--app-html-->"]) {
@@ -53,8 +58,6 @@ for (const { path } of pages) await write(fileFor(path), page(path));
 // Served with a 404 status for any unknown path (not_found_handling).
 await write("404.html", page("/404"));
 
-const escapeXml = (text: string) => text.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
-
 const urls = pages.map(({ path, published }) => {
   const loc = `<loc>${escapeXml(new URL(path, site.url).href)}</loc>`;
   const lastmod = published ? `<lastmod>${published}</lastmod>` : "";
@@ -78,4 +81,14 @@ Sitemap: ${new URL("/sitemap.xml", site.url).href}
 `,
 );
 
-console.log(`prerendered ${pages.length} pages, 404.html, sitemap.xml and robots.txt`);
+// Every note must be in the feed, under its own absolute URL.
+const atom = feed();
+for (const { path } of pages.filter(({ path }) => path.startsWith("/notes/"))) {
+  const id = `<id>${escapeXml(new URL(path, site.url).href)}</id>`;
+  if (!atom.includes(id)) throw new Error(`${notesFeed.path} is missing ${path}`);
+}
+await write(notesFeed.path.slice(1), atom);
+
+console.log(
+  `prerendered ${pages.length} pages, 404.html, sitemap.xml, robots.txt and ${notesFeed.path}`,
+);

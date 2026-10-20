@@ -3,9 +3,10 @@ import { describe, expect, it } from "vite-plus/test";
 import App from "./App";
 import { caseStudies } from "./case-studies";
 import { footer, nav } from "./content";
+import { feed } from "./feed";
 import { notes, tags } from "./notes";
-import { matchRoute } from "./router/routes";
-import { absolute, ogImage, pages as seoPages, site } from "./seo";
+import { isFile, matchRoute } from "./router/routes";
+import { absolute, notesFeed, ogImage, pages as seoPages, site } from "./seo";
 
 const render = (url: string) => renderToString(<App url={url} />);
 
@@ -17,6 +18,7 @@ const cards = Object.keys(import.meta.glob("../public/og/**/*.png"));
 // Every in-site link must land on a page that exists.
 function resolves(href: string) {
   const { pathname } = new URL(href, "https://example.com");
+  if (isFile(pathname)) return pathname === notesFeed.path;
   const route = matchRoute(pathname);
   if (route.name === "work") return caseStudies.some((study) => study.slug === route.slug);
   if (route.name === "note") return notes.some((note) => note.slug === route.slug);
@@ -161,7 +163,38 @@ describe("seo", () => {
     expect(html).not.toContain(`rel="canonical"`);
   });
 
+  it.each(pages)("%s links the notes feed", (path) => {
+    const html = render(path);
+    expect(html).toContain(
+      `<link rel="alternate" type="application/atom+xml" title="${notesFeed.title}" href="${absolute(notesFeed.path)}"/>`,
+    );
+  });
+
   it("uses an https origin without a trailing slash", () => {
     expect(site.url).toMatch(/^https:\/\/[^/]+$/);
+  });
+});
+
+describe("feed", () => {
+  const xml = feed();
+  const ids = [...xml.matchAll(/<entry>\s*<id>([^<]+)<\/id>/g)].map((m) => m[1]);
+
+  it("lists every note, newest first", () => {
+    expect(ids).toEqual(notes.map((note) => absolute(`/notes/${note.slug}`)));
+  });
+
+  it("only uses absolute links, in the markup and in the note bodies", () => {
+    const hrefs = [...xml.matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
+    expect(hrefs.length).toBeGreaterThan(notes.length);
+    for (const href of hrefs) expect(href).toMatch(/^https:\/\//);
+    // Inside <content type="html"> the markup is escaped: `"` is &#34;.
+    expect(xml).not.toMatch(/(?:href|src)=&#34;(?!https:)/);
+  });
+
+  it("carries each note's body, with no form controls from the demos", () => {
+    const contents = [...xml.matchAll(/<content type="html">([^<]*)<\/content>/g)];
+    expect(contents).toHaveLength(notes.length);
+    for (const [, body] of contents) expect(body.length).toBeGreaterThan(200);
+    expect(xml).not.toContain("&#60;input");
   });
 });

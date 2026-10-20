@@ -17,3 +17,8 @@
 # never changes and browsers can keep it for a year.
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
+
+# The notes feed. Cloudflare would serve it as application/xml; feed readers
+# and browsers recognise Atom by its own type.
+/notes/feed.xml
+  Content-Type: application/atom+xml; charset=utf-8

@@ -15,6 +15,10 @@ export function matchRoute(pathname: string): Route {
   return { name: "missing" };
 }
 
+// A path to a file (the feed, a social card) rather than a page: the browser
+// loads it, the router stays out of the way.
+export const isFile = (pathname: string) => /\.[a-z0-9]+$/i.test(pathname);
+
 // Going up to a parent page (a note back to /notes, anything back to /) slides
 // back; everything else slides forward.
 export function directionOf(from: string, to: string): NavDirection {

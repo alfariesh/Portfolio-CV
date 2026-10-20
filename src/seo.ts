@@ -17,6 +17,9 @@ export const site = {
 
 export const absolute = (path: string) => new URL(path, site.url).href;
 
+/** The notes' Atom feed (src/feed.tsx), linked from every page's head. */
+export const notesFeed = { path: "/notes/feed.xml", title: "notes from the studio" };
+
 /** The social card is a 1200×630 PNG drawn by scripts/og.ts from `card`. */
 export const ogSize = { width: 1200, height: 630 };
 export const ogImage = (path: string) => (path === "/" ? "/og/home.png" : `/og${path}.png`);
