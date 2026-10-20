@@ -13,6 +13,7 @@ import { NotePage } from "./pages/NotePage";
 import { NotesPage } from "./pages/NotesPage";
 import { ResumePage } from "./pages/ResumePage";
 import { WorkPage } from "./pages/WorkPage";
+import { preloadPage } from "./preload";
 import { useRouter } from "./router/context";
 import { Router } from "./router/Router";
 import type { Route } from "./router/routes";
@@ -74,7 +75,7 @@ function Site() {
 
 export default function App({ url }: { url?: string }) {
   return (
-    <Router url={url}>
+    <Router url={url} preload={preloadPage}>
       <Site />
     </Router>
   );

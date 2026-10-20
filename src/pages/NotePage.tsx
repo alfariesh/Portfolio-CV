@@ -1,7 +1,7 @@
 import { Cell } from "../components/Grid";
 import { Mark } from "../components/Mark";
 import { NoteCover } from "../components/NoteCover";
-import { proseComponents } from "../components/prose";
+import { ProseBody } from "../components/prose/ProseBody";
 import { Tag } from "../components/Tag";
 import { profile } from "../content";
 import { formatDate, notes, type Note } from "../notes";
@@ -13,7 +13,6 @@ import { Seo } from "../components/Seo";
 export function NotePage({ note }: { note: Note }) {
   const index = notes.indexOf(note);
   const nearby = [notes[index - 1], notes[index + 1]].filter(Boolean);
-  const { Content } = note;
 
   return (
     <>
@@ -42,7 +41,7 @@ export function NotePage({ note }: { note: Note }) {
               </span>
               {profile.name}
             </p>
-            <Content components={proseComponents} />
+            <ProseBody body={note.body} />
           </div>
         </Cell>
 

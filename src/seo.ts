@@ -4,7 +4,8 @@
 // file for each, the sitemap lists them and scripts/og.ts draws their cards.
 import { caseStudies } from "./case-studies";
 import { facts, footer, profile } from "./content";
-import { figures, type FigureKey } from "./iso/figures";
+import type { FigureKey } from "./iso/figures";
+import type { IsoFig } from "./iso/types";
 import { notes } from "./notes";
 
 export const site = {
@@ -229,7 +230,7 @@ export function seoFor(path: string) {
 }
 
 /** The figure's own description, first sentence only, as the card's alt text. */
-export function cardAlt(page: PageSeo) {
-  const scene = figures[page.card.figure].aria.split(/(?<=\.)\s/)[0];
+export function cardAlt(page: PageSeo, figure: IsoFig) {
+  const scene = figure.aria.split(/(?<=\.)\s/)[0];
   return `${page.card.title}: ${scene}`;
 }

@@ -35,6 +35,11 @@ export default defineConfig({
       },
     ],
   },
+  // scripts/prerender.ts reads the manifest to preload each page's chunks,
+  // then deletes it so it isn't deployed.
+  build: {
+    manifest: true,
+  },
   // Case studies and notes are MDX files in src/case-studies and src/notes.
   // MDX compiles them to React components before the React plugin sees them.
   plugins: lazyPlugins(() => [

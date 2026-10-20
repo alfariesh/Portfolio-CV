@@ -5,12 +5,16 @@ import { caseStudies } from "./case-studies";
 import { footer, nav } from "./content";
 import { feed } from "./feed";
 import { notes, tags } from "./notes";
+import { preloadPage } from "./preload";
 import { isFile, matchRoute } from "./router/routes";
 import { absolute, notesFeed, ogImage, pages as seoPages, site } from "./seo";
 
 const render = (url: string) => renderToString(<App url={url} />);
 
 const pages = seoPages.map((page) => page.path);
+
+// Figures and bodies are lazy chunks; load every page's before rendering.
+await Promise.all(pages.map(preloadPage));
 
 // Social cards drawn by scripts/og.ts, as "../public/og/….png".
 const cards = Object.keys(import.meta.glob("../public/og/**/*.png"));
@@ -175,8 +179,9 @@ describe("seo", () => {
   });
 });
 
+const xml = await feed();
+
 describe("feed", () => {
-  const xml = feed();
   const ids = [...xml.matchAll(/<entry>\s*<id>([^<]+)<\/id>/g)].map((m) => m[1]);
 
   it("lists every note, newest first", () => {

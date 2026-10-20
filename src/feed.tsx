@@ -33,7 +33,7 @@ function bodyComponents(note: Note): MDXComponents {
 
 function entry(note: Note) {
   const url = absolute(`/notes/${note.slug}`);
-  const { Content } = note;
+  const Content = note.body.value!;
   const body = renderToStaticMarkup(<Content components={bodyComponents(note)} />);
   return `  <entry>
     <id>${escapeXml(url)}</id>
@@ -48,7 +48,9 @@ function entry(note: Note) {
 }
 
 /** The whole feed, newest note first (the order `notes` already has). */
-export function feed() {
+export async function feed() {
+  // Each body is its own chunk (src/chunk.ts); load them all before rendering.
+  await Promise.all(notes.map((note) => note.body.load()));
   const home = absolute("/");
   const notesUrl = absolute("/notes");
   return `<?xml version="1.0" encoding="utf-8"?>

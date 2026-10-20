@@ -1,3 +1,4 @@
+import { useFigure } from "../iso/figures";
 import { absolute, cardAlt, notesFeed, ogImage, ogSize, seoFor, site } from "../seo";
 
 // Head tags for one page, from its entry in src/seo.ts. React hoists <title>,
@@ -9,6 +10,9 @@ export function Seo({ path }: { path: string }) {
   const url = absolute(path);
   const graph = { "@context": "https://schema.org", "@graph": page.schema };
   const { title, subtitle } = page.card;
+  // The card's figure, for its alt text. Index pages that don't draw it load
+  // it anyway (src/preload.ts), so this never suspends.
+  const figure = useFigure(page.card.figure);
 
   return (
     <>
@@ -31,7 +35,7 @@ export function Seo({ path }: { path: string }) {
       <meta property="og:image" content={absolute(ogImage(path))} />
       <meta property="og:image:width" content={String(ogSize.width)} />
       <meta property="og:image:height" content={String(ogSize.height)} />
-      <meta property="og:image:alt" content={cardAlt(page)} />
+      <meta property="og:image:alt" content={cardAlt(page, figure)} />
       {page.published && <meta property="article:published_time" content={page.published} />}
       <meta name="twitter:card" content="summary_large_image" />
       <script

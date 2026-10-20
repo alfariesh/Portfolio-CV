@@ -1,4 +1,5 @@
 import type { MDXContent } from "mdx/types";
+import { chunk, type Chunk } from "../chunk";
 import type { FigureKey } from "../iso/figures";
 
 // Notes are short MDX files in this folder: `export const meta = {...}` on top,
@@ -27,18 +28,22 @@ export type NoteMeta = {
   cover: FigureKey;
 };
 
-export type Note = NoteMeta & { slug: string; Content: MDXContent };
+export type Note = NoteMeta & { slug: string; body: Chunk<MDXContent> };
 
-const files = import.meta.glob<{ meta: NoteMeta; default: MDXContent }>("./*.mdx", {
+// Meta ships with the site, each body is its own chunk; see src/case-studies.
+const metas = import.meta.glob<NoteMeta>("./*.mdx", {
   eager: true,
+  query: "?meta",
+  import: "meta",
 });
+const bodies = import.meta.glob<MDXContent>("./*.mdx", { import: "default" });
 
 // Newest first.
-export const notes: Note[] = Object.entries(files)
-  .map(([path, file]) => ({
-    ...file.meta,
+export const notes: Note[] = Object.entries(metas)
+  .map(([path, meta]) => ({
+    ...meta,
     slug: path.slice(2, -".mdx".length),
-    Content: file.default,
+    body: chunk(`src/notes${path.slice(1)}`, bodies[path]),
   }))
   .sort((a, b) => b.date.localeCompare(a.date));
 

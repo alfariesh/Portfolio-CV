@@ -14,16 +14,19 @@ const width = Number(params.get("w")) || (only ? 1080 : 540);
 const [a, b] = (params.get("aspect") ?? "4/3").split("/").map(Number);
 const keys = (only ? [only] : Object.keys(figures)) as FigureKey[];
 
+// Figures load on demand (src/iso/figures); fetch the ones shown up front.
+const loaded = await Promise.all(keys.map((key) => figures[key].load()));
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <main style={{ display: "flex", flexWrap: "wrap", gap: 24, padding: 24 }}>
-      {keys.map((key) => (
+      {keys.map((key, i) => (
         <section key={key} style={{ width }}>
           <p className="caps" style={{ marginBottom: 8 }}>
             {key}
           </p>
           <IsoFigure
-            fig={figures[key]}
+            fig={loaded[i]}
             aspect={a / b}
             interactive
             demo={params.has("still") ? "none" : "mount"}

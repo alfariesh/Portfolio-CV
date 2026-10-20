@@ -10,7 +10,7 @@ import { WorkRow } from "../components/WorkRow";
 import { NoteCover } from "../components/NoteCover";
 import { Tag } from "../components/Tag";
 import { facts, featuredWork, profile, sections } from "../content";
-import { figures } from "../iso/figures";
+import { useFigure } from "../iso/figures";
 import { IsoFigure } from "../iso/IsoFigure";
 import { formatDate, notes } from "../notes";
 import { Link } from "../router/Link";
@@ -46,7 +46,7 @@ export function Home() {
           </Head>
         </Cell>
         <Cell span={1} className="cell--art cell--split-art">
-          <IsoFigure fig={figures.about} />
+          <IsoFigure fig={useFigure("about")} />
         </Cell>
         <Cell className="cell--stats">
           <dl className="stats stats--row">
@@ -96,7 +96,7 @@ export function Home() {
           </Head>
         </Cell>
         <Cell className="cell--art">
-          <IsoFigure fig={figures.loop} interactive />
+          <IsoFigure fig={useFigure("loop")} interactive />
         </Cell>
         <Cell className="cell--path">
           <ol className="path">

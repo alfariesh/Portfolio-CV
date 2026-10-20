@@ -7,6 +7,7 @@ import "./styles/art.css";
 import "./styles/pages.css";
 import "./iso/iso.css";
 import App from "./App.tsx";
+import { preloadPage } from "./preload.ts";
 
 // A deploy replaces every hashed file in /assets, so a tab still running the
 // old build fails to load its lazy chunks (the paper texture, the playground).
@@ -26,6 +27,11 @@ const app = (
     <App />
   </StrictMode>
 );
+
+// Figures and the page's body are chunks of their own. Hydration has to find
+// them loaded (the prerender already preloads them with modulepreload links);
+// on a failed load, React fetches them again while it hydrates.
+await preloadPage(window.location.pathname).catch(() => {});
 
 // The build prerenders every page (scripts/prerender.ts), so React adopts the
 // HTML that is already there. `vp dev` serves an empty root and renders fresh.
