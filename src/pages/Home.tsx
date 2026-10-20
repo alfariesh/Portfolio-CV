@@ -1,14 +1,15 @@
 import type { CSSProperties } from "react";
 import { caseStudy } from "../case-studies";
 import { Cell, Fold, Head, Orbit } from "../components/Grid";
-import { Icon, type IconName } from "../components/Icon";
+import { FactList } from "../components/FactList";
+import { Icon } from "../components/Icon";
 import { Hero } from "../components/Hero";
 import { Shipped } from "../components/Shipped";
 import { ToolBelt } from "../components/ToolBelt";
 import { WorkRow } from "../components/WorkRow";
 import { NoteCover } from "../components/NoteCover";
 import { Tag } from "../components/Tag";
-import { facts, featuredWork, profile, sections, type Fact } from "../content";
+import { facts, featuredWork, profile, sections } from "../content";
 import { figures } from "../iso/figures";
 import { IsoFigure } from "../iso/IsoFigure";
 import { formatDate, notes } from "../notes";
@@ -38,9 +39,9 @@ export function Home() {
         <Cell span={1} className="cell--head cell--split" id="about">
           <Head eyebrow={about.eyebrow} title={about.title} body={about.body}>
             {about.link && (
-              <a className="link link--accent" href={about.link.href}>
+              <Link className="link link--accent" href={about.link.href}>
                 {about.link.label}
-              </a>
+              </Link>
             )}
           </Head>
         </Cell>
@@ -200,30 +201,5 @@ export function Home() {
         </Cell>
       </div>
     </>
-  );
-}
-
-type FactListProps = { label: string; icon: IconName; items: Fact[] };
-
-// One group of the about fact sheet: a caps label, then title, place and years.
-function FactList({ label, icon, items }: FactListProps) {
-  return (
-    <div className="bio">
-      <p className="bio__label caps">
-        <Icon name={icon} size={16} />
-        {label}
-      </p>
-      <ul className="bio__list">
-        {items.map((item) => (
-          <li key={item.title} className="bio__item">
-            <div>
-              <h3 className="blurb__title">{item.title}</h3>
-              <p className="bio__place">{item.place}</p>
-            </div>
-            <span className="bio__years">{item.years}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 }

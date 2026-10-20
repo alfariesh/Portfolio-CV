@@ -11,6 +11,7 @@ import { Home } from "./pages/Home";
 import { MissingPage } from "./pages/MissingPage";
 import { NotePage } from "./pages/NotePage";
 import { NotesPage } from "./pages/NotesPage";
+import { ResumePage } from "./pages/ResumePage";
 import { WorkPage } from "./pages/WorkPage";
 import { useRouter } from "./router/context";
 import { Router } from "./router/Router";
@@ -34,6 +35,8 @@ function Page({ route }: { route: Route }) {
       const note = findNote(route.slug);
       return note ? <NotePage note={note} /> : <MissingPage />;
     }
+    case "resume":
+      return <ResumePage />;
     default:
       return <MissingPage />;
   }
