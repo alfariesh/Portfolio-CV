@@ -84,10 +84,19 @@ vp exec wrangler rollback
 
 CI (`.github/workflows/ci.yml`) runs `vp check`, `vp test` and the full build
 on every push and pull request. Pushes to `main` also deploy once the repo
-has a `CLOUDFLARE_ACCOUNT_ID` variable and a `CLOUDFLARE_API_TOKEN` secret
-(token template "Edit Cloudflare Workers"); until then the deploy job is
-skipped. Set the optional `SITE_URL` variable to show the live URL on the
-deployment.
+has a `CLOUDFLARE_ACCOUNT_ID` variable and a `CLOUDFLARE_API_TOKEN` secret;
+until then the deploy job is skipped. One command sets them up:
+
+```bash
+vp run setup:deploy      # once: repo variables, the API token, a first deploy
+```
+
+It reads the account from `wrangler whoami` and the site URL (the `SITE_URL`
+variable) from `src/seo.ts`, opens the Cloudflare token page, asks you to
+paste a token from the "Edit Cloudflare Workers" template, checks it and
+stores it with `gh secret set`, then starts CI on `main`. After that, merging
+to `main` is the deploy. To redeploy without a commit, run the CI workflow
+by hand (Actions → CI → Run workflow, or `gh workflow run ci.yml --ref main`).
 
 ## Forking
 
