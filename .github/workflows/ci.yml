@@ -30,13 +30,14 @@ jobs:
       # boundary, so a green build means every page renders.
       - run: vp run build
 
-  # Deploys main to Cloudflare Workers once checks pass. Off until the repo
-  # has a CLOUDFLARE_ACCOUNT_ID variable and a CLOUDFLARE_API_TOKEN secret
-  # (Settings → Secrets and variables → Actions), so forks don't fail here.
+  # Deploys main to Cloudflare Workers once checks pass, on a push or a manual
+  # run (Actions → CI → Run workflow). Off until the repo has a
+  # CLOUDFLARE_ACCOUNT_ID variable and a CLOUDFLARE_API_TOKEN secret, so forks
+  # don't fail here; `vp run setup:deploy` sets both.
   deploy:
     name: Deploy to Cloudflare
     needs: check
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.CLOUDFLARE_ACCOUNT_ID != ''
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.CLOUDFLARE_ACCOUNT_ID != ''
     runs-on: ubuntu-latest
     environment:
       name: production

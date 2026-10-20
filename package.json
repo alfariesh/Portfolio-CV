@@ -16,6 +16,7 @@
     "preview:cf": "vp run build && wrangler dev",
     "deploy": "vp run build && wrangler deploy",
     "deploy:preview": "vp run build && wrangler versions upload",
+    "setup:deploy": "node scripts/setup-deploy.ts",
     "og": "node scripts/og.ts"
   },
   "dependencies": {
