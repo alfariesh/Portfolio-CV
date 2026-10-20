@@ -1,0 +1,18 @@
+export const meta = {
+  title: "paper texture, zero folds",
+  summary:
+    "the grain behind this site is a WebGL shader. Here it is with the controls exposed, and the reason the folds stay off.",
+  date: "2026-10-14",
+  tag: "video",
+  cover: "zero-folds",
+};
+
+The footer of this site sits on paper fibre: a static WebGL texture from Paper's open-source shader library. It adds the grain you'd feel on a real sheet, at almost no cost, because it renders once and never animates.
+
+The shader can do much more than grain. It can fold, wrinkle and crumple the sheet too, and on its own those look lovely. Next to the grid they don't. Every fold is a line, and this site already has exactly the lines it needs: cell borders, registration marks and the rulers on the edge. Turn the folds on below and watch the page get busier.
+
+<PaperDemo />
+
+So the rule became: fibre and roughness only, folds, wrinkles, crumples and drops at zero. The shader loads lazily into its own chunk, the plain paper colour shows until it's ready, and no page runs more than two of them at once.
+
+The agent wired up the shader and the lazy loading in a few minutes. Deciding that a beautiful effect didn't belong took longer, and that part was mine. More on how this site was made in [rebuilding this site in an afternoon](/notes/rebuilding-in-an-afternoon).

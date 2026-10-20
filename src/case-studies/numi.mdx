@@ -1,0 +1,73 @@
+export const meta = {
+  title: "Numi",
+  kind: "field intelligence app",
+  tagline: "know what to do, know if you're winning",
+  summary:
+    "a market intelligence platform for field teams, redesigned so account executives know exactly what to do each day and managers can see whether the market is covered",
+  year: "2024 – 2025",
+  role: "product design, mobile design, frontend development",
+  industry: "agriculture & field intelligence",
+  platform: "mobile & dashboard",
+  art: "numi",
+  order: 5,
+};
+
+## the brief
+
+Numi is the app a regional account executive opens first thing in the morning to find out what to do that day, and the app a manager opens to see whether the market is actually being covered. It replaced an older tool that held data but never told anyone what to do with it.
+
+That tool treated every user like an analyst at a desk, when they were really on motorbikes, in warehouses and at distributor counters with one hand on a phone. The result was predictable: low daily engagement, inconsistent reporting, and managers who never quite trusted that coverage was complete.
+
+## two things, every day
+
+Ask an account executive what the job really is and the honest answer fits in a sentence: hit your monthly target, and finish today's tasks. That became the spine of the product. Not a feature list, a hierarchy.
+
+Once "target and task" was the north star, a hundred smaller decisions answered themselves. The home screen shows today's tasks. The dashboard leads with progress against target. Anything that competes with those two for attention goes.
+
+## the second job
+
+We assumed the hard problem was market research. Sitting with the field teams, a quieter job kept surfacing: making sure subsidised fertiliser actually reached the kiosks, distributors and warehouses it was meant for, with the paperwork clean. Nobody had designed for it, so nobody could see it. Numi turned out to be a coverage and compliance tool wearing a research tool's clothes.
+
+## designing for the morning
+
+Opening Numi lands on today: the tasks the regional manager already assigned, laid out so the next action is obvious. Tap to start, watch the progress bar move, no deciding what to work on. Every task is a structured report on a kiosk, a distributor or a warehouse, so reporting feels like finishing today's work instead of filling out a form.
+
+The feature I'm proudest of is Mini Insight. A kiosk nobody visits for weeks isn't a data point that screams; it's an absence, and absences are invisible by default. Mini Insight makes them loud: at a glance, which kiosks are on track and which are slipping.
+
+<AiLoop
+  flow={["mobile design", "vibecoding", "working dashboard"]}
+  rows={[
+    [
+      "dashboard",
+      "built the reporting dashboard's frontend from my designs",
+      "set its one principle: lead with target, support with task",
+    ],
+    [
+      "one source",
+      "—",
+      "owned the app and the dashboard, so what's logged in the morning is what the manager sees that afternoon",
+    ],
+    [
+      "the spine",
+      "—",
+      "found \"target and task\" underneath what the field teams already did; it wasn't in any brief",
+    ],
+    [
+      "coverage",
+      "—",
+      "designed Mini Insight, so an unvisited kiosk shows up as an absence you can act on",
+    ],
+  ]}
+>
+
+I designed the mobile app, then vibecoded the manager's dashboard from concept to a working frontend. The code was the agent's part. What the product is about was mine.
+
+</AiLoop>
+
+## what changed
+
+- **from data store to daily ritual**: the old tool held information; Numi shapes a workday
+- **coverage you can prove**: Mini Insight turned unmonitored kiosks into something a manager can act on
+- **one surface, two audiences**: field teams and managers work from the same target-and-task spine, on mobile and on the dashboard
+
+Numi is a simple promise kept simple: open the app, know what to do, know if you're winning.

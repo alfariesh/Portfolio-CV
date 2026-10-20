@@ -1,5 +1,8 @@
-import { lazy, Suspense } from "react";
+import { lazy } from "react";
 import { footer, profile } from "../content";
+import { Link } from "../router/Link";
+import { ClientOnly } from "./ClientOnly";
+import { Icon } from "./Icon";
 import { Mark } from "./Mark";
 
 const PaperFibre = lazy(() => import("./PaperFibre"));
@@ -7,19 +10,22 @@ const PaperFibre = lazy(() => import("./PaperFibre"));
 export function Footer() {
   return (
     <footer className="footer">
-      <Suspense fallback={null}>
+      <ClientOnly>
         <PaperFibre className="footer__paper" />
-      </Suspense>
+      </ClientOnly>
       <div className="footer__inner container">
         <div className="footer__brand">
           <span className="footer__tile">
-            <Mark size={26} color="#FCFCF9" />
+            <Mark size={26} color="#FEFEFC" />
           </span>
           <div className="footer__sign">
             <a className="link link--soft" href={`mailto:${profile.email}`}>
               {profile.email}
             </a>
             <span className="footer__meta">© 2026 {profile.name}</span>
+            <a className="footer__meta link link--soft" href="https://iso-glow.vercel.app">
+              figures made with iso-glow ↗
+            </a>
           </div>
         </div>
         <div className="footer__cols">
@@ -27,9 +33,10 @@ export function Footer() {
             <nav key={col.title} className="footer__col" aria-label={col.title}>
               <p className="footer__title">{col.title}</p>
               {col.links.map((link) => (
-                <a key={link.label} className="link link--soft" href={link.href}>
+                <Link key={link.label} className="link link--soft" href={link.href}>
+                  {link.icon ? <Icon name={link.icon} size={18} /> : null}
                   {link.label}
-                </a>
+                </Link>
               ))}
             </nav>
           ))}

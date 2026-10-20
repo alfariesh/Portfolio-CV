@@ -1,0 +1,90 @@
+export const meta = {
+  title: "iPubers",
+  kind: "national subsidy app",
+  tagline: "a fertiliser sale you can verify",
+  summary:
+    "redesigning how Indonesia redeems subsidised fertiliser: a Rp 200B billing problem cut by 99.9% in two years",
+  year: "2023",
+  role: "product design, UX research, mobile design",
+  industry: "agriculture & government",
+  platform: "mobile",
+  art: "ipubers",
+  order: 3,
+};
+
+## the brief
+
+Indonesia spends roughly Rp 54 trillion a year subsidising fertiliser. PT Pupuk Indonesia delivers it through 516 warehouses, 1,067 distributors and 27,136 kiosks. The problem was never delivering it. It was proving that every sale went to the right farmer, within quota, when that proof was assembled by hand, on paper, weeks after the fact.
+
+iPubers is the rebrand and evolution of Rekan, refocused on one mission: subsidy redemption, done right, at the point of sale. I led the user experience and interface design for the redemption flow, and built the personas from field research with real kiosk operators.
+
+## the counter-intuitive problem
+
+Most people assume the hard part of a national subsidy is logistics. It isn't: the allocation was already delivered at around 95% every year. The expensive failure was administrative. Reporting was manual and the data sat in disconnected systems, so the government corrected billings it couldn't verify, clawing back money for sales that may have been perfectly legitimate.
+
+The number that made everyone stop: Rp 200 billion in subsidy-billing corrections in 2022 alone. Not lost fertiliser. Lost trust.
+
+## one redemption, two and a half minutes
+
+The design challenge was compressing a verification process into something a kiosk owner can finish in about two and a half minutes, even on a weak connection:
+
+1. input the farmer's national ID number
+2. check stock against the kiosk's live inventory
+3. check the farmer's quota in the ministry's e-Alokasi system
+4. photograph the farmer's ID card, geotagged and timestamped
+5. redeem: stock and allocation update at once, and the data reaches the government in about 120 ms
+
+For blank-spot kiosks there's an offline mode, and a rule that lets the photo be taken elsewhere in the same sub-district, so a connectivity problem never stops a farmer from getting fertiliser.
+
+<AiLoop
+  columns={["the machine", "the design"]}
+  flow={["nik", "stock", "e-alokasi", "ktp + ai check", "redeemed"]}
+  rows={[
+    [
+      "id photo",
+      "OCR and AI validation catch a blurred or wrong card on the spot",
+      "made the capture part of the flow, before a bad photo becomes a bad record",
+    ],
+    [
+      "verification",
+      "checks stock and quota in real time, and reports in about 120 ms",
+      "kept it to five steps a kiosk owner finishes in about two and a half minutes",
+    ],
+    [
+      "signal",
+      "—",
+      "an offline mode, and a rule that the photo can be taken elsewhere in the same sub-district",
+    ],
+    [
+      "policy",
+      "—",
+      "three revisions of the technical guidelines, with focus groups at the coordinating ministry and the ombudsman",
+    ],
+  ]}
+>
+
+Here the AI sits inside the product: it checks every ID photo before it becomes a record. Everything around it was designed for people with low digital literacy and one bar of signal.
+
+</AiLoop>
+
+## the proof
+
+<Stats
+  items={[
+    ["−99.9%", "subsidy-billing corrections, from ~Rp 200B in 2022 to ~Rp 9M by May 2024"],
+    ["Rp 181.9B", "revenue recovered that used to evaporate in unprovable corrections"],
+    ["−46%", "administrative cost per kiosk, about Rp 102B a year nationally"],
+    [
+      "95.8%",
+      "rating in the coordinating ministry's 2023 perception survey, ease of redemption at 100%",
+    ],
+  ]}
+/>
+
+The redemption standard was written into national policy, the technical guidelines of the Directorate-General of Agricultural Infrastructure, which made iPubers the official method. Stock is now visible in real time across all 27,066 kiosks, and the old SMS stock monitoring is gone.
+
+## why it matters
+
+Behind the numbers there are two people. The farmer, who needs the right fertiliser at the right moment in a season that doesn't wait. And the kiosk owner, who used to lose four extra working days at the end of every month assembling reports, carrying the quiet stress of "what if my notes are wrong?"
+
+Good governance, it turns out, is a user-experience problem.

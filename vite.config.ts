@@ -1,3 +1,4 @@
+import mdx from "@mdx-js/rollup";
 import react from "@vitejs/plugin-react";
 import { defineConfig, lazyPlugins } from "vite-plus";
 
@@ -6,8 +7,12 @@ export default defineConfig({
   staged: {
     "*": "vp check --fix",
   },
-  fmt: {},
+  // The vendored iso-glow skill stays byte-for-byte as published.
+  fmt: {
+    ignorePatterns: [".claude/skills/**"],
+  },
   lint: {
+    ignorePatterns: [".claude/skills/**"],
     plugins: ["react", "typescript", "oxc"],
     rules: {
       "react/rules-of-hooks": "error",
@@ -30,5 +35,15 @@ export default defineConfig({
       },
     ],
   },
-  plugins: lazyPlugins(() => [react()]),
+  // scripts/prerender.ts reads the manifest to preload each page's chunks,
+  // then deletes it so it isn't deployed.
+  build: {
+    manifest: true,
+  },
+  // Case studies and notes are MDX files in src/case-studies and src/notes.
+  // MDX compiles them to React components before the React plugin sees them.
+  plugins: lazyPlugins(() => [
+    { enforce: "pre", ...mdx() },
+    react({ include: /\.(mdx|jsx|tsx|ts|js)$/ }),
+  ]),
 });

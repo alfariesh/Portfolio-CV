@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "salman-alfariesh",
+  "compatibility_date": "2026-10-06",
+  // Runs only when nothing in dist/ matches and the request is not a page
+  // navigation (see worker/index.ts). Everything else is served straight from
+  // Cloudflare's asset store: free, unlimited, no Worker invocation.
+  "main": "worker/index.ts",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // Every page is prerendered to its own HTML file (scripts/prerender.ts),
+    // so an unknown path gets 404.html with a real 404 status, never a soft
+    // 404. Headers and caching live in public/_headers.
+    "not_found_handling": "404-page",
+  },
+  "observability": {
+    "enabled": true,
+  },
+  "workers_dev": true,
+  // `wrangler versions upload` gets its own <version>-<name> preview URL.
+  "preview_urls": true,
+}

@@ -1,22 +1,45 @@
-// All copy for the site lives here. Edit this file to make the portfolio yours.
+// Copy and links for the home page, nav and footer. Case studies live in
+// src/case-studies/*.mdx and notes in src/notes/*.mdx.
+import { caseStudies } from "./case-studies";
+import type { IconName } from "./components/Icon";
 
 export const profile = {
   name: "Salman Alfariesh",
   handle: "salman",
   role: "product designer & design engineer",
   location: "Indonesia",
-  // TODO: replace with your real contact details before publishing.
-  email: "hello@example.com",
-  resumeUrl: "#",
+  email: "hi@salman.ai.id",
+  // Leave a link empty to hide it: the résumé link on the home page and in the
+  // footer, a social link in the footer.
+  resumeUrl: "/resume",
+  socials: {
+    github: "https://github.com/alfariesh",
+    linkedin: "",
+    dribbble: "",
+    instagram: "",
+  } satisfies Partial<Record<IconName, string>>,
 };
 
-export const nav = [
-  { label: "work", href: "#work" },
-  { label: "systems", href: "#systems" },
-  { label: "process", href: "#process" },
-  { label: "about", href: "#about" },
-  { label: "notes", href: "#notes" },
-] as const;
+// Case studies on the home page, strongest first; /work lists all six.
+export const featuredWork = ["rekanesia", "surau", "ipubers"];
+
+// Shown on every page. Every item is a section of the home page, linked as
+// /#section; `page` is the index page that also counts as that section (the
+// header and bottom bar mark it current there). The icons sit next to the
+// labels in the header and alone in the bottom bar on small screens.
+export type NavItem = {
+  label: string;
+  href: `/#${string}`;
+  icon: IconName;
+  page?: string;
+};
+
+export const nav: NavItem[] = [
+  { label: "about", href: "/#about", icon: "user", page: "/resume" },
+  { label: "process", href: "/#process", icon: "flow" },
+  { label: "work", href: "/#work", icon: "work", page: "/work" },
+  { label: "notes", href: "/#notes", icon: "notes", page: "/notes" },
+];
 
 export const hero = {
   lead: "design, then ship it",
@@ -26,151 +49,150 @@ export const hero = {
   secondary: { label: "currently open to new work →", href: "#contact" },
 };
 
-export const tools = {
-  label: "tools I design and ship with",
-  rows: [
-    ["Paper", "React", "SwiftUI", "TypeScript", "Vite+", "Supabase"],
-    ["React Native", "Expo", "Cloudflare", "Claude Code", "HeroUI"],
-  ],
+// The band under the hero: every product with a case study, set like a logo
+// wall and linked to its page.
+export const shipped = {
+  label: "products I've designed and shipped",
 };
 
-export const intro = {
-  title: ["hello, I'm Salman", "one designer, one canvas,", "a whole connected workflow"],
-  body: "I work where design meets engineering: prototyping on the canvas, syncing tokens to code, and pairing with agents so the craft gets the attention, not the boilerplate.",
-  cta: { label: "view selected work", href: "#work" },
-};
-
-export type Project = {
-  slug: string;
-  name: string;
-  kind: string;
-  summary: string;
-};
-
-export const projects: Project[] = [
-  {
-    slug: "vuboi",
-    name: "Vuboi",
-    kind: "mobile app",
-    summary:
-      "a calm mobile experience designed on the canvas and built in React Native, sharing one token set across iOS and Android",
-  },
-  {
-    slug: "chicken-bank",
-    name: "Chicken Bank",
-    kind: "iOS app",
-    summary:
-      "a playful savings app, prototyped on the canvas with real data and rebuilt natively in SwiftUI",
-  },
-  {
-    slug: "rekanesia-pictograms",
-    name: "Rekanesia",
-    kind: "pictogram family",
-    summary:
-      "a pictogram family drawn on one shared grid, so every icon feels like it belongs to the same voice",
-  },
-  {
-    slug: "rekanesia-states",
-    name: "Rekanesia",
-    kind: "status states",
-    summary:
-      "a complete vocabulary of states — draft, in review, approved, rejected — designed as tokens, not one-offs",
-  },
-];
-
+// The home page reads top to bottom: about, process, work, notes, contact.
 export const sections = {
+  about: {
+    eyebrow: "about",
+    title: "five years of products people use every day",
+    body: "a UI/UX designer who works end to end: field research with kiosk owners, design systems a whole holding company builds on, and prototypes I code myself",
+    link: profile.resumeUrl ? { label: "résumé →", href: profile.resumeUrl } : null,
+    tools: "tools I design and ship with",
+    stats: [
+      ["5+", "years designing end-to-end products"],
+      ["28,000+", "kiosks running the system I designed"],
+      ["5", "brands from one token file"],
+      ["2", "international awards for Rekan"],
+    ] as [string, string][],
+  },
+  process: {
+    eyebrow: "how I work",
+    title: "from the field to the codebase",
+    body: "research before pixels, a system before screens, and agents for the boilerplate so the details get my attention",
+    link: { label: "how this site was built →", href: "/notes/rebuilding-in-an-afternoon" },
+    steps: [
+      {
+        title: "start in the field",
+        body: "I sit with the people who will use it: kiosk owners, distributors, the staff behind the counter. Their day decides the design",
+      },
+      {
+        title: "build the system first",
+        body: "variable tokens and multi-brand themes come before screens, so a rebrand is a two-day job instead of a week",
+      },
+      {
+        title: "prototype in code",
+        body: "agents read the canvas and scaffold the components, so stakeholders test a working web prototype, not a slideshow",
+      },
+      {
+        title: "ship it with care",
+        body: "every generated line is reviewed, formatted, linted and type-checked before it ships. Taste and motion stay with me",
+      },
+    ],
+  },
   work: {
     eyebrow: "selected work",
     title: "from canvas to code, and back again",
-    body: "a few recent projects — each one designed on the canvas, prototyped with real content and shipped by the same pair of hands",
+    link: { label: "see all work", href: "/work" },
+    body: "a multi-brand design system, an Islamic wiki built on classical texts and a national subsidy app: real content, real constraints, real people",
   },
-  systems: {
-    eyebrow: "design systems",
-    title: "systems that scale, pictograms that speak",
-    body: "tokens, states and icon families built once and used everywhere — from the canvas all the way to the component library",
-  },
-  process: {
-    eyebrow: "process",
-    title: "hand off the boilerplate, keep the human touch",
-    body: "agents read my canvas, scaffold the components and sync the tokens. I stay on taste, motion and the details that make it feel alive",
-    points: [
-      {
-        title: "agents that see the canvas",
-        body: "MCP connects the design file to the editor, so components start from the real design, not from a screenshot",
-      },
-      {
-        title: "stay in control",
-        body: "every generated line is reviewed, formatted, linted and type-checked with Vite+ before it ships",
-      },
-    ],
+  notes: {
+    eyebrow: "notes",
+    title: "notes from the studio",
+    body: "short notes on experiments, workflows and prompts: what worked, what didn't, and why",
+    link: { label: "see all notes", href: "/notes" },
   },
   contact: {
     eyebrow: "let's talk",
     title: "have a product that deserves the details?",
-    body: "I'm open to product design, design-system and design-engineering work. Tell me what you're building.",
+    body: "I'm open to product design, design-system and design-engineering roles, remote or in Jakarta. Tell me what you're building.",
     cta: "say hello",
   },
 };
 
-export const now = {
-  title: ["Now", "&Next"],
-  body: "exploring agent-assisted design systems, SwiftUI motion and faster web toolchains. Always happy to trade notes.",
-  cta: { label: "read the notes", href: "#notes" },
+// The about section's fact sheet, from the résumé. Newest first in each group.
+export type Fact = { title: string; place: string; years: string };
+
+type Facts = {
+  experience: Fact[];
+  education: Fact[];
+  awards: Fact[];
+  expertise: string[];
 };
 
-export const notes = [
-  {
-    id: "notes",
-    title: "what's new in the studio",
-    body: "october, 2026: rebuilt this portfolio with Vite+, designed on a Paper canvas and shipped in an afternoon",
-    link: { label: "build log →", href: "#notes" },
-  },
-  {
-    id: "about",
-    title: "about Salman",
-    body: "a designer who codes. I sketch on the canvas, ship in React and Swift, and let agents handle the boilerplate",
-    link: { label: "download résumé →", href: profile.resumeUrl },
-  },
-];
-
-export const footer = {
-  columns: [
+export const facts: Facts = {
+  experience: [
+    { title: "UI/UX designer", place: "PT Pupuk Indonesia, Jakarta", years: "2021 – now" },
+    { title: "graphic designer", place: "MAK Travel, Egypt", years: "2020" },
+  ],
+  education: [
     {
-      title: "portfolio",
-      links: [
-        { label: "home", href: "#top" },
-        { label: "work", href: "#work" },
-        { label: "process", href: "#process" },
-        { label: "about", href: "#about" },
-      ],
+      title: "UI/UX design bootcamp",
+      place: "Purwadhika Digital Technology School",
+      years: "2021",
+    },
+    { title: "Islamic theology", place: "Al-Azhar University, Cairo", years: "2016 – 2020" },
+  ],
+  awards: [
+    {
+      title: "Gold Stevie® Award",
+      place: "innovation in shopping or e-commerce apps, for Rekan",
+      years: "2023",
     },
     {
-      title: "projects",
-      links: [
-        { label: "Vuboi", href: "#work" },
-        { label: "Chicken Bank", href: "#work" },
-        { label: "Rekanesia", href: "#systems" },
-        { label: "Numi", href: "#work" },
-        { label: "iPubers", href: "#work" },
-      ],
-    },
-    {
-      // TODO: point these at your real profiles.
-      title: "elsewhere",
-      links: [
-        { label: "github", href: "#" },
-        { label: "linkedin", href: "#" },
-        { label: "dribbble", href: "#" },
-        { label: "instagram", href: "#" },
-      ],
-    },
-    {
-      title: "colophon",
-      links: [
-        { label: "built with Vite+", href: "https://viteplus.dev" },
-        { label: "designed in Paper", href: "https://paper.design" },
-        { label: "set in system sans", href: "#top" },
-      ],
+      title: "IDC Future Enterprise Award",
+      place: "best in future of industry ecosystem, Asia-Pacific, for Rekan",
+      years: "2022",
     },
   ],
+  expertise: [
+    "design systems",
+    "multi-brand tokens",
+    "mobile app design",
+    "web dashboards",
+    "field research",
+    "user interviews",
+    "AI-assisted prototyping",
+    "developer handoff",
+    "graphic design",
+  ],
+};
+
+type FooterLink = { label: string; href: string; icon?: IconName };
+type FooterColumn = { title: string; links: FooterLink[] };
+
+export const footer: { columns: FooterColumn[] } = {
+  columns: (
+    [
+      {
+        title: "portfolio",
+        links: [
+          { label: "home", href: "/", icon: "home" },
+          { label: "work", href: "/work", icon: "work" },
+          { label: "notes", href: "/notes", icon: "notes" },
+          { label: "about", href: "/#about", icon: "user" },
+          ...(profile.resumeUrl
+            ? [{ label: "résumé", href: profile.resumeUrl, icon: "file" as const }]
+            : []),
+          { label: "feed", href: "/notes/feed.xml", icon: "feed" },
+        ],
+      },
+      {
+        title: "case studies",
+        links: caseStudies
+          .filter((study) => !["numi", "rekan"].includes(study.slug))
+          .map((study) => ({ label: study.title, href: `/work/${study.slug}` })),
+      },
+      {
+        title: "elsewhere",
+        links: Object.entries(profile.socials)
+          .filter(([, href]) => href)
+          .map(([name, href]) => ({ label: name, href, icon: name as IconName })),
+      },
+    ] satisfies FooterColumn[]
+  ).filter((column) => column.links.length > 0),
 };

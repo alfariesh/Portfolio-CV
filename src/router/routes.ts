@@ -1,0 +1,34 @@
+export type Route =
+  | { name: "home" }
+  | { name: "works" }
+  | { name: "work"; slug: string }
+  | { name: "notes" }
+  | { name: "note"; slug: string }
+  | { name: "resume" }
+  | { name: "missing" };
+
+export function matchRoute(pathname: string): Route {
+  const [section, slug, ...rest] = pathname.split("/").filter(Boolean);
+  if (!section) return { name: "home" };
+  if (rest.length > 0) return { name: "missing" };
+  if (section === "work") return slug ? { name: "work", slug } : { name: "works" };
+  if (section === "notes") return slug ? { name: "note", slug } : { name: "notes" };
+  if (section === "resume" && !slug) return { name: "resume" };
+  return { name: "missing" };
+}
+
+// A path to a file (the feed, a social card) rather than a page: the browser
+// loads it, the router stays out of the way.
+export const isFile = (pathname: string) => /\.[a-z0-9]+$/i.test(pathname);
+
+// Going up to a parent page (a note back to /notes, anything back to /) slides
+// back; everything else slides forward.
+export function directionOf(from: string, to: string): NavDirection {
+  const isParent = to === "/" || from.startsWith(to.endsWith("/") ? to : `${to}/`);
+  return isParent && from !== to ? "nav-back" : "nav-forward";
+}
+
+export type NavDirection = "nav-forward" | "nav-back";
+
+// Navigation API: Chrome, Edge, Safari 26.2+, Firefox 147+.
+export const getNavigation = () => (window as { navigation?: Navigation }).navigation;

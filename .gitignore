@@ -27,3 +27,10 @@ dist-ssr
 .env
 .env.*
 !.env.example
+
+# Cloudflare (wrangler dev state and cache)
+.wrangler
+
+# Claude Code: private, per-machine notes
+CLAUDE.local.md
+.claude/settings.local.json

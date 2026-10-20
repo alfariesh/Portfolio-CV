@@ -1,4 +1,4 @@
-type CursorProps = { name: string; tone: "you" | "agent" | "mcp"; x: number; y: number };
+type CursorProps = { name: string; tone: "you" | "agent"; x: number; y: number };
 
 // A collaborator cursor with a name tag, positioned inside a relative parent.
 export function Cursor({ name, tone, x, y }: CursorProps) {

@@ -6,6 +6,12 @@
       "runtimeExecutable": "vp",
       "runtimeArgs": ["dev", "--port", "5173", "--strictPort"],
       "port": 5173
+    },
+    {
+      "name": "cloudflare",
+      "runtimeExecutable": "vp",
+      "runtimeArgs": ["exec", "wrangler", "dev", "--port", "8787"],
+      "port": 8787
     }
   ]
 }

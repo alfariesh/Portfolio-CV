@@ -1,0 +1,266 @@
+/* ------------------------------------------------------------------ */
+/* iso-glow figures (IsoFigure.tsx)                                    */
+/*                                                                     */
+/* The iso-glow light theme, warmed to sit on paper: hairline drawing, */
+/* one ember accent only on what is live, no ambient glow. Figures use */
+/* these tokens only, never a literal colour.                          */
+/* ------------------------------------------------------------------ */
+
+.iso {
+  --panel: #f6f7f3;
+  --edge: #e4e6de;
+  --line: #65675e;
+  --detail: #d8dad1;
+  --body: #f6f7f3;
+  --deck: #fefefc;
+  --ink: #65675e;
+  --ink-hi: #23251d;
+  --live: #1e1f23;
+  --glass: #eeefe9;
+  --recess: #eeefe9;
+  --accent: #f54e00;
+  --accent-hi: #ff9a66;
+  --accent-dim: color-mix(in srgb, var(--accent) 10%, transparent);
+  --glass-on: color-mix(in srgb, var(--accent) 12%, #f6f7f3);
+  --mono: var(--font-mono);
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--mono);
+}
+
+.iso__plate {
+  position: relative;
+  width: 100%;
+  background: var(--panel);
+  transition: background 0.5s;
+}
+
+/* power(true): a warm haze behind the figure while it is on. */
+.iso__plate.is-on {
+  background:
+    radial-gradient(ellipse 50% 45% at 50% 52%, var(--accent-dim), transparent 72%), var(--panel);
+}
+
+.iso__stage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.iso--still .iso__stage {
+  pointer-events: none;
+}
+
+.iso__stage:focus {
+  outline: none;
+}
+
+.iso__stage:focus-visible {
+  outline: 1px dashed var(--line);
+  outline-offset: -8px;
+}
+
+.iso__cap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 18px;
+  padding: 12px 16px 14px;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.iso__readout {
+  color: var(--ink-hi);
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+/* Shared figure vocabulary (light theme: no blur, no halos). :where() keeps
+   these at the lowest specificity, so a figure's own [data-fig] rules win
+   whatever order the stylesheets load in. */
+.iso__stage text {
+  font-family: var(--mono);
+}
+
+:where(.iso) [filter] {
+  filter: none;
+}
+
+:where(.iso) .face {
+  fill: var(--body);
+  stroke: var(--line);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-linejoin: round;
+}
+
+:where(.iso) .face.top {
+  fill: var(--deck);
+}
+
+:where(.iso) .face.recess {
+  fill: var(--recess);
+}
+
+:where(.iso) .detail {
+  fill: none;
+  stroke: var(--detail);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+:where(.iso) .label {
+  fill: var(--ink);
+  font-family: var(--mono);
+}
+
+:where(.iso) .glass {
+  fill: var(--glass);
+  transition:
+    fill 0.3s,
+    stroke 0.3s;
+}
+
+:where(.iso) .glass.hot {
+  fill: var(--glass-on);
+  stroke: var(--accent);
+}
+
+:where(.iso) .halo {
+  display: none;
+}
+
+:where(.iso) .scr {
+  fill: var(--accent-hi);
+  font-family: var(--mono);
+}
+
+:where(.iso) .scr-accent {
+  fill: var(--accent);
+}
+
+:where(.iso) .led {
+  fill: var(--detail);
+  transition: fill 0.2s;
+}
+
+:where(.iso) .led.hot {
+  fill: var(--accent);
+}
+
+:where(.iso) .wire {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.4s;
+}
+
+:where(.iso) .wire.hot {
+  stroke: var(--accent);
+}
+
+:where(.iso) .wire-under {
+  fill: none;
+  stroke: var(--panel);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+:where(.iso) .pulse {
+  fill: none;
+  stroke: var(--accent-hi);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 70 1200;
+  stroke-dashoffset: 70;
+  opacity: 0;
+}
+
+:where(.iso) .pulse.go {
+  animation: iso-flow 0.55s linear;
+}
+
+@keyframes iso-flow {
+  0% {
+    stroke-dashoffset: 70;
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -1000;
+    opacity: 0;
+  }
+}
+
+:where(.iso) .press {
+  cursor: pointer;
+  transition: transform 60ms ease-out;
+}
+
+:where(.iso) .press.down {
+  transform: translateY(3px);
+}
+
+:where(.iso) .press .face {
+  transition:
+    fill 0.6s ease-out,
+    stroke 0.6s ease-out;
+}
+
+:where(.iso) .press.lit .face,
+:where(.iso) .press.latched .face {
+  fill: var(--accent);
+  stroke: var(--accent-hi);
+  transition: none;
+}
+
+:where(.iso) .press.lit .face.top,
+:where(.iso) .press.latched .face.top {
+  fill: var(--accent-hi);
+}
+
+:where(.iso--live) .press:hover .face.top {
+  stroke: var(--ink);
+}
+
+:where(.iso) .blink {
+  animation: iso-blink 1s steps(1) infinite;
+}
+
+@keyframes iso-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(.iso) .press,
+  :where(.iso) .glass,
+  :where(.iso) .press .face,
+  :where(.iso) .wire,
+  .iso__plate {
+    transition: none;
+  }
+
+  :where(.iso) .blink,
+  :where(.iso) .pulse.go {
+    animation: none;
+  }
+}

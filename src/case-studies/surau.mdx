@@ -1,0 +1,69 @@
+export const meta = {
+  title: "Surau",
+  kind: "islamic wiki",
+  tagline: "answers you can check",
+  summary:
+    "an Islamic wiki built on classical texts, designed around one rule: never let someone believe an answer they can't verify",
+  year: "2025",
+  role: "product design, UX research, AI-assisted development",
+  industry: "religion & education",
+  platform: "web app",
+  art: "surau",
+  order: 2,
+};
+
+## the brief
+
+Surau didn't begin with a technology. It began with a discomfort. Ask an AI a question about Islam and it answers instantly, fluently, with total confidence. Ask where the answer came from, and the confidence falls apart. For a recipe that's fine. For someone's faith it's quietly dangerous: a person can be confidently misled about something they hold sacred, and never know it.
+
+So the product got one job, and it became my entire brief: **never let someone believe an answer they can't verify.**
+
+## designing for verification
+
+Most products in this space optimise for more answers, faster. I chose the opposite. A single answer you can trace back to a real page in a real book is worth more than a thousand fluent answers you have to take on faith.
+
+I designed the conversation like an interface. Where does a reader get confused? Where do they need proof instead of prose? Every answer hands the reader the page: the heading, the exact page number, a verbatim quote and a link straight into the source.
+
+## designing for refusal
+
+Everyone's instinct is to make the product answer better. I spent my energy on the opposite: making it trustworthy enough to say "this isn't in the source." A product about faith that confidently invents an answer is worse than one that admits a limit, so a graceful, honest "I don't know" was a deliberate design decision.
+
+<AiLoop
+  flow={["classical texts", "retrieval", "draft → review → publish"]}
+  rows={[
+    [
+      "answers",
+      "finds the passage and drafts the answer",
+      "designed every answer to carry the heading, the page, a verbatim quote and a link",
+    ],
+    [
+      "limits",
+      "says when a question isn't in the source",
+      "made that refusal feel like integrity, not failure",
+    ],
+    [
+      "review",
+      "enforces draft, review, publish, so nothing reaches a reader unreviewed",
+      "brought in a scholar from Al-Azhar University to judge whether what's reviewed is right",
+    ],
+    [
+      "scale",
+      "ran retrieval that genuinely worked",
+      "did the math at scale, and paused the costly part",
+    ],
+  ]}
+>
+
+Technology can organise knowledge and enforce a process. It can't judge whether a translation is faithful to a sacred source. That judgment belongs to people with real training.
+
+</AiLoop>
+
+## the hard calls
+
+Partway through, I watched a process quietly burn far more resources than it should, saw the warning, and let it run anyway. I paid roughly twelve times over for that lesson: a negative signal is a reason to stop.
+
+Then the hardest call. Retrieval worked, but as a solo builder the economics at scale didn't close, so I paused the costly part and changed the order: build the clean, verified library first, starting with the Qur'an on an official, government-published foundation, and earn the right to retrieve over it later.
+
+## where it's headed
+
+A clean, canonical, human-verified library of classical Islamic knowledge, and only then answers built on data that has earned them. Shipping the wrong thing fast is still shipping the wrong thing.

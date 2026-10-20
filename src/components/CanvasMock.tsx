@@ -1,20 +1,20 @@
 import { Cursor } from "../art/Cursor";
 import { pictogramNames } from "../art/pictogram-data";
 import { Pictogram } from "../art/pictograms";
-import { ChickenGoals, MiniScreen, VuboiHome } from "../art/screens";
+import { MiniScreen, NumiOnboarding, VuboiHome } from "../art/screens";
 import { profile } from "../content";
 import { Icon, type IconName } from "./Icon";
 
-const tabs = ["Portfolio 2026", "Rekanesia", "Vuboi", "Chicken Bank", "Numi"];
-const pages = ["Selected work", "Systems", "Process", "About"];
+const tabs = ["Portfolio 2026", "Rekanesia", "Vuboi", "Surau", "iPubers"];
+const pages = ["About", "Process", "Selected work", "Notes"];
 const artboards = [
-  "Vuboi / Home",
-  "Vuboi / Wallet",
+  "Vuboi / Planner",
+  "Vuboi / Tracker",
   "Rekanesia / Pictograms",
-  "Rekanesia / States",
-  "Chicken Bank / Goals",
+  "Rekanesia / Stepper",
+  "Surau / Answer",
   "Numi / Onboarding",
-  "iPubers / Feed",
+  "iPubers / Redemption",
 ];
 const tools: IconName[] = ["pointer", "hand", "frame", "rect", "pen", "text"];
 const about = [
@@ -29,7 +29,7 @@ const terminal = [
     cmd: "vp create vite -- --template react-ts",
     out: "Scaffolded portfolio with React + TypeScript",
   },
-  { cmd: "paper – get_computed_styles (MCP)", out: "ink #181818 · paper #FCFCF9 · line #D7D7D6" },
+  { cmd: "paper – get_computed_styles (MCP)", out: "ink #23251D · paper #FEFEFC · line #D8DAD1" },
   { cmd: "vp check", out: "pass: no lint or type errors" },
 ];
 
@@ -99,7 +99,7 @@ export function CanvasMock() {
 
         <div className="cm__canvas">
           <div className="cm__board" style={{ left: 124, top: 40 }}>
-            <span className="cm__board-label">Vuboi / Home</span>
+            <span className="cm__board-label">Vuboi / Planner</span>
             <div className="cm__selection">
               <MiniScreen width={196}>
                 <VuboiHome />
@@ -124,13 +124,13 @@ export function CanvasMock() {
           </div>
 
           <div className="cm__board" style={{ left: 352, top: 292 }}>
-            <span className="cm__board-label">Rekanesia / States</span>
+            <span className="cm__board-label">Rekanesia / Stepper</span>
             <div className="cm__states">
               {[
-                ["Draft", "draft"],
-                ["In review", "review"],
-                ["Approved", "ok"],
-                ["Rejected", "no"],
+                ["− 1 +", "draft"],
+                ["30 kg", "review"],
+                ["50 kg", "ok"],
+                ["custom", "archived"],
               ].map(([label, tone]) => (
                 <span key={label} className={`chip chip--${tone}`}>
                   <i />
@@ -141,9 +141,9 @@ export function CanvasMock() {
           </div>
 
           <div className="cm__board" style={{ left: 600, top: 40 }}>
-            <span className="cm__board-label">Chicken Bank / Goals</span>
+            <span className="cm__board-label">Numi / Onboarding</span>
             <MiniScreen width={196}>
-              <ChickenGoals />
+              <NumiOnboarding />
             </MiniScreen>
           </div>
 

@@ -1,0 +1,80 @@
+export const meta = {
+  title: "Rekan",
+  kind: "kiosk point of sale",
+  tagline: "an app a shop owner opens every morning",
+  summary:
+    "turning about 27,000 fertiliser kiosks across Indonesia into a connected point of sale, so a company that sells through partners it doesn't own can see what's happening on the ground",
+  year: "2021 – 2023",
+  role: "product design, UX research, mobile design",
+  industry: "agriculture & government",
+  platform: "mobile",
+  art: "rekan",
+  order: 6,
+};
+
+## the brief
+
+Between Pupuk Indonesia's factories and the farmer sits a layer the company could barely see: 27,136 independent kiosks across the archipelago. They recorded sales on paper, tracked farmers' credit in notebooks and reported stock by hand, if at all. Rekan is the product I helped design and ship to close that gap: one app in every kiosk owner's hands that records the sale and sends the signal home.
+
+## the real users
+
+Our research surfaced a clear persona: kiosk owners aged 45 to 60, often with low digital literacy, sometimes in areas with weak or no signal. The usual playbook, ship a slick point of sale and users will adapt, was the wrong one. A half-adopted app produces worse data than paper, because it lies about coverage.
+
+So the win wasn't a feature-rich app. It was an app a 55-year-old kiosk owner in a low-signal village would actually open every morning. I owned the experience and interface design end to end, and built the personas, Agus Sutarya and Udin Saputra, from surveys, interviews, field observation and focus groups with real kiosk operators.
+
+## four pillars
+
+- **point of sale**: a sale logged in seconds, farmers' credit tracked, today's revenue on the home screen the way a shopkeeper glances at the till
+- **stock**: real-time stock at the kiosk, so the network knows it's running low before a farmer is turned away
+- **farmer points**: a rewards layer that let the company profile its buyers at retail for the first time
+- **ordering**: kiosks order from distributors inside the app and pay by bank transfer or paylater
+
+<Stats
+  items={[
+    ["100,000+", "combined downloads"],
+    ["15,000+", "average daily active users"],
+    ["3–4M", "transaction notes a month into the data lake"],
+    ["2", "awards: IDC Future Enterprise 2022 and a Gold Stevie 2023"],
+  ]}
+/>
+
+<AiLoop
+  columns={["the machine", "the design"]}
+  flow={["kiosk app", "transactions", "data lake", "analytics"]}
+  rows={[
+    [
+      "every sale",
+      "3–4 million notes a month flow into the company's data lake",
+      "made recording a sale take seconds, so the data exists at all",
+    ],
+    [
+      "analytics",
+      "market share, pricing, demand prediction and churn from retail data",
+      "the farmer points layer, so buyers could be profiled instead of guessed at",
+    ],
+    [
+      "stock",
+      "detects low stock at the kiosk in real time",
+      "large tap targets, plain language and today's revenue first",
+    ],
+    [
+      "people",
+      "—",
+      "two personas from surveys, interviews, field observation and focus groups",
+    ],
+  ]}
+>
+
+Rekan was designed before agents were part of my work. The machine here is the data pipeline; everything a person touches was designed around two kiosk owners.
+
+</AiLoop>
+
+## the proof
+
+Beyond the numbers, Rekan passed an ISO 27001 audit in which the auditor marked its process area as exceeding expectations and a model for other applications in the holding. It was registered for copyright with Indonesia's Ministry of Law and Human Rights, and it was the holding's first cloud-based auto-scaling microservice architecture.
+
+## the journey
+
+We didn't get there in one leap. Two years of iteration: surveying kiosk owners, watching them stumble on a screen, rebuilding it, shipping again. Designing for them meant resisting the urge to make the app impressive and committing to make it kind.
+
+That foundation made the next chapter possible. When the government asked for the whole subsidised-fertiliser flow to go digital, Rekan became [iPubers](/work/ipubers), and its components became [Rekanesia](/work/rekanesia).

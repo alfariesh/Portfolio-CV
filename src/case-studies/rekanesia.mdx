@@ -1,0 +1,81 @@
+export const meta = {
+  title: "Rekanesia",
+  kind: "design system",
+  tagline: "one product, many brands",
+  summary:
+    "a multi-brand design system: one source of truth that lets one product become many brands across design, web and native, without rebuilding",
+  year: "2021 – now",
+  role: "design system, design tokens, mobile design, frontend",
+  industry: "agriculture & government",
+  platform: "design, web & native",
+  art: "rekanesia",
+  order: 4,
+};
+
+## the day a button took a week
+
+In 2021 I was designing Rekan, a point-of-sale app for fertiliser kiosks, and I didn't think about design systems at all. Then the product scaled. One day I was asked to change a single element, and it was brutal: the same component lived in dozens of places, each slightly different, each fixed by hand. A change that should have taken minutes ate days.
+
+A mentor said what I needed to hear: the smoothness you feel now is debt you haven't paid yet. That sentence is why Rekanesia exists.
+
+## earning the right to a system
+
+I didn't start by designing a system. I started by auditing one: every screen I'd shipped, which elements repeated, how often, and how much logic each one carried.
+
+The winner was the stepper, a humble quantity input. It was the most used and most logic-heavy component in the app, with presets tied to real bag sizes like 50 kg and 30 kg. Getting it right meant understanding the business, not just the pixels. A design system isn't a land grab; you earn it one high-leverage component at a time.
+
+## the seven-day rebrand, delivered in two
+
+In 2022 the Ministry of Agriculture noticed Rekan. It was already in the hands of 28,000 kiosks, so it became the natural choice to run the national subsidised-fertiliser program, as iPubers. The catch: rebrand the whole app in seven days, design to release.
+
+Duplicating and recolouring every asset would have been fast to start and impossible to maintain. Rebuilding from scratch was out. So I moved the foundation to variable design tokens and made theming a property of the system instead of a manual repaint. I presented the full rebrand and handed it to development on day two.
+
+<Stats
+  items={[
+    ["day 2", "of a seven-day rebrand window, design handed to development"],
+    ["28,000", "kiosks running the app when the rebrand landed"],
+    ["5", "platforms compiled from one token source"],
+    ["30 × 5", "native components re-skinned into five brands at runtime"],
+  ]}
+/>
+
+## from the design file to production
+
+A design system that lives only in a design file is a suggestion. So one change carries all the way to production: update a variable, sync it through Token Studio, commit to GitHub, build with Style Dictionary, deploy to a CDN. No one re-types values into code. Three principles govern every decision: accessible on small screens and low-end devices, achievable so the right path is the easy one, and scalable as if a fourth, fifth and sixth brand are coming.
+
+<AiLoop
+  columns={["the machine", "me"]}
+  flow={["design file", "token sync", "git", "style dictionary", "5 platforms"]}
+  rows={[
+    [
+      "platforms",
+      "compiles one DTCG JSON source to Flutter, Jetpack Compose, CSS, Android XML and Swift on every push",
+      "named and layered the tokens so a new brand extends the system instead of rewriting it",
+    ],
+    [
+      "brands",
+      "a Compose prototype re-skins 30 components into 5 brands at runtime by swapping one parameter",
+      "decided what has to survive every brand: accessible, achievable, scalable",
+    ],
+    [
+      "web",
+      "@rekanesia/ui: about 37 React components on accessible primitives, styled with Tailwind",
+      "chose to lean on libraries already stable in code as the team got leaner",
+    ],
+    [
+      "building with it",
+      "an LLM reads SKILLS.md and assembles screens from Rekanesia",
+      "wrote SKILLS.md so the output stays on the system instead of guessing",
+    ],
+  ]}
+>
+
+Version 4 is the bet that the next decade of interfaces gets assembled by humans and machines, and that whoever owns the source of truth owns the consistency.
+
+</AiLoop>
+
+## what I learned
+
+The most valuable thing Rekanesia gave me wasn't a component library. It was a way of thinking: naming, layering, versioning, making sure the smallest unit is right so the largest structure holds. One source of truth. Many brands. No rebuilds.
+
+Thanks to @taufik, who defined the new colour set and vectorised the brand assets during the rebrand, and @hilal, who researched the token pipeline.
