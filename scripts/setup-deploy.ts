@@ -109,8 +109,43 @@ Create a Cloudflare API token:
 }
 
 // 5. Deploy main now rather than waiting for the next push.
+type LatestRun = { databaseId: number; event: string } | undefined;
+const latestRun = (): LatestRun => {
+  const out = run("gh", [
+    "run",
+    "list",
+    "--workflow",
+    "ci.yml",
+    "--repo",
+    repo,
+    "--limit",
+    "1",
+    "--json",
+    "databaseId,event",
+    "--jq",
+    ".[0] // empty",
+  ]);
+  return out ? (JSON.parse(out) as LatestRun) : undefined;
+};
+const before = latestRun();
 run("gh", ["workflow", "run", "ci.yml", "--repo", repo, "--ref", "main"]);
+// The dispatch lands asynchronously. Wait for its run to appear so a trigger
+// that quietly failed can't end the setup on a success note.
+const deadline = Date.now() + 30_000;
+let runId: number | undefined;
+while (!runId && Date.now() < deadline) {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const current = latestRun();
+  if (current?.event === "workflow_dispatch" && current.databaseId !== before?.databaseId) {
+    runId = current.databaseId;
+  }
+}
+if (!runId) {
+  fail(
+    "No CI run appeared within 30s of triggering it. Start one by hand: gh workflow run ci.yml --ref main",
+  );
+}
 console.log(`
-✓ CI started on main; it deploys once check, test and build pass.
-  watch it:  gh run watch --repo ${repo}
+✓ CI run ${runId} started; it deploys once check, test and build pass.
+  watch it:  gh run watch ${runId} --repo ${repo}
   from now on every push to main deploys ${siteUrl}`);
