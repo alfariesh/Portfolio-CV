@@ -17,8 +17,7 @@ import { preloadPage } from "./preload";
 import { useRouter } from "./router/context";
 import { Router } from "./router/Router";
 import type { Route } from "./router/routes";
-import bold from "./fonts/HarmonyOS_Sans_Bold.woff2?url";
-import regular from "./fonts/HarmonyOS_Sans_Regular.woff2?url";
+import googleSans from "./fonts/GoogleSans-latin.woff2?url";
 
 function Page({ route }: { route: Route }) {
   switch (route.name) {
@@ -49,10 +48,9 @@ const swap = { "nav-forward": "page-forward", "nav-back": "page-back", default: 
 
 function Site() {
   const { route, pathname, isPending } = useRouter();
-  // Headlines are bold and body text regular on every page. Preloading them
+  // One variable font covers body and headlines on every page. Preloading it
   // (a <link> in the prerendered head) saves the round trip after the CSS.
-  preload(regular, { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
-  preload(bold, { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
+  preload(googleSans, { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
   return (
     <>
       <a className="skip-link" href="#main">

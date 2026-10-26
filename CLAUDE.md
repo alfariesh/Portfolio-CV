@@ -27,7 +27,7 @@ Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug
 - Code splitting: every iso figure and every case study or note body is its own chunk (`src/chunk.ts`, read with `useChunk`); the MDX `meta` stays in the main bundle through a `?meta` glob the build trims to that export. `src/preload.ts` (`chunksFor`) lists what each page renders, including its social card's figure (`<Seo>` reads its alt text). The client loads it before `hydrateRoot` (`main.tsx`) and before every route change (the router waits for it, and warms a page on link hover or focus), the server before rendering, and the prerender turns it into `<link rel="modulepreload">` tags using the client build manifest (then deletes `dist/.vite`). A page that starts drawing another figure needs it in `chunksFor`; `src/preload.test.tsx` renders each page with only its own chunks and fails otherwise.
 - Lazy WebGL pieces (`PaperFibre`, `PaperPlayground`) go inside `<ClientOnly>`: the server can't wait for a lazy chunk, and hydrating a boundary it gave up on logs React error 419 in every visitor's console.
 - Social cards (`public/og/**.png`, 1200×630) and the PNG favicons (`favicon-96.png`, `apple-touch-icon.png`; Google doesn't read SVG favicons) are committed. `vp run og` redraws them in headless Chrome from `/social-cards/` (`src/og/*`, dev only); rerun it after changing a page's card or figure, or adding a page (a test checks every page has its card).
-- Fonts: `App.tsx` preloads HarmonyOS Sans Regular and Bold (body and headlines), the first text on every page.
+- Fonts: `App.tsx` preloads Google Sans (one self-hosted variable woff2, Latin subset, weights 400–700; body and headlines), the first text on every page.
 
 ## Where things live
 
@@ -47,7 +47,7 @@ Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug
 
 ## Design rules
 
-- Tokens (`:root` in `src/index.css`): ink `#23251d`, ink-soft `#65675e`, paper `#fefefc`, paper-deep `#f6f7f3`, line `#d8dad1`, accent `#f54e00` (also text links). Use the `var(--…)` tokens in CSS rather than hex values. HarmonyOS Sans; body 18/28, display 56/56 at −0.02em, labels 14px caps.
+- Tokens (`:root` in `src/index.css`): ink `#23251d`, ink-soft `#65675e`, paper `#fefefc`, paper-deep `#f6f7f3`, line `#d8dad1`, accent `#f54e00` (also text links). Use the `var(--…)` tokens in CSS rather than hex values. Google Sans; body 18/28, display 56/56 at −0.02em, labels 14px caps.
 - Layout: 1321px container, 1082px two-column grid of bordered cells with 12px registration marks where lines meet (`.cell::before/::after`).
 - Keep lines minimal. Only cell borders, registration marks, edge rulers, the fold edges (fill only, no stroke) and the process path's connector are allowed. The backdrop folds are one tall tile of 45° triangles and half-diamonds (`.backdrop__folds`); `<Fold corner>` (`Grid.tsx`) dog-ears a cell corner, fill only. Vary section shapes on the home page (split head + art, full head, orbit arch, path, index list) rather than repeating one. Do not add repeating background grids or graph-paper patterns to the page or cells; the user found them messy. (In the Paper reference the 120px grid tile is `no-repeat`, not a full grid.)
 - Paper texture: keep `folds`, `wrinkles`, `crumples` and `drops` at 0 so it adds no lines. Render it outside `<Scaler>` at real size, and keep to about two WebGL instances per page.
