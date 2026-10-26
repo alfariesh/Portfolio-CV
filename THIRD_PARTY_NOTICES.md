@@ -41,11 +41,12 @@ Loaded from `@fontsource-variable/caveat`. Caveat by Impallari Type.
 are not used anywhere on the site; the layout is an homage to
 [paper.design](https://paper.design).
 
-## Simple Icons (CC0 1.0)
+## Tool logos
 
-Tool logos in `src/components/tool-logos.ts` are from
-[Simple Icons](https://simpleicons.org). The logos are trademarks of their
-owners and appear only to name the tools.
+The tool logos in `src/components/tool-logos.ts` (Paper, Figma, Storybook,
+ClickUp, Jump and one still unnamed) are the tools' own marks. They are
+trademarks of their owners and appear only to name the tools the author uses.
+They are not covered by this repository's MIT License.
 
 ## Rekanesia stroke-sharp icons
 
