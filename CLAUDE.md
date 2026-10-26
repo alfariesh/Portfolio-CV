@@ -1,6 +1,6 @@
 # Salman Alfariesh — portfolio
 
-Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug>`: six case studies, the ones in `featuredWork` (`src/content.ts`) on home), notes (`/notes`, `/notes/<slug>`) and a résumé (`/resume`). React 19.3 + TypeScript on Vite+ 1.1.0, pnpm (pinned via `devEngines`), Node 24 (`.node-version`). Open source: code MIT, content all rights reserved (`LICENSE` lists the paths). A small hand-written router, no backend. The user writes in Indonesian; site copy is English, lowercase, paper.design voice.
+Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug>`: six case studies, the ones in `featuredWork` (`src/content.ts`) on home), notes (`/notes`, `/notes/<slug>`) and a résumé (`/resume`). React 19.3 + TypeScript on Vite+ 1.4.0, pnpm (pinned via `devEngines`), Node 24 (`.node-version`). Open source: code MIT, content all rights reserved (`LICENSE` lists the paths). A small hand-written router, no backend. The user writes in Indonesian; site copy is English, lowercase, paper.design voice.
 
 ## Setup notes
 
@@ -76,6 +76,10 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 ## Built-in Commands vs Scripts
 
 `vp <name>` runs a built-in command. `vp run <name>` runs a `package.json` script or a `vite.config.ts` task. Scripts cannot overwrite built-ins, so `vp dev` and `vp run dev` may do different things. Check `package.json` and `vite.config.ts` first, and run `vp run <name>` when the project defines a script or task with that name.
+
+## Running Scripts
+
+Run TypeScript and JavaScript files with `vpx <file>`, for example `vpx ./scripts/seed.ts --dry-run`. It handles enums, decorators, JSX, and tsconfig `paths`, so do not add `tsx` or `ts-node` to run scripts. `vpx --watch <file>` reruns the file when a file it uses changes, in place of `tsx watch`. `vp node <file>` runs plain Node.js.
 
 ## Tool Versions
 
