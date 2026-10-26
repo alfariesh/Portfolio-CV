@@ -9,7 +9,8 @@ import { figures, type FigureKey } from "./figures";
 import { IsoFigure } from "./IsoFigure";
 
 const params = new URLSearchParams(location.search);
-const only = params.get("fig") as FigureKey | null;
+const fig = params.get("fig");
+const only = fig && fig in figures ? (fig as FigureKey) : null;
 const width = Number(params.get("w")) || (only ? 1080 : 540);
 const [a, b] = (params.get("aspect") ?? "4/3").split("/").map(Number);
 const keys = (only ? [only] : Object.keys(figures)) as FigureKey[];
