@@ -40,7 +40,7 @@ function entry(note: Note) {
     <title>${escapeXml(note.title)}</title>
     <link rel="alternate" type="text/html" href="${escapeXml(url)}"/>
     <published>${timestamp(note.date)}</published>
-    <updated>${timestamp(note.date)}</updated>
+    <updated>${timestamp(note.updated ?? note.date)}</updated>
     <category term="${escapeXml(note.tag)}"/>
     <summary>${escapeXml(note.summary)}</summary>
     <content type="html">${escapeXml(body)}</content>
@@ -53,6 +53,11 @@ export async function feed() {
   await Promise.all(notes.map((note) => note.body.load()));
   const home = absolute("/");
   const notesUrl = absolute("/notes");
+  // ISO dates sort as text.
+  const latest = notes
+    .map((note) => note.updated ?? note.date)
+    .sort()
+    .at(-1)!;
   return `<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>${escapeXml(notesUrl)}</id>
@@ -60,7 +65,7 @@ export async function feed() {
   <subtitle>${escapeXml(seoFor("/notes").description)}</subtitle>
   <link rel="self" type="application/atom+xml" href="${escapeXml(absolute(notesFeed.path))}"/>
   <link rel="alternate" type="text/html" href="${escapeXml(notesUrl)}"/>
-  <updated>${timestamp(notes[0].date)}</updated>
+  <updated>${timestamp(latest)}</updated>
   <author>
     <name>${escapeXml(profile.name)}</name>
     <uri>${escapeXml(home)}</uri>

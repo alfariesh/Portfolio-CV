@@ -26,6 +26,11 @@ export function NotePage({ note }: { note: Note }) {
           <header className="article-head">
             <p className="article-head__meta">
               <time dateTime={note.date}>{formatDate(note.date)}</time>
+              {note.updated && (
+                <span>
+                  updated <time dateTime={note.updated}>{formatDate(note.updated)}</time>
+                </span>
+              )}
               <Tag tag={note.tag} />
             </p>
             <h1 className="article-head__title">{note.title}</h1>

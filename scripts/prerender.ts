@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 type ServerEntry = {
   render: (url: string) => Promise<string>;
   chunksFor: (url: string) => { src: string }[];
-  pages: { path: string; published?: string }[];
+  pages: { path: string; published?: string; updated?: string }[];
   site: { url: string };
   escapeXml: (text: string) => string;
   feed: () => Promise<string>;
@@ -88,9 +88,10 @@ for (const { path } of pages) await write(fileFor(path), await page(path));
 // Served with a 404 status for any unknown path (not_found_handling).
 await write("404.html", await page("/404"));
 
-const urls = pages.map(({ path, published }) => {
+const urls = pages.map(({ path, published, updated }) => {
   const loc = `<loc>${escapeXml(new URL(path, site.url).href)}</loc>`;
-  const lastmod = published ? `<lastmod>${published}</lastmod>` : "";
+  const modified = updated ?? published;
+  const lastmod = modified ? `<lastmod>${modified}</lastmod>` : "";
   return `  <url>${loc}${lastmod}</url>`;
 });
 await write(

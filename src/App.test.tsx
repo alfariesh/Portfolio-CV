@@ -156,6 +156,27 @@ describe("seo", () => {
     for (const node of graph) expect(node["@type"]).toBeTruthy();
   });
 
+  it.each(seoPages.filter((page) => page.type === "article"))(
+    "$path carries publish and modified dates",
+    ({ path, published, updated }) => {
+      expect(published).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      const html = render(path);
+      expect(head(html, /<meta property="article:published_time" content="([^"]+)"/g)).toEqual([
+        published,
+      ]);
+      expect(head(html, /<meta property="article:modified_time" content="([^"]+)"/g)).toEqual([
+        updated ?? published,
+      ]);
+      const [json] = head(html, /<script type="application\/ld\+json">(.*?)<\/script>/g);
+      const article = JSON.parse(json)["@graph"].find(
+        (node: { "@type": string }) =>
+          node["@type"] === "Article" || node["@type"] === "BlogPosting",
+      );
+      expect(article.datePublished).toBe(published);
+      expect(article.dateModified).toBe(updated ?? published);
+    },
+  );
+
   it("gives every page a unique title and description", () => {
     expect(new Set(seoPages.map((page) => page.title)).size).toBe(seoPages.length);
     expect(new Set(seoPages.map((page) => page.description)).size).toBe(seoPages.length);

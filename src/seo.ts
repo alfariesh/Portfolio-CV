@@ -33,6 +33,8 @@ export type PageSeo = {
   type: "website" | "article";
   /** ISO date the page was first published. */
   published?: string;
+  /** ISO date of the last edit; the sitemap and structured data prefer it. */
+  updated?: string;
   /** What the social card shows; its title is also og:title. */
   card: { eyebrow: string; title: string; subtitle?: string; figure: FigureKey };
   /** schema.org nodes, emitted as one JSON-LD @graph. */
@@ -168,6 +170,8 @@ const studyPages = caseStudies.map((study): PageSeo => {
     title: `${study.title}: ${study.kind} case study | ${profile.name}`,
     description: `${study.title} case study: ${study.summary}.`,
     type: "article",
+    published: study.published,
+    updated: study.updated,
     card: {
       eyebrow: `case study · ${study.kind}`,
       title: study.title,
@@ -181,6 +185,8 @@ const studyPages = caseStudies.map((study): PageSeo => {
         description: study.summary,
         image: [absolute(ogImage(path))],
         url: absolute(path),
+        datePublished: study.published,
+        dateModified: study.updated ?? study.published,
         author,
         about: study.kind,
       },
@@ -200,6 +206,7 @@ const notePages = notes.map((note): PageSeo => {
     description: note.summary,
     type: "article",
     published: note.date,
+    updated: note.updated,
     card: { eyebrow: `notes · ${note.tag}`, title: note.title, figure: note.cover },
     schema: [
       {
@@ -209,6 +216,7 @@ const notePages = notes.map((note): PageSeo => {
         image: [absolute(ogImage(path))],
         url: absolute(path),
         datePublished: note.date,
+        dateModified: note.updated ?? note.date,
         author,
         keywords: note.tag,
       },
