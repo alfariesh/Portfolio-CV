@@ -14,7 +14,9 @@ export const profile = {
   resumeUrl: "/resume",
   socials: {
     github: "https://github.com/alfariesh",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/alfariesh/",
+    x: "https://x.com/alfariesh",
+    threads: "",
     dribbble: "",
     instagram: "",
   } satisfies Partial<Record<IconName, string>>,
@@ -47,12 +49,6 @@ export const hero = {
   body: "I'm Salman — I design interfaces, design systems and mobile apps, then build them in React, React Native and Swift. Canvas and codebase, one continuous loop.",
   primary: { label: "see selected work", href: "#work" },
   secondary: { label: "currently open to new work →", href: "#contact" },
-};
-
-// The band under the hero: every product with a case study, set like a logo
-// wall and linked to its page.
-export const shipped = {
-  label: "products I've designed and shipped",
 };
 
 // The home page reads top to bottom: about, process, work, notes, contact.
@@ -170,16 +166,7 @@ export const footer: { columns: FooterColumn[] } = {
     [
       {
         title: "portfolio",
-        links: [
-          { label: "home", href: "/", icon: "home" },
-          { label: "work", href: "/work", icon: "work" },
-          { label: "notes", href: "/notes", icon: "notes" },
-          { label: "about", href: "/#about", icon: "user" },
-          ...(profile.resumeUrl
-            ? [{ label: "résumé", href: profile.resumeUrl, icon: "file" as const }]
-            : []),
-          { label: "feed", href: "/notes/feed.xml", icon: "feed" },
-        ],
+        links: nav.map(({ label, href, icon }) => ({ label, href, icon })),
       },
       {
         title: "case studies",
@@ -192,6 +179,15 @@ export const footer: { columns: FooterColumn[] } = {
         links: Object.entries(profile.socials)
           .filter(([, href]) => href)
           .map(([name, href]) => ({ label: name, href, icon: name as IconName })),
+      },
+      {
+        title: "credits",
+        links: [
+          { label: "iso-glow", href: "https://iso-glow.vercel.app" },
+          { label: "paper shaders", href: "https://github.com/paper-design/shaders" },
+          { label: "google sans", href: "https://github.com/googlefonts/googlesans" },
+          { label: "jetbrains mono", href: "https://www.jetbrains.com/lp/mono/" },
+        ],
       },
     ] satisfies FooterColumn[]
   ).filter((column) => column.links.length > 0),

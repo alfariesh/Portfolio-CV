@@ -17,7 +17,6 @@ import { site } from "../seo";
 // - a line or two of responsibilities and results for each role
 // - the degree earned at Al-Azhar (only the subject, "Islamic theology", is known)
 // - languages spoken
-// - a LinkedIn link (profile.socials.linkedin is empty)
 
 const portfolio = new URL(site.url);
 
@@ -122,13 +121,11 @@ export function ResumePage() {
               tools
             </h2>
             <ul className="skills">
-              {toolLogos
-                .filter((tool) => !tool.unnamed)
-                .map((tool) => (
-                  <li key={tool.name} className="skill">
-                    {tool.name}
-                  </li>
-                ))}
+              {toolLogos.map((tool) => (
+                <li key={tool.name} className="skill">
+                  {tool.name}
+                </li>
+              ))}
             </ul>
           </div>
         </Cell>

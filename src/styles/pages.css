@@ -362,6 +362,8 @@
 }
 
 .stats__value {
+  font-family: var(--font-code);
+  font-weight: 700;
   font-size: 40px;
   line-height: 44px;
   letter-spacing: var(--tracking-display);
@@ -651,9 +653,8 @@
 .feature-row__summary {
   margin-top: 18px;
   color: var(--ink-80);
-  font-family: var(--font-hand);
-  font-size: 26px;
-  line-height: 32px;
+  font-size: 20px;
+  line-height: 30px;
   text-wrap: pretty;
 }
 
@@ -706,9 +707,8 @@
   max-width: 600px;
   margin-top: 24px;
   color: var(--ink-80);
-  font-family: var(--font-hand);
-  font-size: 28px;
-  line-height: 34px;
+  font-size: 22px;
+  line-height: 32px;
   text-wrap: balance;
 }
 

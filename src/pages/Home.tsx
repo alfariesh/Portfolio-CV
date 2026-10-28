@@ -4,7 +4,6 @@ import { Cell, Fold, Head, Orbit } from "../components/Grid";
 import { FactList } from "../components/FactList";
 import { Icon } from "../components/Icon";
 import { Hero } from "../components/Hero";
-import { Shipped } from "../components/Shipped";
 import { ToolBelt } from "../components/ToolBelt";
 import { WorkRow } from "../components/WorkRow";
 import { NoteCover } from "../components/NoteCover";
@@ -32,8 +31,15 @@ export function Home() {
       <Hero />
 
       <div className="grid">
-        <Cell tone="clear" className="cell--shipped">
-          <Shipped />
+        <Cell className="cell--stats">
+          <dl className="stats stats--row">
+            {about.stats.map(([value, label]) => (
+              <div key={label} className="stats__item">
+                <dt className="stats__value">{value}</dt>
+                <dd className="stats__label">{label}</dd>
+              </div>
+            ))}
+          </dl>
         </Cell>
 
         <Cell span={1} className="cell--head cell--split" id="about">
@@ -47,16 +53,6 @@ export function Home() {
         </Cell>
         <Cell span={1} className="cell--art cell--split-art">
           <IsoFigure fig={useFigure("about")} />
-        </Cell>
-        <Cell className="cell--stats">
-          <dl className="stats stats--row">
-            {about.stats.map(([value, label]) => (
-              <div key={label} className="stats__item">
-                <dt className="stats__value">{value}</dt>
-                <dd className="stats__label">{label}</dd>
-              </div>
-            ))}
-          </dl>
         </Cell>
         <Cell span={1}>
           <FactList label="experience" icon="work" items={facts.experience} />
@@ -87,15 +83,15 @@ export function Home() {
           <ToolBelt label={about.tools} />
         </Cell>
 
-        <Cell className="cell--head" id="process">
-          <Fold corner="tr" />
+        <Cell span={1} className="cell--head cell--split" id="process">
           <Head eyebrow={process.eyebrow} title={process.title} body={process.body}>
             <Link className="link link--accent" href={process.link.href}>
               {process.link.label}
             </Link>
           </Head>
         </Cell>
-        <Cell className="cell--art">
+        <Cell span={1} className="cell--art cell--split-art">
+          <Fold corner="tr" />
           <IsoFigure fig={useFigure("loop")} interactive />
         </Cell>
         <Cell className="cell--path">

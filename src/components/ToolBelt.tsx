@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
-import { toolLogos } from "./tool-logos";
+import { logoScale, toolLogos } from "./tool-logos";
 
-// The tools, as a pill of app tiles drifting sideways on footer paper, closing
+// The tools, each a logo and its name, drifting sideways on footer paper, closing
 // the about section. One group is real; the rest repeat it so the loop has no
 // gap, and are hidden from assistive tech. See `.toolbelt` in src/index.css.
 const copies = 4;
@@ -15,18 +15,14 @@ export function ToolBelt({ label }: { label: string }) {
           {Array.from({ length: copies }, (_, copy) => (
             <ul key={copy} className="toolbelt__group" aria-hidden={copy > 0 || undefined}>
               {toolLogos.map((tool) => (
-                <li
-                  key={tool.name}
-                  className="toolbelt__item"
-                  title={tool.unnamed ? undefined : tool.name}
-                  style={{ "--tint": tool.tint } as CSSProperties}
-                >
+                <li key={tool.name} className="toolbelt__item">
                   <svg
                     viewBox={tool.viewBox}
-                    role={copy === 0 ? "img" : undefined}
-                    aria-label={copy === 0 ? tool.name : undefined}
+                    aria-hidden="true"
+                    style={{ "--scale": logoScale(tool.viewBox) } as CSSProperties}
                     dangerouslySetInnerHTML={{ __html: tool.markup }}
                   />
+                  <span>{tool.name}</span>
                 </li>
               ))}
             </ul>

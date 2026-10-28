@@ -26,7 +26,7 @@
   --accent-ink: #f54e00;
 
   --font-sans: "Google Sans", sans-serif;
-  --font-hand: "Caveat Variable", "Caveat", cursive;
+  --font-code: "JetBrains Mono Variable", ui-monospace, monospace;
   --font-mono: "Google Sans", sans-serif;
 
   --text-display: 56px;
@@ -837,9 +837,8 @@ main:focus {
 .head__body {
   max-width: 600px;
   text-wrap: pretty;
-  font-family: var(--font-hand);
-  font-size: 26px;
-  line-height: 32px;
+  font-size: 20px;
+  line-height: 30px;
 }
 
 .cell--head {
@@ -950,74 +949,6 @@ main:focus {
 }
 
 /* ------------------------------------------------------------------ */
-/* Shipped: the products, set like a logo wall under the hero           */
-/* ------------------------------------------------------------------ */
-
-.cell--shipped {
-  flex-direction: column;
-}
-
-.shipped {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 48px;
-  width: 100%;
-  padding: 90px 24px;
-}
-
-.shipped__label {
-  color: var(--ink-muted);
-  font-weight: 500;
-  text-align: center;
-}
-
-.shipped__rows {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-}
-
-.shipped__row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 16px 56px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.shipped__item {
-  color: #65675e;
-  font-size: 30px;
-  line-height: 44px;
-  font-weight: 600;
-  letter-spacing: -0.035em;
-  white-space: nowrap;
-  transition: color 0.15s ease;
-}
-
-.shipped__item:hover {
-  color: var(--ink);
-}
-
-/* A little typographic variety, the way a logo wall has. */
-.shipped__row:first-child li:nth-child(2) .shipped__item,
-.shipped__row:last-child li:nth-child(3) .shipped__item {
-  font-weight: 400;
-  letter-spacing: -0.01em;
-}
-
-.shipped__row:first-child li:nth-child(3) .shipped__item,
-.shipped__row:last-child li:nth-child(1) .shipped__item {
-  font-size: 24px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-/* ------------------------------------------------------------------ */
 /* About: stats and the fact sheet                                     */
 /* ------------------------------------------------------------------ */
 
@@ -1072,7 +1003,8 @@ main:focus {
 .bio__years {
   flex: none;
   color: var(--ink-muted);
-  font-size: 16px;
+  font-family: var(--font-code);
+  font-size: 14px;
   line-height: 24px;
   font-variant-numeric: tabular-nums;
 }
@@ -1119,7 +1051,7 @@ main:focus {
   align-items: center;
   gap: 40px;
   width: 100%;
-  padding: 64px var(--cell-pad);
+  padding: 64px 0;
 }
 
 .toolbelt__label {
@@ -1128,19 +1060,14 @@ main:focus {
   text-align: center;
 }
 
-/* A pill of app tiles drifting sideways. The track holds four copies of the
-   list (the last three hidden from assistive tech) and moves by one copy, so
-   the loop never shows a seam. Fill only, no outline; the ends fade out. */
+/* The tools drifting sideways, edge to edge in the cell. The track holds four
+   copies of the list (the last three hidden from assistive tech) and moves by
+   one copy, so the loop never shows a seam. */
 .toolbelt__pill {
-  --tile: 72px;
-  --tile-gap: 24px;
+  --tile-gap: 56px;
   width: 100%;
-  max-width: 720px;
-  padding: 28px 0;
+  padding: 20px 0;
   overflow: hidden;
-  border-radius: 999px;
-  background: var(--paper-deep);
-  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
 }
 
 .toolbelt__track {
@@ -1163,36 +1090,28 @@ main:focus {
   list-style: none;
 }
 
+/* Just the mark in the tool's own colours, and its name. */
 .toolbelt__item {
-  display: grid;
+  --logo-h: 38px;
+  display: flex;
   flex: none;
-  place-items: center;
-  width: var(--tile);
-  height: var(--tile);
-  border-radius: 22px;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--tint) 24%, var(--paper)),
-    color-mix(in srgb, var(--tint) 10%, var(--paper))
-  );
-  box-shadow:
-    0 8px 16px -10px rgb(35 37 29 / 45%),
-    inset 0 1px 0 rgb(255 255 255 / 70%);
-  transition:
-    translate 200ms ease,
-    box-shadow 200ms ease;
+  align-items: center;
+  gap: 14px;
+  height: 56px;
+  color: var(--ink);
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  transition: translate 200ms ease;
 }
 
 .toolbelt__item:hover {
   translate: 0 -4px;
-  box-shadow:
-    0 14px 20px -12px rgb(35 37 29 / 50%),
-    inset 0 1px 0 rgb(255 255 255 / 70%);
 }
 
 .toolbelt__item svg {
-  width: 38px;
-  height: 38px;
+  height: calc(var(--logo-h) * var(--scale));
 }
 
 @keyframes toolbelt-drift {
@@ -1209,7 +1128,7 @@ main:focus {
   --rise: 40px;
   --node: 32px;
   --gap: 32px;
-  padding: 72px var(--cell-pad) 64px;
+  padding: 56px var(--cell-pad) 48px;
 }
 
 .path {
@@ -1601,6 +1520,11 @@ main:focus {
     line-height: 26px;
   }
 
+  /* Too small to read at phone width: the hero is just its copy. */
+  .showcase {
+    display: none;
+  }
+
   .hero {
     padding-block: 48px 40px;
   }
@@ -1637,30 +1561,18 @@ main:focus {
     min-height: 440px;
   }
 
-  .shipped {
-    gap: 28px;
-    padding-block: 56px;
-  }
-
-  .shipped__rows {
-    gap: 8px;
-  }
-
-  .shipped__row {
-    gap: 4px 28px;
-  }
-
-  .shipped__item {
-    font-size: 22px !important;
-    line-height: 36px;
-  }
-
   .stats.stats--row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .cell--stats {
     padding-block: 36px;
+  }
+
+  /* The mono digits are wide: "28,000+" has to fit half the row. */
+  .stats .stats__value {
+    font-size: 30px;
+    line-height: 36px;
   }
 
   .bio {
@@ -1677,18 +1589,14 @@ main:focus {
   }
 
   .toolbelt__pill {
-    --tile: 56px;
-    --tile-gap: 16px;
-    padding-block: 20px;
+    --tile-gap: 32px;
+    padding-block: 12px;
   }
 
   .toolbelt__item {
-    border-radius: 18px;
-  }
-
-  .toolbelt__item svg {
-    width: 30px;
-    height: 30px;
+    --logo-h: 28px;
+    height: 44px;
+    font-size: 22px;
   }
 
   .cell--note {
@@ -1727,12 +1635,7 @@ main:focus {
     animation: none !important;
     transition: none !important;
   }
-  /* No drifting: show one copy of the tiles, centred. */
-  .toolbelt__pill {
-    border-radius: 40px;
-    mask-image: none;
-  }
-
+  /* No drifting: show one copy of the tools, centred. */
   .toolbelt__track {
     width: auto;
     justify-content: center;
@@ -1741,7 +1644,7 @@ main:focus {
   .toolbelt__group {
     flex-wrap: wrap;
     justify-content: center;
-    padding-right: 0;
+    padding: 0 var(--cell-pad);
   }
 
   .toolbelt__group[aria-hidden] {
