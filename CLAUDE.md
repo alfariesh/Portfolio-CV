@@ -1,6 +1,6 @@
 # Salman Alfariesh — portfolio
 
-Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug>`: six case studies, the ones in `featuredWork` (`src/content.ts`) on home), notes (`/notes`, `/notes/<slug>`) and a résumé (`/resume`). React 19.3 + TypeScript on Vite+ 1.1.0, pnpm (pinned via `devEngines`), Node 24 (`.node-version`). Open source: code MIT, content all rights reserved (`LICENSE` lists the paths). A small hand-written router, no backend. The user writes in Indonesian; site copy is English, lowercase, paper.design voice.
+Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug>`: six case studies, the ones in `featuredWork` (`src/content.ts`) on home), notes (`/notes`, `/notes/<slug>`) and a résumé (`/resume`). React 19.3 + TypeScript on Vite+ 1.4.0, pnpm (pinned via `devEngines`), Node 24 (`.node-version`). Open source: code MIT, content all rights reserved (`LICENSE` lists the paths). A small hand-written router, no backend. The user writes in Indonesian; site copy is English, lowercase, paper.design voice.
 
 ## Setup notes
 
@@ -24,10 +24,10 @@ Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug
 - `<Seo path>` (`src/components/Seo.tsx`) renders the head tags; React hoists them and swaps them on navigation. `<NoIndex>` is for the 404. JSON-LD is a data block, so the CSP doesn't need to allow it.
 - `scripts/prerender.ts` moves React's hoisted tags (`<title>`, `<meta>`, `<link>`, the figures' `<style precedence>`) into `<head>`, writes the pages, `404.html`, `sitemap.xml`, `robots.txt` and the notes feed, and fails the build on a missing or doubled `<title>` or a Suspense boundary the server gave up on.
 - The Atom feed of the notes is `/notes/feed.xml` (`src/feed.tsx`, path and title in `notesFeed` in `src/seo.ts`). Each entry carries the note's rendered body with absolute links; a note component that only works on the site (like `PaperDemo`) needs a stand-in in `bodyComponents`. Every page's head links it, the footer too, and `_headers` serves it as `application/atom+xml`. The router leaves paths with a file extension to the browser (`isFile` in `src/router/routes.ts`).
-- Code splitting: every iso figure and every case study or note body is its own chunk (`src/chunk.ts`, read with `useChunk`); the MDX `meta` stays in the main bundle through a `?meta` glob the build trims to that export. `src/preload.ts` (`chunksFor`) lists what each page renders, including its social card's figure (`<Seo>` reads its alt text). The client loads it before `hydrateRoot` (`main.tsx`) and before every route change (the router waits for it, and warms a page on link hover or focus), the server before rendering, and the prerender turns it into `<link rel="modulepreload">` tags using the client build manifest (then deletes `dist/.vite`). A page that starts drawing another figure needs it in `chunksFor`; `src/preload.test.tsx` renders each page with only its own chunks and fails otherwise.
+- Code splitting: every page component (`src/pages/chunks.ts`, except the 404, which stays in the entry), every iso figure and every case study or note body is its own chunk (`src/chunk.ts`, read with `useChunk`); the MDX `meta` stays in the main bundle through a `?meta` glob the build trims to that export. `src/preload.ts` (`chunksFor`) lists what each page renders (its page chunk first), including its social card's figure (`<Seo>` reads its alt text). The client loads it before `hydrateRoot` (`main.tsx`) and before every route change (the router waits for it, and warms a page on link hover or focus), the server before rendering, and the prerender turns it into `<link rel="modulepreload">` tags using the client build manifest (then deletes `dist/.vite`). A page that starts drawing another figure needs it in `chunksFor`; `src/preload.test.tsx` renders each page with only its own chunks and fails otherwise.
 - Lazy WebGL pieces (`PaperFibre`, `PaperPlayground`) go inside `<ClientOnly>`: the server can't wait for a lazy chunk, and hydrating a boundary it gave up on logs React error 419 in every visitor's console.
 - Social cards (`public/og/**.png`, 1200×630) and the PNG favicons (`favicon-96.png`, `apple-touch-icon.png`; Google doesn't read SVG favicons) are committed. `vp run og` redraws them in headless Chrome from `/social-cards/` (`src/og/*`, dev only); rerun it after changing a page's card or figure, or adding a page (a test checks every page has its card).
-- Fonts: `App.tsx` preloads HarmonyOS Sans Regular and Bold (body and headlines), the first text on every page.
+- Fonts: `App.tsx` preloads Google Sans (one self-hosted variable woff2, Latin subset, weights 400–700; body and headlines), the first text on every page.
 
 ## Where things live
 
@@ -47,12 +47,12 @@ Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug
 
 ## Design rules
 
-- Tokens (`:root` in `src/index.css`): ink `#23251d`, ink-soft `#65675e`, paper `#fefefc`, paper-deep `#f6f7f3`, line `#d8dad1`, accent `#f54e00` (also text links). Use the `var(--…)` tokens in CSS rather than hex values. HarmonyOS Sans; body 18/28, display 56/56 at −0.02em, labels 14px caps.
+- Tokens (`:root` in `src/index.css`): ink `#23251d`, ink-soft `#65675e`, paper `#fefefc`, paper-deep `#f6f7f3`, line `#d8dad1`, accent `#f54e00` (also text links). Use the `var(--…)` tokens in CSS rather than hex values. Google Sans; body 18/28, display 56/56 at −0.02em, labels 14px caps.
 - Layout: 1321px container, 1082px two-column grid of bordered cells with 12px registration marks where lines meet (`.cell::before/::after`).
 - Keep lines minimal. Only cell borders, registration marks, edge rulers, the fold edges (fill only, no stroke) and the process path's connector are allowed. The backdrop folds are one tall tile of 45° triangles and half-diamonds (`.backdrop__folds`); `<Fold corner>` (`Grid.tsx`) dog-ears a cell corner, fill only. Vary section shapes on the home page (split head + art, full head, orbit arch, path, index list) rather than repeating one. Do not add repeating background grids or graph-paper patterns to the page or cells; the user found them messy. (In the Paper reference the 120px grid tile is `no-repeat`, not a full grid.)
 - Paper texture: keep `folds`, `wrinkles`, `crumples` and `drops` at 0 so it adds no lines. Render it outside `<Scaler>` at real size, and keep to about two WebGL instances per page.
 - Iso figures use bare class names inside their SVG (`face`, `top`, `detail`, `label`, `glass`, `scr`, `led`, `wire`, `pulse`, `press`, `lit`, `hot`…). Don't define site-level CSS with those names: site 14px caps are `.caps`, the hero's mini screens `.mscr`.
-- Don't use Paper's logo, wordmark or brand art. The "s" monogram in `Mark.tsx` and all illustrations are original.
+- Don't use Paper's logo, wordmark or brand art, except the Paper tool tile in the tools band (the author asked for it, as one of the tools they use). The "s" monogram in `Mark.tsx` and all illustrations are original.
 
 ## Paper (design reference)
 
@@ -76,6 +76,10 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 ## Built-in Commands vs Scripts
 
 `vp <name>` runs a built-in command. `vp run <name>` runs a `package.json` script or a `vite.config.ts` task. Scripts cannot overwrite built-ins, so `vp dev` and `vp run dev` may do different things. Check `package.json` and `vite.config.ts` first, and run `vp run <name>` when the project defines a script or task with that name.
+
+## Running Scripts
+
+Run TypeScript and JavaScript files with `vpx <file>`, for example `vpx ./scripts/seed.ts --dry-run`. It handles enums, decorators, JSX, and tsconfig `paths`, so do not add `tsx` or `ts-node` to run scripts. `vpx --watch <file>` reruns the file when a file it uses changes, in place of `tsx watch`. `vp node <file>` runs plain Node.js.
 
 ## Tool Versions
 

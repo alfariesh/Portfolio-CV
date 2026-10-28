@@ -3,6 +3,7 @@ import type { Chunk } from "./chunk";
 import { featuredWork } from "./content";
 import { figures, type FigureKey } from "./iso/figures";
 import { findNote, notes } from "./notes";
+import { pageChunks } from "./pages/chunks";
 import { matchRoute } from "./router/routes";
 import { seoFor } from "./seo";
 
@@ -16,10 +17,12 @@ import { seoFor } from "./seo";
 export function chunksFor(pathname: string): Chunk<unknown>[] {
   const route = matchRoute(pathname);
   const art: FigureKey[] = [];
+  // Each page component is a chunk too (src/pages/chunks.ts).
   const bodies: Chunk<unknown>[] = [];
 
   switch (route.name) {
     case "home":
+      bodies.push(pageChunks.home);
       // As drawn by src/pages/Home.tsx: about, the loop, the featured work
       // and the two newest notes.
       art.push("about", "loop", seoFor("/").card.figure);
@@ -27,27 +30,30 @@ export function chunksFor(pathname: string): Chunk<unknown>[] {
       art.push(...notes.slice(0, 2).map((note) => note.cover));
       break;
     case "works":
+      bodies.push(pageChunks.works);
       art.push(...caseStudies.map((study) => study.art), seoFor("/work").card.figure);
       break;
     case "work": {
       const study = findCaseStudy(route.slug);
       if (study) {
         art.push(study.art);
-        bodies.push(study.body);
+        bodies.push(pageChunks.work, study.body);
       }
       break;
     }
     case "resume":
+      bodies.push(pageChunks.resume);
       art.push(seoFor("/resume").card.figure);
       break;
     case "notes":
+      bodies.push(pageChunks.notes);
       art.push(...notes.map((note) => note.cover), seoFor("/notes").card.figure);
       break;
     case "note": {
       const note = findNote(route.slug);
       if (note) {
         art.push(note.cover);
-        bodies.push(note.body);
+        bodies.push(pageChunks.note, note.body);
       }
       break;
     }

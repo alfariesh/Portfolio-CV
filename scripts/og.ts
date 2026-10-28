@@ -5,7 +5,10 @@
 //
 //   vp run og      (after changing a page's title, card or figure)
 //
-// Needs Google Chrome; set CHROME_PATH if it lives somewhere else.
+// Needs Google Chrome; set CHROME_PATH if it lives somewhere else. The raw
+// screenshots are ~250 kB each; shrink them to a 256-colour palette afterwards
+// (`pngquant --quality=80-95 --force --ext .png public/og/**/*.png` or
+// oxipng). scripts/og.test.ts fails a card over 150 kB.
 import { spawn } from "node:child_process";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";

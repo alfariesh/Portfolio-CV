@@ -8,7 +8,7 @@ export const profile = {
   handle: "salman",
   role: "product designer & design engineer",
   location: "Indonesia",
-  email: "hi@salman.ai.id",
+  email: "salman@alfariesh.ai.id",
   // Leave a link empty to hide it: the résumé link on the home page and in the
   // footer, a social link in the footer.
   resumeUrl: "/resume",

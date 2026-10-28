@@ -24,12 +24,11 @@ Copyright (c) 2026 Tolga Cohce (iso-figure, on which iso-glow is based)
 
 The full MIT text is in [.claude/skills/iso-glow/LICENSE](.claude/skills/iso-glow/LICENSE).
 
-## HarmonyOS Sans (HarmonyOS Sans Fonts License)
+## Google Sans (SIL Open Font License 1.1)
 
-`src/fonts/HarmonyOS_Sans_*.woff2`, Copyright 2021 Huawei Device Co., Ltd.
-Redistributed under the HarmonyOS Sans Fonts License Agreement, included as
-[src/fonts/LICENSE-HarmonyOS-Sans.txt](src/fonts/LICENSE-HarmonyOS-Sans.txt).
-The fonts are not covered by this repository's MIT License.
+`src/fonts/GoogleSans-latin.woff2` (the Latin subset of the variable font,
+from Google Fonts), Copyright 2025 The Google Sans Project Authors.
+License text: [src/fonts/LICENSE-Google-Sans.txt](src/fonts/LICENSE-Google-Sans.txt).
 
 ## Caveat (SIL Open Font License 1.1)
 
@@ -42,11 +41,12 @@ Loaded from `@fontsource-variable/caveat`. Caveat by Impallari Type.
 are not used anywhere on the site; the layout is an homage to
 [paper.design](https://paper.design).
 
-## Simple Icons (CC0 1.0)
+## Tool logos
 
-Tool logos in `src/components/tool-logos.ts` are from
-[Simple Icons](https://simpleicons.org). The logos are trademarks of their
-owners and appear only to name the tools.
+The tool logos in `src/components/tool-logos.ts` (Paper, Figma, Storybook,
+ClickUp, Jump and one still unnamed) are the tools' own marks. They are
+trademarks of their owners and appear only to name the tools the author uses.
+They are not covered by this repository's MIT License.
 
 ## Rekanesia stroke-sharp icons
 

@@ -1,4 +1,4 @@
-import { ViewTransition } from "react";
+import { createElement, ViewTransition, type ComponentType } from "react";
 import { preload } from "react-dom";
 import { findCaseStudy } from "./case-studies";
 import { Backdrop } from "./components/Backdrop";
@@ -6,38 +6,39 @@ import { BottomNav } from "./components/BottomNav";
 import { Footer } from "./components/Footer";
 import { Nav } from "./components/Nav";
 import { findNote } from "./notes";
-import { CaseStudyPage } from "./pages/CaseStudyPage";
-import { Home } from "./pages/Home";
+import { useChunk, type Chunk } from "./chunk";
+import { pageChunks } from "./pages/chunks";
 import { MissingPage } from "./pages/MissingPage";
-import { NotePage } from "./pages/NotePage";
-import { NotesPage } from "./pages/NotesPage";
-import { ResumePage } from "./pages/ResumePage";
-import { WorkPage } from "./pages/WorkPage";
 import { preloadPage } from "./preload";
 import { useRouter } from "./router/context";
 import { Router } from "./router/Router";
 import type { Route } from "./router/routes";
-import bold from "./fonts/HarmonyOS_Sans_Bold.woff2?url";
-import regular from "./fonts/HarmonyOS_Sans_Regular.woff2?url";
+import googleSans from "./fonts/GoogleSans-latin.woff2?url";
+
+// Reads a page's chunk (loaded before this renders, see src/preload.ts) and
+// draws it.
+function Loaded<P extends object>({ page, props }: { page: Chunk<ComponentType<P>>; props: P }) {
+  return createElement(useChunk(page), props);
+}
 
 function Page({ route }: { route: Route }) {
   switch (route.name) {
     case "home":
-      return <Home />;
+      return <Loaded page={pageChunks.home} props={{}} />;
     case "works":
-      return <WorkPage />;
+      return <Loaded page={pageChunks.works} props={{}} />;
     case "work": {
       const study = findCaseStudy(route.slug);
-      return study ? <CaseStudyPage study={study} /> : <MissingPage />;
+      return study ? <Loaded page={pageChunks.work} props={{ study }} /> : <MissingPage />;
     }
     case "notes":
-      return <NotesPage />;
+      return <Loaded page={pageChunks.notes} props={{}} />;
     case "note": {
       const note = findNote(route.slug);
-      return note ? <NotePage note={note} /> : <MissingPage />;
+      return note ? <Loaded page={pageChunks.note} props={{ note }} /> : <MissingPage />;
     }
     case "resume":
-      return <ResumePage />;
+      return <Loaded page={pageChunks.resume} props={{}} />;
     default:
       return <MissingPage />;
   }
@@ -49,10 +50,9 @@ const swap = { "nav-forward": "page-forward", "nav-back": "page-back", default: 
 
 function Site() {
   const { route, pathname, isPending } = useRouter();
-  // Headlines are bold and body text regular on every page. Preloading them
+  // One variable font covers body and headlines on every page. Preloading it
   // (a <link> in the prerendered head) saves the round trip after the CSS.
-  preload(regular, { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
-  preload(bold, { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
+  preload(googleSans, { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
   return (
     <>
       <a className="skip-link" href="#main">
