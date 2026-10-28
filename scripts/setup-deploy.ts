@@ -11,6 +11,7 @@
 import { execFileSync, spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import { createInterface } from "node:readline";
+import { dispatchDeploy } from "./deploy-ci.ts";
 
 const tokenPage = "https://dash.cloudflare.com/profile/api-tokens";
 
@@ -109,8 +110,11 @@ Create a Cloudflare API token:
 }
 
 // 5. Deploy main now rather than waiting for the next push.
-run("gh", ["workflow", "run", "ci.yml", "--repo", repo, "--ref", "main"]);
+const ciRun = await dispatchDeploy(repo, (args) => run("gh", args)).catch((error: unknown) =>
+  fail(error instanceof Error ? error.message : String(error)),
+);
 console.log(`
-✓ CI started on main; it deploys once check, test and build pass.
-  watch it:  gh run watch --repo ${repo}
+✓ CI run ${ciRun.databaseId} started; it deploys once check, test and build pass.
+  run:       ${ciRun.url}
+  watch it:  gh run watch ${ciRun.databaseId} --repo ${repo}
   from now on every push to main deploys ${siteUrl}`);

@@ -32,8 +32,11 @@ jobs:
 
   # Deploys main to Cloudflare Workers once checks pass, on a push or a manual
   # run (Actions → CI → Run workflow). Off until the repo has a
-  # CLOUDFLARE_ACCOUNT_ID variable and a CLOUDFLARE_API_TOKEN secret, so forks
-  # don't fail here; `vp run setup:deploy` sets both.
+  # CLOUDFLARE_ACCOUNT_ID variable, so forks don't fail here; `vp run
+  # setup:deploy` sets it and the CLOUDFLARE_API_TOKEN secret. The `secrets`
+  # context can't be read from a job-level `if`, so the first step fails fast
+  # with instructions when the token is missing instead of leaving wrangler's
+  # non-interactive error to explain it.
   deploy:
     name: Deploy to Cloudflare
     needs: check
@@ -46,6 +49,14 @@ jobs:
       group: deploy-production
       cancel-in-progress: false
     steps:
+      - name: Fail fast if the API token is missing
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::CLOUDFLARE_API_TOKEN is not set on this repo. Create a token from the 'Edit Cloudflare Workers' template at https://dash.cloudflare.com/profile/api-tokens, then: gh secret set CLOUDFLARE_API_TOKEN (or rerun vp run setup:deploy)."
+            exit 1
+          fi
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: voidzero-dev/setup-vp@cab1ab9eaff52d4857875f4f2c016e36af8f2c76 # v1.22.0
         with:
