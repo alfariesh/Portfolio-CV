@@ -121,13 +121,11 @@ export function ResumePage() {
               tools
             </h2>
             <ul className="skills">
-              {toolLogos
-                .filter((tool) => !tool.unnamed)
-                .map((tool) => (
-                  <li key={tool.name} className="skill">
-                    {tool.name}
-                  </li>
-                ))}
+              {toolLogos.map((tool) => (
+                <li key={tool.name} className="skill">
+                  {tool.name}
+                </li>
+              ))}
             </ul>
           </div>
         </Cell>

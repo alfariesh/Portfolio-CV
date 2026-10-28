@@ -47,12 +47,13 @@ Portfolio in the style of paper.design: a home page, work (`/work`, `/work/<slug
 
 ## Design rules
 
+- Fonts: Google Sans for everything (`--font-sans`); JetBrains Mono (`--font-code`, `@fontsource-variable/jetbrains-mono`) only for numbers and code-like text: the stats (bold), fact-sheet years, the hero mock's inspector fields and terminal. No handwriting font.
 - Tokens (`:root` in `src/index.css`): ink `#23251d`, ink-soft `#65675e`, paper `#fefefc`, paper-deep `#f6f7f3`, line `#d8dad1`, accent `#f54e00` (also text links). Use the `var(--…)` tokens in CSS rather than hex values. Google Sans; body 18/28, display 56/56 at −0.02em, labels 14px caps.
 - Layout: 1321px container, 1082px two-column grid of bordered cells with 12px registration marks where lines meet (`.cell::before/::after`).
 - Keep lines minimal. Only cell borders, registration marks, edge rulers, the fold edges (fill only, no stroke) and the process path's connector are allowed. The backdrop folds are one tall tile of 45° triangles and half-diamonds (`.backdrop__folds`); `<Fold corner>` (`Grid.tsx`) dog-ears a cell corner, fill only. Vary section shapes on the home page (split head + art, full head, orbit arch, path, index list) rather than repeating one. Do not add repeating background grids or graph-paper patterns to the page or cells; the user found them messy. (In the Paper reference the 120px grid tile is `no-repeat`, not a full grid.)
 - Paper texture: keep `folds`, `wrinkles`, `crumples` and `drops` at 0 so it adds no lines. Render it outside `<Scaler>` at real size, and keep to about two WebGL instances per page.
 - Iso figures use bare class names inside their SVG (`face`, `top`, `detail`, `label`, `glass`, `scr`, `led`, `wire`, `pulse`, `press`, `lit`, `hot`…). Don't define site-level CSS with those names: site 14px caps are `.caps`, the hero's mini screens `.mscr`.
-- Don't use Paper's logo, wordmark or brand art, except the Paper tool tile in the tools band (the author asked for it, as one of the tools they use). The "s" monogram in `Mark.tsx` and all illustrations are original.
+- Don't use Paper's logo, wordmark or brand art, except the Paper logo in the tools band (the author asked for it, as one of the tools they use). The "s" monogram in `Mark.tsx` and all illustrations are original.
 
 ## Paper (design reference)
 
