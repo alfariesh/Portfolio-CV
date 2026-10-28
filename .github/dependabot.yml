@@ -10,3 +10,13 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    groups:
+      # React and its renderer require the same exact version.
+      react:
+        patterns:
+          - react
+          - react-dom
+    ignore:
+      # Match the Node 24 runtime selected by .node-version and CI.
+      - dependency-name: "@types/node"
+        update-types: [version-update:semver-major]
