@@ -43,8 +43,8 @@ are not used anywhere on the site; the layout is an homage to
 
 ## Tool logos
 
-The tool logos in `src/components/tool-logos.ts` (Paper, Figma, Storybook,
-ClickUp, n8n and PostHog) are the tools' own marks. They are
+The tool logos in `src/components/tool-logos.ts` (Paper, Figma, ClickUp,
+n8n, PostHog, Claude Code and Codex) are the tools' own marks. They are
 trademarks of their owners and appear only to name the tools the author uses.
 They are not covered by this repository's MIT License.
 
