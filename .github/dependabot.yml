@@ -5,3 +5,8 @@ updates:
     directory: /
     schedule:
       interval: monthly
+  # React, Vite+, wrangler and the shader package get CVE alerts and version PRs.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly

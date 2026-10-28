@@ -23,7 +23,7 @@ jobs:
         with:
           node-version-file: .node-version
           cache: true
-      - run: vp check
+      - run: vp check --deny-warnings
       - run: vp test
       # The real build: type-check, client and server bundles, every page
       # prerendered. It fails on a missing <title> or an abandoned Suspense

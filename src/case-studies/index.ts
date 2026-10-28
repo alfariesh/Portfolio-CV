@@ -12,6 +12,10 @@ export type CaseStudyMeta = {
   /** One sentence for the home page and the page header. */
   summary: string;
   year: string;
+  /** ISO date the case study went on the site, e.g. "2026-10-14". */
+  published: string;
+  /** ISO date of the last edit; set it when the story changes. */
+  updated?: string;
   role: string;
   industry: string;
   platform: string;

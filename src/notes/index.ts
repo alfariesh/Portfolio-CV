@@ -23,6 +23,8 @@ export type NoteMeta = {
   summary: string;
   /** ISO date, e.g. "2026-10-12". */
   date: string;
+  /** ISO date of the last edit; set it when the note changes. */
+  updated?: string;
   tag: Tag;
   /** iso-glow figure for the list and the page header. */
   cover: FigureKey;

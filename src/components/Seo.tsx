@@ -37,6 +37,9 @@ export function Seo({ path }: { path: string }) {
       <meta property="og:image:height" content={String(ogSize.height)} />
       <meta property="og:image:alt" content={cardAlt(page, figure)} />
       {page.published && <meta property="article:published_time" content={page.published} />}
+      {page.published && (
+        <meta property="article:modified_time" content={page.updated ?? page.published} />
+      )}
       <meta name="twitter:card" content="summary_large_image" />
       <script
         type="application/ld+json"

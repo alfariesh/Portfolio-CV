@@ -1,25 +1,12 @@
 @font-face {
-  font-family: "HarmonyOS Sans";
+  font-family: "Google Sans";
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 700;
   font-display: swap;
-  src: url("./fonts/HarmonyOS_Sans_Regular.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "HarmonyOS Sans";
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url("./fonts/HarmonyOS_Sans_Medium.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "HarmonyOS Sans";
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url("./fonts/HarmonyOS_Sans_Bold.woff2") format("woff2");
+  src: url("./fonts/GoogleSans-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* ------------------------------------------------------------------ */
@@ -38,9 +25,9 @@
   /* Accent for text links (Ibid accent). */
   --accent-ink: #f54e00;
 
-  --font-sans: "HarmonyOS Sans", sans-serif;
+  --font-sans: "Google Sans", sans-serif;
   --font-hand: "Caveat Variable", "Caveat", cursive;
-  --font-mono: "HarmonyOS Sans", sans-serif;
+  --font-mono: "Google Sans", sans-serif;
 
   --text-display: 56px;
   --leading-display: 56px;
@@ -1141,34 +1128,77 @@ main:focus {
   text-align: center;
 }
 
-.toolbelt__list {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 32px 24px;
+/* A pill of app tiles drifting sideways. The track holds four copies of the
+   list (the last three hidden from assistive tech) and moves by one copy, so
+   the loop never shows a seam. Fill only, no outline; the ends fade out. */
+.toolbelt__pill {
+  --tile: 72px;
+  --tile-gap: 24px;
   width: 100%;
   max-width: 720px;
+  padding: 28px 0;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--paper-deep);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+.toolbelt__track {
+  display: flex;
+  width: max-content;
+  animation: toolbelt-drift 28s linear infinite;
+}
+
+.toolbelt__pill:hover .toolbelt__track {
+  animation-play-state: paused;
+}
+
+.toolbelt__group {
+  display: flex;
+  flex: none;
+  gap: var(--tile-gap);
+  /* The gap after the last tile, so a copy is exactly a quarter of the track. */
+  padding: 0 var(--tile-gap) 0 0;
   margin: 0;
-  padding: 0;
   list-style: none;
 }
 
 .toolbelt__item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  color: #65675e;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--tile);
+  height: var(--tile);
+  border-radius: 22px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--tint) 24%, var(--paper)),
+    color-mix(in srgb, var(--tint) 10%, var(--paper))
+  );
+  box-shadow:
+    0 8px 16px -10px rgb(35 37 29 / 45%),
+    inset 0 1px 0 rgb(255 255 255 / 70%);
+  transition:
+    translate 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.toolbelt__item:hover {
+  translate: 0 -4px;
+  box-shadow:
+    0 14px 20px -12px rgb(35 37 29 / 50%),
+    inset 0 1px 0 rgb(255 255 255 / 70%);
 }
 
 .toolbelt__item svg {
-  fill: currentColor;
+  width: 38px;
+  height: 38px;
 }
 
-.toolbelt__name {
-  color: var(--ink-muted);
-  font-size: 13px;
-  line-height: 16px;
-  text-align: center;
+@keyframes toolbelt-drift {
+  to {
+    transform: translateX(-25%);
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -1646,17 +1676,19 @@ main:focus {
     padding-block: 48px;
   }
 
-  .toolbelt__list {
-    gap: 24px 8px;
+  .toolbelt__pill {
+    --tile: 56px;
+    --tile-gap: 16px;
+    padding-block: 20px;
+  }
+
+  .toolbelt__item {
+    border-radius: 18px;
   }
 
   .toolbelt__item svg {
-    width: 26px;
-    height: 26px;
-  }
-
-  .toolbelt__name {
-    font-size: 12px;
+    width: 30px;
+    height: 30px;
   }
 
   .cell--note {
@@ -1694,5 +1726,25 @@ main:focus {
   *::after {
     animation: none !important;
     transition: none !important;
+  }
+  /* No drifting: show one copy of the tiles, centred. */
+  .toolbelt__pill {
+    border-radius: 40px;
+    mask-image: none;
+  }
+
+  .toolbelt__track {
+    width: auto;
+    justify-content: center;
+  }
+
+  .toolbelt__group {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-right: 0;
+  }
+
+  .toolbelt__group[aria-hidden] {
+    display: none;
   }
 }

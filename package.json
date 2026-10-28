@@ -5,7 +5,7 @@
   "description": "Salman Alfariesh's portfolio: React 19 + MDX, prerendered and served from Cloudflare Workers.",
   "homepage": "https://salman-alfariesh.alfarieshsalman.workers.dev",
   "license": "SEE LICENSE IN LICENSE",
-  "author": "Salman Alfariesh <hi@salman.ai.id>",
+  "author": "Salman Alfariesh <salman@alfariesh.ai.id>",
   "type": "module",
   "scripts": {
     "dev": "vp dev",
