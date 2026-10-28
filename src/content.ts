@@ -16,6 +16,7 @@ export const profile = {
     github: "https://github.com/alfariesh",
     linkedin: "https://www.linkedin.com/in/alfariesh/",
     x: "https://x.com/alfariesh",
+    threads: "",
     dribbble: "",
     instagram: "",
   } satisfies Partial<Record<IconName, string>>,
@@ -165,16 +166,7 @@ export const footer: { columns: FooterColumn[] } = {
     [
       {
         title: "portfolio",
-        links: [
-          { label: "home", href: "/", icon: "home" },
-          { label: "work", href: "/work", icon: "work" },
-          { label: "notes", href: "/notes", icon: "notes" },
-          { label: "about", href: "/#about", icon: "user" },
-          ...(profile.resumeUrl
-            ? [{ label: "résumé", href: profile.resumeUrl, icon: "file" as const }]
-            : []),
-          { label: "feed", href: "/notes/feed.xml", icon: "feed" },
-        ],
+        links: nav.map(({ label, href, icon }) => ({ label, href, icon })),
       },
       {
         title: "case studies",

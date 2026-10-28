@@ -44,12 +44,13 @@ are not used anywhere on the site; the layout is an homage to
 ## Tool logos
 
 The tool logos in `src/components/tool-logos.ts` (Paper, Figma, Storybook,
-ClickUp, Jump and one still unnamed) are the tools' own marks. They are
+ClickUp, n8n and PostHog) are the tools' own marks. They are
 trademarks of their owners and appear only to name the tools the author uses.
 They are not covered by this repository's MIT License.
 
-## Rekanesia stroke-sharp icons
+## Hugeicons stroke-rounded icons
 
 The icons and pictograms in `src/components/icon-data.ts` and
-`src/art/pictogram-markup.ts` come from the Rekanesia design system, which
-the author designed. They are not covered by this repository's MIT License.
+`src/art/pictogram-markup.ts` are from the free Hugeicons set
+([hugeicons.com](https://hugeicons.com)), in its stroke-rounded style, and keep
+their own license. They are not covered by this repository's MIT License.
