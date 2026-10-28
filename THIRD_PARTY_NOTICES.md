@@ -30,9 +30,9 @@ The full MIT text is in [.claude/skills/iso-glow/LICENSE](.claude/skills/iso-glo
 from Google Fonts), Copyright 2025 The Google Sans Project Authors.
 License text: [src/fonts/LICENSE-Google-Sans.txt](src/fonts/LICENSE-Google-Sans.txt).
 
-## Caveat (SIL Open Font License 1.1)
+## JetBrains Mono (SIL Open Font License 1.1)
 
-Loaded from `@fontsource-variable/caveat`. Caveat by Impallari Type.
+Loaded from `@fontsource-variable/jetbrains-mono`. JetBrains Mono by JetBrains.
 
 ## Paper Shaders (Apache-2.0)
 

@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
-import "@fontsource-variable/caveat/wght.css";
+import "@fontsource-variable/jetbrains-mono/wght.css";
 import "./index.css";
 import "./styles/canvas.css";
 import "./styles/art.css";

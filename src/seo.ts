@@ -54,6 +54,7 @@ const person = {
   knowsAbout: ["product design", "design systems", "mobile app design", "React", "SwiftUI"],
   // Only profiles that are real links; placeholders ("#") stay out.
   sameAs: footer.columns
+    .filter((column) => column.title !== "credits")
     .flatMap((column) => column.links)
     .map((link) => link.href)
     .filter((href) => href.startsWith("https://") && !href.startsWith(site.url)),
