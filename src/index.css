@@ -1128,7 +1128,7 @@ main:focus {
   --rise: 40px;
   --node: 32px;
   --gap: 32px;
-  padding: 72px var(--cell-pad) 64px;
+  padding: 56px var(--cell-pad) 48px;
 }
 
 .path {
@@ -1520,6 +1520,11 @@ main:focus {
     line-height: 26px;
   }
 
+  /* Too small to read at phone width: the hero is just its copy. */
+  .showcase {
+    display: none;
+  }
+
   .hero {
     padding-block: 48px 40px;
   }
@@ -1562,6 +1567,12 @@ main:focus {
 
   .cell--stats {
     padding-block: 36px;
+  }
+
+  /* The mono digits are wide: "28,000+" has to fit half the row. */
+  .stats .stats__value {
+    font-size: 30px;
+    line-height: 36px;
   }
 
   .bio {

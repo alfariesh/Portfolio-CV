@@ -83,15 +83,15 @@ export function Home() {
           <ToolBelt label={about.tools} />
         </Cell>
 
-        <Cell className="cell--head" id="process">
-          <Fold corner="tr" />
+        <Cell span={1} className="cell--head cell--split" id="process">
           <Head eyebrow={process.eyebrow} title={process.title} body={process.body}>
             <Link className="link link--accent" href={process.link.href}>
               {process.link.label}
             </Link>
           </Head>
         </Cell>
-        <Cell className="cell--art">
+        <Cell span={1} className="cell--art cell--split-art">
+          <Fold corner="tr" />
           <IsoFigure fig={useFigure("loop")} interactive />
         </Cell>
         <Cell className="cell--path">
