@@ -16,7 +16,7 @@ export const profile = {
     github: "https://github.com/alfariesh",
     linkedin: "https://www.linkedin.com/in/alfariesh/",
     x: "https://x.com/alfariesh",
-    threads: "",
+    threads: "https://www.threads.com/@alfariesh",
     dribbble: "",
     instagram: "",
   } satisfies Partial<Record<IconName, string>>,
