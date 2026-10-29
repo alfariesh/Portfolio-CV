@@ -81,7 +81,7 @@ const home: PageSeo = {
   card: {
     eyebrow: "portfolio",
     title: profile.name,
-    subtitle: "design, then ship it",
+    subtitle: "an ai-native product designer",
     figure: "about",
   },
   schema: [
