@@ -612,27 +612,19 @@ main:focus {
   gap: 18px;
 }
 
+/* The hero's one sentence: bigger and tighter than the section titles. */
 .display {
-  display: flex;
-  flex-direction: column;
-  font-size: var(--text-display);
-  line-height: var(--leading-display);
-  letter-spacing: var(--tracking-display);
+  font-size: clamp(38px, 5.2vw, 68px);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
   font-weight: 700;
-}
-
-.display__line {
-  display: block;
   text-wrap: balance;
-}
-
-.display__line--muted {
-  color: var(--ink-muted);
 }
 
 /* The editable headline line (LiveType): real text, with a canvas over it
    that reaches past the line for the frame, labels and dragged letters. */
 .live-type {
+  display: block;
   position: relative;
   touch-action: pan-y;
   user-select: none;
@@ -666,6 +658,9 @@ main:focus {
   padding-right: 12px;
   opacity: 0.6;
   text-wrap: pretty;
+  /* Same size as the section intros (.head__body). */
+  font-size: 20px;
+  line-height: 30px;
 }
 
 .hero__actions {

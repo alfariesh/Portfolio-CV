@@ -33,9 +33,10 @@ const BOUNCE = 0.4;
 const KICK_DECAY = 0.62;
 const SPECKS = 12;
 const LABEL_FONT = '10px "JetBrains Mono Variable", ui-monospace, monospace';
-const INTRO_DELAY = 0.35;
-const INTRO_STEP = 0.075;
-const INTRO_TRAIL = 3;
+const INTRO_DELAY = 0.6;
+// Seconds per letter, quicker on longer lines so the pass stays about 4.5s.
+const introStep = (letters: number) => Math.min(0.12, 4.5 / Math.max(1, letters));
+const INTRO_TRAIL = 4;
 
 const approach = (current: number, target: number, dt: number, seconds: number) =>
   current + (target - current) * (1 - Math.exp(-dt / seconds));
@@ -311,7 +312,7 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
       let agent = -1;
       if (intro >= 0) {
         intro += dt;
-        const at = Math.floor((intro - INTRO_DELAY) / INTRO_STEP);
+        const at = Math.floor((intro - INTRO_DELAY) / introStep(glyphs.length));
         if (at >= glyphs.length + INTRO_TRAIL) {
           intro = -1;
           if (!launched) {
@@ -323,7 +324,7 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
         }
       }
       const introducing = intro >= 0;
-      const step = introducing ? Math.floor((intro - INTRO_DELAY) / INTRO_STEP) : -1;
+      const step = introducing ? Math.floor((intro - INTRO_DELAY) / introStep(glyphs.length)) : -1;
 
       for (let k = kicks.length - 1; k >= 0; k--) {
         if (kicks[k].at > pulse) continue;
@@ -375,7 +376,7 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
           frame.x2 = bx2;
           frame.y2 = by2;
         }
-        const glide = focus === dragging ? 0.02 : introducing ? 0.04 : 0.08;
+        const glide = focus === dragging ? 0.02 : introducing ? 0.07 : 0.08;
         frame.x1 = approach(frame.x1, bx1, dt, glide);
         frame.y1 = approach(frame.y1, by1, dt, glide);
         frame.x2 = approach(frame.x2, bx2, dt, glide);
@@ -393,7 +394,7 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
           : i === focus && i !== dragging
             ? 1
             : 0;
-        glyph.outline = approach(glyph.outline, target, dt, introducing ? 0.06 : 0.09);
+        glyph.outline = approach(glyph.outline, target, dt, introducing ? 0.12 : 0.09);
         if (Math.abs(glyph.outline - target) > 0.002) moving = true;
         else glyph.outline = target;
         const styled = `${glyph.offset.x.toFixed(1)} ${glyph.offset.y.toFixed(1)} ${glyph.outline.toFixed(3)}`;
