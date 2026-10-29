@@ -1,20 +1,20 @@
 import { useEffect, useRef } from "react";
 
 // A headline line you can edit like a canvas, adapted from React Bits'
-// TechText (MIT). The letters stay real DOM text (prerendered, wrapping,
-// selectable by the browser's own layout); a canvas laid over the line draws
-// what a design tool would: a dashed outline of the active letter, a
-// selection frame with handles, blinking specks and a mono label. On load an
-// "agent" frame runs along the line, turning each letter into its outline and
-// filling it back in, and the line hops once at the end: designed with ai,
-// then shipped. Letters can be dragged off the baseline (they spring home)
-// and clicked to send a ripple through their neighbours.
+// TechText (MIT), working on words rather than letters. The words stay real
+// DOM text (prerendered, wrapping, kerned by the browser); a canvas laid over
+// the line draws what a design tool would: a dashed outline of the active
+// word, a selection frame with handles, blinking specks and a mono label. On
+// load an "agent" frame runs along the line, turning each word into its
+// outline and filling it back in, and the line hops once at the end. Words
+// can be dragged off the baseline (they spring home) and clicked to send a
+// ripple through their neighbours.
 
 type Box = { x1: number; y1: number; x2: number; y2: number };
 type Art = { image: HTMLCanvasElement; left: number; top: number };
 type Glyph = {
   el: HTMLSpanElement;
-  char: string;
+  word: string;
   x: number;
   baseline: number;
   box: Box;
@@ -26,7 +26,7 @@ type Glyph = {
 };
 type Kick = { index: number; at: number; velocity: number };
 
-// Room around the line for labels, specks and dragged letters.
+// Room around the line for labels, specks and dragged words.
 const PAD = 48;
 const SPRING = 320;
 const BOUNCE = 0.4;
@@ -34,9 +34,9 @@ const KICK_DECAY = 0.62;
 const SPECKS = 12;
 const LABEL_FONT = '10px "JetBrains Mono Variable", ui-monospace, monospace';
 const INTRO_DELAY = 0.6;
-// Seconds per letter, quicker on longer lines so the pass stays about 4.5s.
-const introStep = (letters: number) => Math.min(0.12, 4.5 / Math.max(1, letters));
-const INTRO_TRAIL = 4;
+// Seconds per word, quicker on longer lines so the pass stays about 4.5s.
+const introStep = (words: number) => Math.min(0.55, 4.5 / Math.max(1, words));
+const INTRO_TRAIL = 2;
 
 const approach = (current: number, target: number, dt: number, seconds: number) =>
   current + (target - current) * (1 - Math.exp(-dt / seconds));
@@ -71,6 +71,7 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
     let height = 1;
     let dpr = 1;
     let font = "";
+    let tracking = "0px";
     let ink = "";
     let accent = "";
     let raf = 0;
@@ -101,23 +102,25 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
       if (!c) return { image, left, top };
       c.setTransform(dpr, 0, 0, dpr, -left * dpr, -top * dpr);
       c.font = font;
+      c.letterSpacing = tracking;
       c.lineJoin = "round";
       c.lineWidth = 3;
       c.strokeStyle = ink;
       c.setLineDash([4, 2]);
-      c.strokeText(glyph.char, glyph.x, glyph.baseline);
+      c.strokeText(glyph.word, glyph.x, glyph.baseline);
       // Keep only the outer half of the stroke: a clean silhouette.
       c.setLineDash([]);
       c.globalCompositeOperation = "destination-out";
-      c.fillText(glyph.char, glyph.x, glyph.baseline);
+      c.fillText(glyph.word, glyph.x, glyph.baseline);
       return { image, left, top };
     };
 
-    // Reads where the browser put each letter. A dragged letter is moved with
+    // Reads where the browser put each word. A dragged word is moved with
     // relative positioning, which its offsets include, so take it back off.
     const measure = () => {
       const style = getComputedStyle(root);
       font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+      tracking = style.letterSpacing === "normal" ? "0px" : style.letterSpacing;
       ink = style.color;
       accent = style.getPropertyValue("--accent").trim() || ink;
       width = root.offsetWidth + PAD * 2;
@@ -126,19 +129,20 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       ctx.font = font;
+      ctx.letterSpacing = tracking;
       const marker = root.querySelector<HTMLSpanElement>(".live-type__base");
-      const spans = [...root.querySelectorAll<HTMLSpanElement>(".live-type__char")];
+      const spans = [...root.querySelectorAll<HTMLSpanElement>(".live-type__word")];
       const shift = marker && spans[0] ? marker.offsetTop - spans[0].offsetTop : 0;
       const previous = glyphs;
       glyphs = spans.map((el, i) => {
-        const char = el.textContent ?? "";
-        const m = ctx.measureText(char);
+        const word = el.textContent ?? "";
+        const m = ctx.measureText(word);
         const kept = previous[i];
         const x = el.offsetLeft - (kept?.offset.x ?? 0);
         const baseline = el.offsetTop - (kept?.offset.y ?? 0) + shift;
         return {
           el,
-          char,
+          word,
           x,
           baseline,
           box: {
@@ -307,7 +311,7 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
       const damping = 2 * Math.sqrt(SPRING) * (1 - BOUNCE * 0.96);
       const size = glyphs.length ? glyphs[0].box.y2 - glyphs[0].box.y1 : 40;
 
-      // Intro: the agent's frame steps along the line; the letters it has
+      // Intro: the agent's frame steps along the line; the words it has
       // just passed show their outline, then fill back in behind it.
       let agent = -1;
       if (intro >= 0) {
@@ -415,7 +419,7 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
 
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // A dashed ghost stays home while a letter is away.
+      // A dashed ghost stays home while a word is away.
       for (const glyph of glyphs) {
         const moved = Math.hypot(glyph.offset.x, glyph.offset.y);
         if (moved > 1) {
@@ -433,10 +437,10 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
       if (active) {
         const moved = Math.hypot(active.offset.x, active.offset.y);
         const label = introducing
-          ? `ai · ${active.char}`
+          ? `ai · ${active.word}`
           : moved > 1
             ? `${signed(Math.round(active.offset.x))}, ${signed(Math.round(-active.offset.y))}`
-            : `${active.char}  ${Math.round(active.box.x2 - active.box.x1)} × ${Math.round(active.box.y2 - active.box.y1)}`;
+            : `${active.word}  ${Math.round(active.box.x2 - active.box.x1)} × ${Math.round(active.box.y2 - active.box.y1)}`;
         drawFrame(label);
       }
 
@@ -557,13 +561,7 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
       {words.map((word, w) => (
         <span key={w}>
           {w > 0 && " "}
-          <span className="live-type__word">
-            {Array.from(word).map((char, i) => (
-              <span key={i} className="live-type__char">
-                {char}
-              </span>
-            ))}
-          </span>
+          <span className="live-type__word">{word}</span>
         </span>
       ))}
       <canvas ref={canvasRef} className="live-type__canvas" aria-hidden="true" />
