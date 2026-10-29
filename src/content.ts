@@ -44,9 +44,9 @@ export const nav: NavItem[] = [
 ];
 
 export const hero = {
-  lead: "design, then ship it",
-  muted: ["a product designer who", "turns canvases into code"],
-  body: "I'm Salman — I design interfaces, design systems and mobile apps, then build them in React, React Native and Swift. Canvas and codebase, one continuous loop.",
+  lead: "design with ai, then ship it",
+  muted: ["an ai-native product designer", "with agents in the loop"],
+  body: "I'm Salman — I design interfaces, design systems and mobile apps with AI agents at my side, then build them in React, React Native and Swift. Canvas, codebase and agents, one continuous loop.",
   primary: { label: "see selected work", href: "#work" },
   secondary: { label: "currently open to new work →", href: "#contact" },
 };

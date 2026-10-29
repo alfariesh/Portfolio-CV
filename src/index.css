@@ -630,6 +630,37 @@ main:focus {
   color: var(--ink-muted);
 }
 
+/* The editable headline line (LiveType): real text, with a canvas over it
+   that reaches past the line for the frame, labels and dragged letters. */
+.live-type {
+  position: relative;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.live-type__word {
+  white-space: nowrap;
+}
+
+.live-type__char {
+  position: relative;
+}
+
+.live-type__base {
+  display: inline-block;
+  width: 0;
+  height: 0;
+}
+
+.live-type__canvas {
+  position: absolute;
+  inset: -48px;
+  width: calc(100% + 96px);
+  height: calc(100% + 96px);
+  pointer-events: none;
+}
+
 .lede {
   max-width: 600px;
   padding-right: 12px;

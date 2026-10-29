@@ -1,5 +1,6 @@
 import { hero } from "../content";
 import { CanvasMock } from "./CanvasMock";
+import { LiveType } from "./LiveType";
 import { Scaler } from "./Scaler";
 
 export function Hero() {
@@ -8,7 +9,7 @@ export function Hero() {
       <section className="hero container" aria-labelledby="hero-title">
         <div className="hero__copy">
           <h1 id="hero-title" className="display">
-            <span className="display__line">{hero.lead}</span>
+            <LiveType text={hero.lead} className="display__line" />
             {hero.muted.map((line) => (
               <span key={line} className="display__line display__line--muted">
                 {line}

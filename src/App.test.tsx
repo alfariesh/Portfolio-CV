@@ -34,7 +34,7 @@ describe("home page", () => {
 
   it("renders the hero headline as the only h1", () => {
     expect(html.match(/<h1/g)).toHaveLength(1);
-    expect(html).toContain("design, then ship it");
+    expect(html.replace(/<[^>]+>/g, "")).toContain("design with ai, then ship it");
   });
 
   it("has a section for every nav link that points at it", () => {
