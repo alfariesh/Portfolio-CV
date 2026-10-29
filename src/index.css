@@ -632,11 +632,8 @@ main:focus {
 }
 
 .live-type__word {
-  white-space: nowrap;
-}
-
-.live-type__char {
   position: relative;
+  white-space: nowrap;
 }
 
 .live-type__base {

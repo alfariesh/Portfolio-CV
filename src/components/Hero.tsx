@@ -9,7 +9,12 @@ export function Hero() {
       <section className="hero container" aria-labelledby="hero-title">
         <div className="hero__copy">
           <h1 id="hero-title" className="display">
-            <LiveType text={hero.title} />
+            <LiveType
+              text={hero.title}
+              prompts={hero.prompts}
+              author={hero.author}
+              agents={hero.agents}
+            />
           </h1>
           <p className="lede">{hero.body}</p>
         </div>
