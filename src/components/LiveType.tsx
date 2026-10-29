@@ -9,6 +9,12 @@ import { useEffect, useRef } from "react";
 // outline and filling it back in, and the line hops once at the end. Words
 // can be dragged off the baseline (they spring home) and clicked to send a
 // ripple through their neighbours.
+//
+// The intro is a multiplayer canvas: the first agent's cursor drives the
+// frame and types a prompt for each word in the label, the other agents and
+// the author follow a few words behind, and the author clicks the last word
+// to ship the line. Then every cursor parks on its own word and stays there,
+// riding along when that word is dragged or hops.
 
 type Box = { x1: number; y1: number; x2: number; y2: number };
 type Art = { image: HTMLCanvasElement; left: number; top: number };
@@ -32,11 +38,18 @@ const SPRING = 320;
 const BOUNCE = 0.4;
 const KICK_DECAY = 0.62;
 const SPECKS = 12;
-const LABEL_FONT = '10px "JetBrains Mono Variable", ui-monospace, monospace';
+const LABEL_FONT = '11px "JetBrains Mono Variable", ui-monospace, monospace';
+const LABEL_TRACKING = "1.2px";
 const INTRO_DELAY = 0.6;
 // Seconds per word, quicker on longer lines so the pass stays about 4.5s.
-const introStep = (words: number) => Math.min(0.55, 4.5 / Math.max(1, words));
+const introStep = (words: number) => Math.min(0.5, 4.5 / Math.max(1, words));
 const INTRO_TRAIL = 2;
+// Characters per second the agent types its prompts at.
+const TYPE_RATE = 45;
+// After the pass: the author's cursor reaches the last word and clicks it,
+// then everyone heads for their parking spot.
+const FINALE_CLICK = 0.6;
+const FINALE_END = 1;
 
 const approach = (current: number, target: number, dt: number, seconds: number) =>
   current + (target - current) * (1 - Math.exp(-dt / seconds));
@@ -54,10 +67,34 @@ const noise = (...values: number[]) => {
 
 const signed = (value: number) => (value > 0 ? `+${value}` : value < 0 ? `−${-value}` : "0");
 
-export function LiveType({ text, className = "" }: { text: string; className?: string }) {
+// A cursor on the canvas: its name tag, a colour token (a CSS custom
+// property on the line, like "--accent") and the word it parks on.
+export type Collaborator = { name: string; color: string; park: string };
+type Cursor = Collaborator & { fill: string; x: number; y: number; alpha: number; press: number };
+
+type LiveTypeProps = {
+  text: string;
+  // One prompt per word, typed by the first agent as it reaches that word.
+  prompts?: string[];
+  author?: Collaborator;
+  agents?: Collaborator[];
+  className?: string;
+};
+
+const nobody: Collaborator = { name: "you", color: "--ink-soft", park: "" };
+
+export function LiveType({
+  text,
+  prompts = [],
+  author = nobody,
+  agents = [],
+  className = "",
+}: LiveTypeProps) {
   const rootRef = useRef<HTMLSpanElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const words = text.split(" ");
+  const promptKey = prompts.join("\n");
+  const castKey = JSON.stringify([author, ...agents]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -74,6 +111,8 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
     let tracking = "0px";
     let ink = "";
     let accent = "";
+    let paper = "";
+    const lines = promptKey ? promptKey.split("\n") : [];
     let raf = 0;
     let last = performance.now();
     let pulse = 0;
@@ -85,6 +124,17 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
     // The intro runs once, the first time the line is in view with its font.
     let intro = reducedMotion ? -1 : 0;
     let launched = false;
+    let finale = -1;
+    // The author first, then the agents; the first agent leads the intro.
+    const cast: Cursor[] = (JSON.parse(castKey) as Collaborator[]).map((c) => ({
+      ...c,
+      fill: "",
+      x: 0,
+      y: 0,
+      alpha: 0,
+      press: 0,
+    }));
+    const [me, ...crew] = cast;
     const kicks: Kick[] = [];
     const pointer = { x: 0, y: 0, inside: false };
     const grab = { x: 0, y: 0 };
@@ -123,6 +173,8 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
       tracking = style.letterSpacing === "normal" ? "0px" : style.letterSpacing;
       ink = style.color;
       accent = style.getPropertyValue("--accent").trim() || ink;
+      paper = style.getPropertyValue("--paper").trim() || "#ffffff";
+      for (const c of cast) c.fill = style.getPropertyValue(c.color).trim() || ink;
       width = root.offsetWidth + PAD * 2;
       height = root.offsetHeight + PAD * 2;
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -297,11 +349,80 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
       drawSpecks(a);
 
       ctx.font = LABEL_FONT;
+      ctx.letterSpacing = LABEL_TRACKING;
       ctx.textBaseline = "bottom";
       ctx.globalAlpha = 0.75 * a;
       ctx.fillText(label, Math.round(frame.x1), Math.round(frame.y1) - 7);
       ctx.globalAlpha = 1;
+      ctx.letterSpacing = tracking;
     };
+
+    // A Figma-style pointer with a name tag, tip at the cursor's point.
+    const drawCursor = (c: Cursor) => {
+      if (c.alpha < 0.01) return;
+      ctx.save();
+      ctx.translate(Math.round(c.x), Math.round(c.y));
+      const scale = 1 - 0.18 * c.press;
+      ctx.scale(scale, scale);
+      ctx.globalAlpha = c.alpha;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, 17);
+      ctx.lineTo(4.6, 12.6);
+      ctx.lineTo(7.6, 19.2);
+      ctx.lineTo(10.4, 18);
+      ctx.lineTo(7.5, 11.6);
+      ctx.lineTo(13.2, 11.6);
+      ctx.closePath();
+      ctx.lineJoin = "round";
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = paper;
+      ctx.stroke();
+      ctx.fillStyle = c.fill;
+      ctx.fill();
+      ctx.font = LABEL_FONT;
+      ctx.letterSpacing = LABEL_TRACKING;
+      ctx.textBaseline = "middle";
+      const w = ctx.measureText(c.name).width + 14;
+      ctx.beginPath();
+      ctx.roundRect(12, 20, w, 20, 6);
+      ctx.fill();
+      ctx.fillStyle = paper;
+      ctx.fillText(c.name, 19, 30.5);
+      ctx.restore();
+    };
+
+    const follow = (c: Cursor, x: number, y: number, show: boolean, dt: number, lag: number) => {
+      if (c.alpha < 0.02) {
+        c.x = x;
+        c.y = y;
+      }
+      c.x = approach(c.x, x, dt, lag);
+      c.y = approach(c.y, y, dt, lag);
+      c.alpha = approach(c.alpha, show ? 1 : 0, dt, 0.12);
+      c.press = approach(c.press, 0, dt, 0.12);
+      const settled =
+        Math.abs(c.x - x) < 0.3 &&
+        Math.abs(c.y - y) < 0.3 &&
+        Math.abs(c.alpha - (show ? 1 : 0)) < 0.01 &&
+        c.press < 0.01;
+      if (settled) {
+        c.x = x;
+        c.y = y;
+        c.alpha = show ? 1 : 0;
+        c.press = 0;
+      }
+      return !settled;
+    };
+
+    // Where a cursor rests on a word: just above the baseline, so its tag
+    // hangs in the gap under the line. A second cursor on the same word
+    // takes the word's left side.
+    const rest = (glyph: Glyph, slot: number): [number, number] => [
+      (slot === 0 ? glyph.box.x2 - 14 : glyph.box.x1 + (glyph.box.x2 - glyph.box.x1) * 0.28) +
+        glyph.offset.x,
+      glyph.baseline - 6 + glyph.offset.y,
+    ];
 
     const tick = (now: number) => {
       raf = 0;
@@ -319,16 +440,24 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
         const at = Math.floor((intro - INTRO_DELAY) / introStep(glyphs.length));
         if (at >= glyphs.length + INTRO_TRAIL) {
           intro = -1;
-          if (!launched) {
-            launched = true;
-            kick(glyphs.length - 1, size * 6);
-          }
+          finale = 0;
         } else {
           agent = Math.min(at, glyphs.length - 1);
         }
       }
       const introducing = intro >= 0;
       const step = introducing ? Math.floor((intro - INTRO_DELAY) / introStep(glyphs.length)) : -1;
+      const final = glyphs.length - 1;
+      if (finale >= 0) {
+        finale += dt;
+        if (finale >= FINALE_CLICK && !launched) {
+          launched = true;
+          if (me) me.press = 1;
+          kick(final, size * 6);
+        }
+        if (finale >= FINALE_END) finale = -1;
+      }
+      const shipping = finale >= 0 && finale < FINALE_CLICK + 0.25;
 
       for (let k = kicks.length - 1; k >= 0; k--) {
         if (kicks[k].at > pulse) continue;
@@ -366,8 +495,9 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
         moving = true;
       });
 
-      const hover = pointer.inside && !introducing ? glyphAt(pointer.x, pointer.y) : -1;
-      const focus = introducing ? agent : dragging >= 0 ? dragging : hover;
+      const hover =
+        pointer.inside && !introducing && finale < 0 ? glyphAt(pointer.x, pointer.y) : -1;
+      const focus = introducing ? agent : shipping ? final : dragging >= 0 ? dragging : hover;
       if (focus >= 0) {
         const glyph = glyphs[focus];
         const bx1 = glyph.box.x1 + glyph.offset.x - 6;
@@ -389,6 +519,38 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
       }
       frame.alpha = approach(frame.alpha, focus >= 0 ? 1 : 0, dt, 0.1);
       if (frame.alpha > 0.01 && frame.alpha < 0.99) moving = true;
+
+      // During the intro the lead agent sits on the frame's corner handle and
+      // the others trail behind; the author then clicks the last word, and
+      // after that everyone rests on their own word.
+      const show = !introducing || agent >= 0;
+      const parking = !introducing && !(finale >= 0 && finale < FINALE_END);
+      const slots = new Map<string, number>();
+      cast.forEach((c, k) => {
+        const lag = k === 0 ? 0.16 : 0.14;
+        let target: [number, number] | null = null;
+        if (parking) {
+          const home = glyphs.findIndex((glyph) => glyph.word === c.park);
+          if (home >= 0) {
+            const slot = slots.get(c.park) ?? 0;
+            slots.set(c.park, slot + 1);
+            target = rest(glyphs[home], slot);
+          }
+        } else if (introducing && c === crew[0]) {
+          const lead = glyphs[Math.max(0, agent)];
+          target = [lead.box.x2 + 5, lead.box.y2 + 5];
+        } else if (introducing) {
+          const behind = c === me ? 3 : crew.indexOf(c);
+          target = rest(glyphs[Math.max(0, agent - behind)], 0);
+        } else if (c === me) {
+          const end = glyphs[final];
+          target = [(end.box.x1 + end.box.x2) / 2, (end.box.y1 + end.box.y2) / 2];
+        }
+        // The other agents hold still while the author ships the line.
+        target ??= [c.x, c.y];
+        const glide = parking ? 0.3 : c === crew[0] ? 0.08 : lag;
+        if (follow(c, target[0], target[1], show, dt, glide)) moving = true;
+      });
 
       glyphs.forEach((glyph, i) => {
         const target = introducing
@@ -436,15 +598,22 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
       const active = glyphs[frame.index];
       if (active) {
         const moved = Math.hypot(active.offset.x, active.offset.y);
+        const typed = Math.max(0, intro - INTRO_DELAY - frame.index * introStep(glyphs.length));
+        const prompt = lines[frame.index] ?? `ai · ${active.word}`;
+        const shown = prompt.slice(0, Math.floor(typed * TYPE_RATE));
+        const caret = shown.length < prompt.length || pulse % 0.8 < 0.4 ? "_" : " ";
         const label = introducing
-          ? `ai · ${active.word}`
-          : moved > 1
-            ? `${signed(Math.round(active.offset.x))}, ${signed(Math.round(-active.offset.y))}`
-            : `${active.word}  ${Math.round(active.box.x2 - active.box.x1)} × ${Math.round(active.box.y2 - active.box.y1)}`;
+          ? shown + caret
+          : finale >= 0
+            ? `${me?.name ?? "you"} · ship it`
+            : moved > 1
+              ? `${signed(Math.round(active.offset.x))}, ${signed(Math.round(-active.offset.y))}`
+              : `${active.word}  ${Math.round(active.box.x2 - active.box.x1)} × ${Math.round(active.box.y2 - active.box.y1)}`;
         drawFrame(label);
       }
+      for (const c of [...cast].reverse()) drawCursor(c);
 
-      const busy = moving || introducing || kicks.length > 0 || focus >= 0;
+      const busy = moving || introducing || finale >= 0 || kicks.length > 0 || focus >= 0;
       if (busy && visible && alive) raf = requestAnimationFrame(tick);
     };
 
@@ -532,7 +701,12 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
       measure();
       wake();
     };
-    if (document.fonts) document.fonts.ready.then(start, start);
+    // A canvas never asks for a font, so load the label's mono face first.
+    if (document.fonts)
+      document.fonts
+        .load(LABEL_FONT)
+        .then(() => document.fonts.ready)
+        .then(start, start);
     else start();
 
     return () => {
@@ -553,7 +727,7 @@ export function LiveType({ text, className = "" }: { text: string; className?: s
       root.removeEventListener("pointercancel", onUp);
       root.removeEventListener("pointerleave", onLeave);
     };
-  }, [text]);
+  }, [text, promptKey, castKey]);
 
   return (
     <span ref={rootRef} className={`live-type ${className}`.trim()}>

@@ -45,6 +45,25 @@ export const nav: NavItem[] = [
 
 export const hero = {
   title: "An ai-native product designer with agents in the loop",
+  // Typed by the agent cursor over each word of the title as the hero loads.
+  prompts: [
+    "> write a headline",
+    "> make it ai-native",
+    "> what do I make?",
+    "> set the role",
+    "> keep it short",
+    "> add agents",
+    "> kern −10",
+    "> balance lines",
+    "> close the loop",
+  ],
+  // The cursors on the title: they work through it as the hero loads, then
+  // each one rests on its word.
+  author: { name: "salman", color: "--ink-soft", park: "designer" },
+  agents: [
+    { name: "Fable 5.5", color: "--accent", park: "agents" },
+    { name: "Astra 6.1", color: "--ink", park: "agents" },
+  ],
   body: "I'm Salman. I design web and mobile products with AI agents as my teammates, from the first sketch to the design docs and skills that keep them shipping.",
   primary: { label: "see selected work", href: "#work" },
   secondary: { label: "currently open to new work →", href: "#contact" },
