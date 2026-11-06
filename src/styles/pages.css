@@ -900,6 +900,20 @@
   animation: 460ms cubic-bezier(0.2, 0, 0, 1) 80ms both vt-in-down;
 }
 
+/* The visitor's cursor (YouCursor) is not part of any page: it stays put and
+   live while the page swaps, so no cross-fade and no travelling. */
+::view-transition-group(you-cursor) {
+  animation: none;
+}
+
+::view-transition-old(you-cursor) {
+  display: none;
+}
+
+::view-transition-new(you-cursor) {
+  animation: none;
+}
+
 /* Illustrations and note covers travel between the list and the detail. */
 ::view-transition-group(.morph) {
   animation-duration: 560ms;
@@ -1127,6 +1141,7 @@
   .backdrop,
   .footer,
   .bottom-nav,
+  .cursor--you,
   .resume__print {
     display: none !important;
   }

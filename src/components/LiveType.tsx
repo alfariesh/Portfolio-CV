@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { CURSOR } from "../art/cursor-shape";
 
 // A headline line you can edit like a canvas, adapted from React Bits'
 // TechText (MIT), working on words rather than letters. The words stay real
@@ -38,8 +39,8 @@ const SPRING = 320;
 const BOUNCE = 0.4;
 const KICK_DECAY = 0.62;
 const SPECKS = 12;
-const LABEL_FONT = '11px "JetBrains Mono Variable", ui-monospace, monospace';
-const LABEL_TRACKING = "1.2px";
+const LABEL_FONT = `${CURSOR.label.size}px "JetBrains Mono Variable", ui-monospace, monospace`;
+const LABEL_TRACKING = `${CURSOR.label.tracking}px`;
 const INTRO_DELAY = 0.6;
 // Seconds per word, quicker on longer lines so the pass stays about 4.5s.
 const introStep = (words: number) => Math.min(0.5, 4.5 / Math.max(1, words));
@@ -120,7 +121,6 @@ export function LiveType({
     let ready = false;
     let alive = true;
     let dragging = -1;
-    let cursor = "";
     // The intro runs once, the first time the line is in view with its font.
     let intro = reducedMotion ? -1 : 0;
     let launched = false;
@@ -135,6 +135,7 @@ export function LiveType({
       press: 0,
     }));
     const [me, ...crew] = cast;
+    const arrow = new Path2D(CURSOR.path);
     const kicks: Kick[] = [];
     const pointer = { x: 0, y: 0, inside: false };
     const grab = { x: 0, y: 0 };
@@ -357,38 +358,50 @@ export function LiveType({
       ctx.letterSpacing = tracking;
     };
 
-    // A Figma-style pointer with a name tag, tip at the cursor's point.
+    // The same cursor as art/Cursor.tsx, from the same numbers: the shared
+    // arrow with a paper outline and a thin shadow, then the name tag. The tip
+    // is at the cursor's point.
     const drawCursor = (c: Cursor) => {
       if (c.alpha < 0.01) return;
+      const { tag, shadow } = CURSOR;
       ctx.save();
       ctx.translate(Math.round(c.x), Math.round(c.y));
       const scale = 1 - 0.18 * c.press;
       ctx.scale(scale, scale);
       ctx.globalAlpha = c.alpha;
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.lineTo(0, 17);
-      ctx.lineTo(4.6, 12.6);
-      ctx.lineTo(7.6, 19.2);
-      ctx.lineTo(10.4, 18);
-      ctx.lineTo(7.5, 11.6);
-      ctx.lineTo(13.2, 11.6);
-      ctx.closePath();
+      // A canvas shadow ignores the transform, so it is given in device pixels.
+      ctx.shadowColor = `rgb(0 0 0 / ${shadow.alpha})`;
+      ctx.shadowBlur = shadow.blur * dpr;
+      ctx.shadowOffsetY = shadow.y * dpr;
+
+      ctx.save();
+      const k = CURSOR.size / CURSOR.box;
+      ctx.scale(k, k);
+      ctx.translate(-CURSOR.tip, -CURSOR.tip);
       ctx.lineJoin = "round";
-      ctx.lineWidth = 2;
+      ctx.lineWidth = CURSOR.outline;
+      ctx.fillStyle = paper;
       ctx.strokeStyle = paper;
-      ctx.stroke();
+      // Outline and fill in paper cast the shadow of the whole shape; the
+      // colour then goes on top, so half of the outline stays visible.
+      ctx.fill(arrow);
+      ctx.stroke(arrow);
+      ctx.shadowColor = "transparent";
       ctx.fillStyle = c.fill;
-      ctx.fill();
+      ctx.fill(arrow);
+      ctx.restore();
+
       ctx.font = LABEL_FONT;
       ctx.letterSpacing = LABEL_TRACKING;
       ctx.textBaseline = "middle";
-      const w = ctx.measureText(c.name).width + 14;
+      const w = ctx.measureText(c.name).width + tag.padX * 2;
+      ctx.fillStyle = c.fill;
       ctx.beginPath();
-      ctx.roundRect(12, 20, w, 20, 6);
+      ctx.roundRect(tag.x, tag.y, w, tag.height, tag.radius);
       ctx.fill();
+      ctx.shadowColor = "transparent";
       ctx.fillStyle = paper;
-      ctx.fillText(c.name, 19, 30.5);
+      ctx.fillText(c.name, tag.x + tag.padX, tag.y + tag.height / 2 + 0.5);
       ctx.restore();
     };
 
@@ -573,12 +586,6 @@ export function LiveType({
         }
       });
 
-      const nextCursor = dragging >= 0 ? "grabbing" : hover >= 0 ? "grab" : "";
-      if (nextCursor !== cursor) {
-        cursor = nextCursor;
-        root.style.cursor = nextCursor;
-      }
-
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // A dashed ghost stays home while a word is away.
@@ -714,7 +721,6 @@ export function LiveType({
       cancelAnimationFrame(raf);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
-      root.style.cursor = "";
       for (const glyph of glyphs) {
         glyph.el.style.left = "";
         glyph.el.style.top = "";

@@ -84,6 +84,12 @@ describe.each(pages)("page %s", (url) => {
       expect(render(page), `${page}#${id}`).toContain(`id="${id}"`);
     }
   });
+
+  // The visitor's cursor only exists once a mouse has moved, so it is never
+  // part of the prerendered page.
+  it("prerenders no cursor for the visitor", () => {
+    expect(html).not.toContain("cursor--you");
+  });
 });
 
 describe("case studies", () => {

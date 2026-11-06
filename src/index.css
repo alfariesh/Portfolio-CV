@@ -24,6 +24,8 @@
   --accent: #f54e00;
   /* Accent for text links (Ibid accent). */
   --accent-ink: #f54e00;
+  /* The visitor's own cursor ("You"), on every page. */
+  --violet: #8a63d2;
 
   --font-sans: "Google Sans", sans-serif;
   --font-code: "JetBrains Mono Variable", ui-monospace, monospace;
