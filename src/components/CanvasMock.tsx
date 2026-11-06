@@ -2,7 +2,7 @@ import { Cursor } from "../art/Cursor";
 import { pictogramNames } from "../art/pictogram-data";
 import { Pictogram } from "../art/pictograms";
 import { MiniScreen, NumiOnboarding, VuboiHome } from "../art/screens";
-import { profile } from "../content";
+import { hero, profile } from "../content";
 import { Icon, type IconName } from "./Icon";
 
 const tabs = ["Portfolio 2026", "Rekanesia", "Vuboi", "Surau", "iPubers"];
@@ -32,6 +32,17 @@ const terminal = [
   { cmd: "paper – get_computed_styles (MCP)", out: "ink #23251D · paper #FEFEFC · line #D8DAD1" },
   { cmd: "vp check", out: "pass: no lint or type errors" },
 ];
+
+// Where each collaborator's cursor sits on the canvas, by name, so the hero
+// config can reorder or add people without moving the wrong cursor.
+const spots: Record<string, { x: number; y: number }> = {
+  [hero.author.name]: { x: 318, y: 150 },
+  [hero.agents[0].name]: { x: 170, y: 330 },
+  [hero.agents[1].name]: { x: 560, y: 360 },
+};
+const cursors = [hero.author, ...hero.agents].flatMap((who) =>
+  spots[who.name] ? [{ ...who, ...spots[who.name] }] : [],
+);
 
 // A faux design-tool window. Projects are artboards, the inspector is the bio.
 export function CanvasMock() {
@@ -147,9 +158,9 @@ export function CanvasMock() {
             </MiniScreen>
           </div>
 
-          <Cursor name="Salman" tone="you" x={318} y={150} />
-          <Cursor name="Fable 5.5" tone="agent" x={170} y={330} />
-          <Cursor name="Astra 6.1" tone="agent" x={560} y={360} />
+          {cursors.map(({ name, color, x, y }) => (
+            <Cursor key={name} name={name} color={color} x={x} y={y} />
+          ))}
         </div>
 
         <aside className="cm__right">

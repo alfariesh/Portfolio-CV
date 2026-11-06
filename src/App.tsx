@@ -1,10 +1,12 @@
 import { createElement, ViewTransition, type ComponentType } from "react";
 import { preload } from "react-dom";
 import { findCaseStudy } from "./case-studies";
+import { YouCursor } from "./art/YouCursor";
 import { Backdrop } from "./components/Backdrop";
 import { BottomNav } from "./components/BottomNav";
 import { Footer } from "./components/Footer";
 import { Nav } from "./components/Nav";
+import { hero } from "./content";
 import { findNote } from "./notes";
 import { useChunk, type Chunk } from "./chunk";
 import { pageChunks } from "./pages/chunks";
@@ -69,6 +71,7 @@ function Site() {
       </div>
       <Footer />
       <BottomNav />
+      <YouCursor name={hero.visitor.name} color={hero.visitor.color} />
     </>
   );
 }

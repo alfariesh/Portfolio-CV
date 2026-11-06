@@ -11,33 +11,65 @@
   line-height: 20px;
 }
 
-/* Collaborator cursors */
+/* Cursors: the same pointer, outline, shadow and tag as the ones LiveType draws
+   on the headline canvas. The numbers (size, shadow, tag, text) come from
+   art/cursor-shape.ts through the component's inline styles. The element's
+   corner sits on the arrow's tip. */
 .cursor {
-  --c: #f54e00;
+  --c: var(--accent);
   position: absolute;
   z-index: 5;
-  display: flex;
-  align-items: flex-start;
-  gap: 1px;
-  color: var(--c);
   pointer-events: none;
-  filter: drop-shadow(0 2px 3px #00000026);
+  transform-origin: 0 0;
+}
+
+.cursor svg {
+  position: absolute;
+  overflow: visible;
+}
+
+.cursor path {
+  fill: var(--c);
+  stroke: var(--paper);
+  stroke-linejoin: round;
+  paint-order: stroke;
 }
 
 .cursor b {
-  margin-top: 13px;
-  padding: 2px 7px;
-  border-radius: 4px;
+  position: absolute;
   background: var(--c);
-  color: #fff;
-  font-size: 12px;
-  line-height: 16px;
-  font-weight: 500;
+  color: var(--paper);
+  font-family: var(--font-code);
+  font-weight: 400;
   white-space: nowrap;
 }
 
-.cursor--agent {
-  --c: #8a63d2;
+/* The visitor's own cursor (YouCursor): fixed to the viewport above everything,
+   placed with `translate`. Its own view-transition name keeps it live while a
+   page swaps (see "View transitions" in pages.css). */
+.cursor--you {
+  position: fixed;
+  z-index: 9999;
+  opacity: 0;
+  transition:
+    opacity 0.1s,
+    scale 0.08s;
+  view-transition-name: you-cursor;
+}
+
+.cursor--you.is-on {
+  opacity: 1;
+}
+
+.cursor--you.is-down {
+  scale: 0.82;
+}
+
+/* Set on <html> while the visitor's cursor is shown: it replaces the system one
+   everywhere, links and text included. */
+.has-you-cursor,
+.has-you-cursor * {
+  cursor: none !important;
 }
 
 /* Status chips */

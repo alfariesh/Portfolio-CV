@@ -64,6 +64,8 @@ export const hero = {
     { name: "Fable 5.5", color: "--accent", park: "agents" },
     { name: "Astra 6.1", color: "--ink", park: "agents" },
   ],
+  // The visitor's own cursor: it follows the mouse on every page.
+  visitor: { name: "You", color: "--violet" },
   body: "I'm Salman. I design web and mobile products with AI agents as my teammates, from the first sketch to the design docs and skills that keep them shipping.",
   primary: { label: "see selected work", href: "#work" },
   secondary: { label: "currently open to new work →", href: "#contact" },
